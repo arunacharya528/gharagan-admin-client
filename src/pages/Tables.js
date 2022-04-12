@@ -18,137 +18,67 @@ import {
 } from '@windmill/react-ui'
 import { EditIcon, TrashIcon } from '../icons'
 
-import response from '../utils/demo/tableData'
+import response from '../utils/demo/productData'
 // make a copy of the data, for the second table
 const response2 = response.concat([])
 
 function Tables() {
-  /**
-   * DISCLAIMER: This code could be badly improved, but for the sake of the example
-   * and readability, all the logic for both table are here.
-   * You would be better served by dividing each table in its own
-   * component, like Table(?) and TableWithActions(?) hiding the
-   * presentation details away from the page view.
-   */
 
   // setup pages control for every table
-  const [pageTable1, setPageTable1] = useState(1)
-  const [pageTable2, setPageTable2] = useState(1)
+  const [pageTable, setPageTable] = useState(1)
 
   // setup data for every table
-  const [dataTable1, setDataTable1] = useState([])
-  const [dataTable2, setDataTable2] = useState([])
+  const [dataTable, setDataTable] = useState([])
 
   // pagination setup
   const resultsPerPage = 10
   const totalResults = response.length
 
   // pagination change control
-  function onPageChangeTable1(p) {
-    setPageTable1(p)
-  }
-
-  // pagination change control
-  function onPageChangeTable2(p) {
-    setPageTable2(p)
+  function onPageChangeTable(p) {
+    setPageTable(p)
   }
 
   // on page change, load new sliced data
   // here you would make another server request for new data
   useEffect(() => {
-    setDataTable1(response.slice((pageTable1 - 1) * resultsPerPage, pageTable1 * resultsPerPage))
-  }, [pageTable1])
+    setDataTable(response.slice((pageTable - 1) * resultsPerPage, pageTable * resultsPerPage))
+  }, [pageTable])
 
-  // on page change, load new sliced data
-  // here you would make another server request for new data
-  useEffect(() => {
-    setDataTable2(response2.slice((pageTable2 - 1) * resultsPerPage, pageTable2 * resultsPerPage))
-  }, [pageTable2])
 
   return (
     <>
-      <PageTitle>Tables</PageTitle>
-
-      <CTA />
-
-      <SectionTitle>Simple table</SectionTitle>
+      <PageTitle>Products</PageTitle>
       <TableContainer className="mb-8">
         <Table>
           <TableHeader>
             <tr>
-              <TableCell>Client</TableCell>
+              <TableCell>Name</TableCell>
               <TableCell>Amount</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Date</TableCell>
-            </tr>
-          </TableHeader>
-          <TableBody>
-            {dataTable1.map((user, i) => (
-              <TableRow key={i}>
-                <TableCell>
-                  <div className="flex items-center text-sm">
-                    <Avatar className="hidden mr-3 md:block" src={user.avatar} alt="User avatar" />
-                    <div>
-                      <p className="font-semibold">{user.name}</p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">{user.job}</p>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">$ {user.amount}</span>
-                </TableCell>
-                <TableCell>
-                  <Badge type={user.status}>{user.status}</Badge>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">{new Date(user.date).toLocaleDateString()}</span>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <TableFooter>
-          <Pagination
-            totalResults={totalResults}
-            resultsPerPage={resultsPerPage}
-            onChange={onPageChangeTable1}
-            label="Table navigation"
-          />
-        </TableFooter>
-      </TableContainer>
+              <TableCell>SKU</TableCell>
+              <TableCell>Category</TableCell>
+              <TableCell>Brand</TableCell>
+              <TableCell>Action</TableCell>
 
-      <SectionTitle>Table with actions</SectionTitle>
-      <TableContainer className="mb-8">
-        <Table>
-          <TableHeader>
-            <tr>
-              <TableCell>Client</TableCell>
-              <TableCell>Amount</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Actions</TableCell>
             </tr>
           </TableHeader>
           <TableBody>
-            {dataTable2.map((user, i) => (
+            {dataTable.map((product, i) => (
               <TableRow key={i}>
                 <TableCell>
-                  <div className="flex items-center text-sm">
-                    <Avatar className="hidden mr-3 md:block" src={user.avatar} alt="User avatar" />
-                    <div>
-                      <p className="font-semibold">{user.name}</p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">{user.job}</p>
-                    </div>
-                  </div>
+                  {product.name}
                 </TableCell>
                 <TableCell>
-                  <span className="text-sm">$ {user.amount}</span>
+                  {product.price}
                 </TableCell>
                 <TableCell>
-                  <Badge type={user.status}>{user.status}</Badge>
+                  {product.SKU}
                 </TableCell>
                 <TableCell>
-                  <span className="text-sm">{new Date(user.date).toLocaleDateString()}</span>
+                  {product.category.name}
+                </TableCell>
+                <TableCell>
+                  {product.brand.name}
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center space-x-4">
@@ -168,7 +98,7 @@ function Tables() {
           <Pagination
             totalResults={totalResults}
             resultsPerPage={resultsPerPage}
-            onChange={onPageChangeTable2}
+            onChange={onPageChangeTable}
             label="Table navigation"
           />
         </TableFooter>

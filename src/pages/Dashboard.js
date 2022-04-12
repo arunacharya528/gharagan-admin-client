@@ -8,7 +8,7 @@ import ChartLegend from '../components/Chart/ChartLegend'
 import PageTitle from '../components/Typography/PageTitle'
 import { ChatIcon, CartIcon, MoneyIcon, PeopleIcon } from '../icons'
 import RoundIcon from '../components/RoundIcon'
-import response from '../utils/demo/tableData'
+import response from '../utils/demo/productData'
 import {
   TableBody,
   TableContainer,
