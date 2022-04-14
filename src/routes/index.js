@@ -12,6 +12,8 @@ const Page404 = lazy(() => import('../pages/404'))
 const Blank = lazy(() => import('../pages/Blank'))
 const Product = lazy(() => import('../pages/Product/Product'))
 const ProductView = lazy(() => import('../pages/Product/View'))
+const Category = lazy(() => import('../pages/Category/Category'))
+const ProductEdit = lazy(() => import('../pages/Product/Edit'))
 
 
 
@@ -69,7 +71,15 @@ const routes = [
   {
     path: '/product/:productId',
     component: ProductView
-  }
+  },
+  {
+    path: '/product/:productId/edit',
+    component: ProductEdit
+  },
+  {
+    path: '/category',
+    component: Category
+  },
 ]
 
 export default routes

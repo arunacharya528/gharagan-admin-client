@@ -8,7 +8,7 @@ import { HeartIcon, PeopleIcon, EditIcon, TrashIcon } from '../../icons'
 import InfoCard from '../../components/Cards/InfoCard'
 import RoundIcon from '../../components/RoundIcon'
 import { Link } from 'react-router-dom'
-import { EditGeneralInfo } from './Edit'
+// import { EditGeneralInfo } from './Edit'
 
 const moment = require('moment');
 
@@ -64,7 +64,7 @@ function View() {
         openModal();
         setModalData({
             title: "Edit general info",
-            body: <EditGeneralInfo />
+            body: <></>
         });
     }
     return (
@@ -83,7 +83,7 @@ function View() {
                         <div className="flex justify-between">
                             <span>Product Detail</span>
                             <div className='flex space-x-5'>
-                                <Link layout="link" size="icon" aria-label="Edit" to={"/app/product/"}>
+                                <Link layout="link" size="icon" aria-label="Edit" to={"/app/product/" + data.id + "/edit"}>
                                     <EditIcon className="w-5 h-5" aria-hidden="true" />
                                 </Link>
                                 <Link layout="link" size="icon" aria-label="Edit" to={"/app/product/"}>

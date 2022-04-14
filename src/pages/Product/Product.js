@@ -31,23 +31,11 @@ const response2 = response.concat([])
 
 function Tables() {
 
-    // setup pages control for every table
-    const [pageTable, setPageTable] = useState(1)
-
-    // setup data for every table
     const [dataTable, setDataTable] = useState([])
 
-    // pagination setup
-    const resultsPerPage = 10
-    // const totalResults = response.length
-    const [totalResults, setTotalResults] = useState(10);
 
     const [modalData, setModalData] = useState({ title: undefined, body: undefined });
 
-    // pagination change control
-    function onPageChangeTable(p) {
-        setPageTable(p)
-    }
 
     const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -59,18 +47,14 @@ function Tables() {
         setIsModalOpen(false)
     }
 
-    // on page change, load new sliced data
-    // here you would make another server request for new data
     useEffect(() => {
 
         getProducts()
             .then(response => {
-                console.log(response.data)
-                setDataTable(response.data.slice((pageTable - 1) * resultsPerPage, pageTable * resultsPerPage))
-                setTotalResults(response.data.length)
+                setDataTable(response.data)
             })
             .catch(error => console.log(error));
-    }, [pageTable])
+    }, [])
 
     const getAverageRating = (ratings) => {
         const numbers = ratings.map((rating) => rating.rate);
@@ -143,12 +127,6 @@ function Tables() {
                     </TableBody>
                 </Table>
                 <TableFooter>
-                    <Pagination
-                        totalResults={totalResults}
-                        resultsPerPage={resultsPerPage}
-                        onChange={onPageChangeTable}
-                        label="Table navigation"
-                    />
                 </TableFooter>
             </TableContainer>
         </>
