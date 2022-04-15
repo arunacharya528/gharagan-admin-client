@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Input, HelperText, Label, Select, Textarea } from '@windmill/react-ui'
 import { HeartIcon, PeopleIcon, EditIcon, TrashIcon } from '../../icons'
 
@@ -13,14 +13,18 @@ import { useLocation } from 'react-router-dom/cjs/react-router-dom.min'
 import InfoCard from '../../components/Cards/InfoCard'
 import RoundIcon from '../../components/RoundIcon'
 import { Link } from 'react-router-dom'
-import { Editor } from '@tinymce/tinymce-react';
-// import 'tinymce/plugins/link';
+import { GeneralInfoEdit } from "./GeneralInfoEdit";
+import { InventoryEdit } from "./InventoryEdit";
+import { DescriptionEdit } from "./DescriptionEdit";
+
+
 const Edit = () => {
 
 
 
-    const [name, setName] = useState('');
-
+    const [product, setProduct] = useState(undefined);
+    const [editor, setEditor] = useState(null);
+    const location = useLocation();
 
     const editorRef = useRef(null);
     const log = () => {
@@ -28,6 +32,17 @@ const Edit = () => {
             console.log(editorRef.current.getContent());
         }
     };
+
+    useEffect(() => {
+        getproduct(location.pathname.split('/')[3])
+            .then(response => {
+                // console.log(response.data)
+                setProduct(response.data)
+            })
+            .catch(error => console.log(error))
+    }, [])
+
+
     return (
         <>
             <PageTitle>
@@ -47,14 +62,11 @@ const Edit = () => {
 
                         </div>
                         <div className="text-gray-600 dark:text-gray-400">
-                            <Label>
-                                <span>Name</span>
-                                <Input className="mt-1" placeholder="Enter product name" />
-                            </Label>
-                            <Label className="mt-4">
-                                <span>Summary</span>
-                                <Textarea className="mt-1" rows="3" placeholder="Enter summary" />
-                            </Label>
+                            {product ?
+                                <GeneralInfoEdit product={product} />
+                                : ''
+                            }
+
                         </div>
                     </CardBody>
                 </Card>
@@ -71,67 +83,20 @@ const Edit = () => {
                 </Card>
             </div>
 
-            {/* <Card className="mb-8 shadow-md ">
+            <Card className="mb-8 shadow-md ">
                 <CardBody>
-                    <p className="mb-4 font-semibold text-gray-600 dark:text-gray-300">Description</p>
+                    <p className="mb-4 font-semibold text-gray-600 dark:text-gray-300">Update Description</p>
                     <p className='text-gray-600 dark:text-gray-400'>
-
-                        <Label className="mt-4">
-                            <span>Message</span>
-                            <Textarea className="mt-1" rows="10" placeholder="Enter some long form content." />
-                        </Label>
-
+                        <DescriptionEdit/>
                     </p>
 
                 </CardBody>
-            </Card> */}
+            </Card>
             <Card className="mb-8 shadow-md ">
                 <CardBody>
                     <p className="mb-4 font-semibold text-gray-600 dark:text-gray-300">Inventory</p>
-                    <table className='table-auto w-full text-gray-600 dark:text-gray-400 '>
-                        <tbody>
-                            <tr className='text-left text-gray-600 dark:text-gray-300'>
-                                <th className='py-2'>Type</th>
-                                <th className='py-2'>Price</th>
-                                <th className='py-2'>Discount %</th>
-                                <th className='py-2'>Amount</th>
-                                <th className='py-2'>Status</th>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <Input className="mt-1" placeholder="Jane Doe" />
-                                </th>
-                                <th>
-                                    <Input className="mt-1" placeholder="Jane Doe" />
-                                </th>
-                                <th>
-                                    <Input className="mt-1" placeholder="Jane Doe" />
-                                </th>
-                                <th>
-                                    123
-                                </th>
-                                <th>
-                                    <Select className="mt-1">
-                                        <option value={'active'}>Active</option>
-                                        <option value={'inactive'}>Inactive</option>
-                                    </Select>
-                                </th>
-                                <th>
-                                    <button>Save</button>
-                                </th>
-                            </tr>
-                            
-                            {/* {data.inventories.map((inventory, index) =>
-                                <tr key={index}>
-                                    <td>{inventory.type}</td>
-                                    <td>{inventory.price}</td>
-                                    <td>{inventory.discount.discount_percent}%</td>
-                                    <td>{getDiscountedPrice(inventory.price, inventory.discount.discount_percent)}</td>
-                                    <td>{getStatusBadge(inventory.discount.active)}</td>
-                                </tr>
-                            )} */}
-                        </tbody>
-                    </table>
+
+                    <InventoryEdit />
 
                 </CardBody>
             </Card>
