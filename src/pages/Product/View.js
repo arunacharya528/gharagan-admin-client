@@ -93,11 +93,6 @@ function View() {
                             <CardBody>
                                 <div className="mb-4 font-semibold text-gray-600 dark:text-gray-300 flex justify-between">
                                     <span>General Info</span>
-                                    <div>
-                                        <button layout="link" size="icon" aria-label="Edit" onClick={handleGeneralInfoEdit}>
-                                            <EditIcon className="w-5 h-5" aria-hidden="true" />
-                                        </button>
-                                    </div>
                                 </div>
                                 <div className="text-gray-600 dark:text-gray-400">
                                     <table>
@@ -167,14 +162,16 @@ function View() {
                                     <tr className='text-left text-gray-600 dark:text-gray-300'>
                                         <th className='py-2'>Type</th>
                                         <th className='py-2'>Price</th>
+                                        <th className='py-2'>Quantity</th>
                                         <th className='py-2'>Discount %</th>
-                                        <th className='py-2'>Discounted Price</th>
+                                        <th className='py-2'>Amount</th>
                                         <th className='py-2'>Status</th>
                                     </tr>
                                     {data.inventories.map((inventory, index) =>
                                         <tr key={index}>
                                             <td>{inventory.type}</td>
                                             <td>{inventory.price}</td>
+                                            <td>{inventory.quantity}</td>
                                             <td>{inventory.discount.discount_percent}%</td>
                                             <td>{getDiscountedPrice(inventory.price, inventory.discount.discount_percent)}</td>
                                             <td>{getStatusBadge(inventory.discount.active)}</td>
@@ -190,9 +187,9 @@ function View() {
                             <p className="mb-4 font-semibold text-gray-600 dark:text-gray-300">Photos</p>
 
                             <div className="">
-                                <div className="flex overflow-auto">
+                                <div className="grid sm:grid-cols-3 md:grid-cols-5 gap-5">
                                     {data.images.map((image, index) =>
-                                        <img src={image.image} className="flex-initial w-64 mr-4 rounded-lg mb-6" key={index} />
+                                        <img src={image.file ? process.env.REACT_APP_FILE_PATH + '/' + image.file.path : image.image_url} className="flex-initial w-64 h-auto mr-4 rounded-lg mb-6" key={index} />
                                     )}
                                 </div>
                             </div>
