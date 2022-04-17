@@ -28,6 +28,10 @@ import { ReactComponent as OutlineCogIcon } from './outlineCog.svg'
 import { ReactComponent as OutlineLogoutIcon } from './outlineLogout.svg'
 import { ReactComponent as CheckIcon } from './check.svg'
 import { ReactComponent as CrossIcon } from './cross.svg'
+import { ReactComponent as MinusIcon } from './minus.svg'
+import { ReactComponent as PlusIcon } from './plus.svg'
+
+
 
 
 export {
@@ -60,5 +64,7 @@ export {
   OutlineCogIcon,
   OutlineLogoutIcon,
   CheckIcon,
-  CrossIcon
+  CrossIcon,
+  MinusIcon,
+  PlusIcon
 }
