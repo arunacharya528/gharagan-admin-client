@@ -3,19 +3,20 @@ import { Input, HelperText, Label, Select, Textarea, Button } from '@windmill/re
 import { ButtonsIcon, CheckIcon, CrossIcon, HeartIcon } from "../../icons";
 import { getCategories } from "../../adapters/category";
 import { getBrands } from "../../adapters/brand";
+import { getProduct, putProduct } from "../../adapters/product";
+import { useLocation } from "react-router-dom";
 
-export const GeneralInfoEdit = ({ product }) => {
+export const GeneralInfoEdit = () => {
 
     const [name, setName] = useState('');
     const [summary, setSummary] = useState('');
-    const [parentId, setParentId] = useState(0);
     const [categoryId, setCategoryId] = useState(0);
     const [brandId, setBrandId] = useState(0);
 
-    // data storage for backend data
     const [categories, setCategories] = useState([]);
-    const [selectedTree, setSelectedTree] = useState(undefined);
     const [brands, setBrands] = useState(undefined)
+    const location = useLocation();
+
     useEffect(() => {
         getCategories()
             .then(response => { setCategories(response.data) })
@@ -25,23 +26,29 @@ export const GeneralInfoEdit = ({ product }) => {
             .then(response => { setBrands(response.data) })
             .catch(error => console.log(error))
 
-        // console.log(product)
+        getProduct(location.pathname.split('/')[3])
+            .then(response => {
 
-        setName(product.name);
-        setSummary(product.summary)
-        setCategoryId(product.category_id);
-        setBrandId(product.brand_id)
-        setParentId(product.parent_id)
-
-        // setSelectedTree([])
+                const product = response.data;
+                setName(product.name);
+                setSummary(product.summary)
+                setCategoryId(product.category_id);
+                setBrandId(product.brand_id)
+            })
+            .catch(error => console.log(error))
     }, [])
 
-
-
-
-
     const handleSubmission = (e) => {
-        console.log({ name, summary, parentId, categoryId, brandId })
+
+        putProduct({
+            name: name,
+            summary: summary,
+            category_id: categoryId,
+            brand_id: brandId
+        })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     return (
@@ -57,31 +64,21 @@ export const GeneralInfoEdit = ({ product }) => {
 
             <Label className="mt-4">
                 <span>Category</span>
-                <div className="grid gap-6 mb-8 md:grid-cols-2">
-                    <Label className="mt-4">
-                        <span>Selected Parent</span>
-                        <div className="mt-2 flex flex-col">
-                            {categories.map((category, index) =>
+                <div className="grid gap-6 mb-8 sm:grid-cols-3 md:grid-cols-5">
+                    {categories.map((category, index) =>
+                        <div className="flex flex-col">
+                            <span className="ml-2">{category.name}</span>
+                            {category.child_categories.map((child_category) =>
                                 <Label className="ml-6" radio>
-                                    <Input type="radio" value={category.id} name="parent_category" onChange={e => { setSelectedTree(category.child_categories); setParentId(category.id) }} />
-                                    <span className="ml-2">{category.name}</span>
+                                    <Input type="radio" value={child_category.id} name="category" onChange={e => setCategoryId(child_category.id)}
+                                        checked={categoryId === child_category.id ? true : false}
+                                    />
+                                    <span className="ml-2">{child_category.name}</span>
                                 </Label>
-
                             )}
-
                         </div>
-                    </Label>
-                    <Label className="mt-4">
-                        <span>Selected Child</span>
-                        {selectedTree ?
-                            <Select className="mt-1" onChange={e => setCategoryId(e.target.value)} value={categoryId} >
-                                {selectedTree.map((category, index) =>
-                                    <option value={category.id} key={index}>{category.name}</option>
-                                )}
-                            </Select>
-                            : ''}
 
-                    </Label>
+                    )}
                 </div>
             </Label>
 

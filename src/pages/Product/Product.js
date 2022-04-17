@@ -23,8 +23,8 @@ import { EditIcon, TrashIcon } from '../../icons'
 
 import response from '../../utils/demo/productData'
 import PageTitle from '../../components/Typography/PageTitle'
-import { getProducts } from './adapter'
 import { Link } from 'react-router-dom'
+import { getProducts } from '../../adapters/product'
 // import { Modal, MyModal } from '../../components/Modal/MyModal'
 // make a copy of the data, for the second table
 const response2 = response.concat([])

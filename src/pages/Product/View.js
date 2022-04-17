@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Card, CardBody, Badge, Modal, ModalHeader, ModalBody } from '@windmill/react-ui'
-import response from '../../utils/demo/productData'
 import PageTitle from '../../components/Typography/PageTitle'
-import { getproduct, getProducts } from './adapter'
+import { getProduct, getProducts } from '../../adapters/product'
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min'
 import { HeartIcon, PeopleIcon, EditIcon, TrashIcon } from '../../icons'
 import InfoCard from '../../components/Cards/InfoCard'
@@ -18,7 +17,7 @@ function View() {
     const location = useLocation();
 
     useEffect(() => {
-        getproduct(location.pathname.split('/')[3])
+        getProduct(location.pathname.split('/')[3])
             .then(response => {
                 console.log(response.data)
                 setData(response.data)
