@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import Markdown from 'marked-react';
+import React, { useEffect, useState } from "react";
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Input, HelperText, Label, Select, Textarea, Button } from '@windmill/react-ui'
 
 import "./default.scss";
+import { CheckIcon, CrossIcon } from "../../icons";
+import { getProduct, putProduct } from "../../adapters/product";
+import { useLocation } from "react-router-dom";
 export const DescriptionEdit = () => {
 
 
@@ -42,6 +44,27 @@ Embedding an image
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{text}</ReactMarkdown>
         );
     };
+
+    const location = useLocation();
+
+    const [toggleCancel, setToggleCancel] = useState(false);
+    useEffect(() => {
+        getProduct(location.pathname.split('/')[3])
+            .then(response => {
+                setDescription(response.data.description)
+            })
+            .catch(error => console.log(error))
+    }, [toggleCancel])
+
+
+    const handleSubmission = () => {
+        putProduct({ description: description })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+
     return (
         <>
             {isExampleHidden ? '' :
@@ -49,7 +72,7 @@ Embedding an image
 
                     <Label className="">
                         <span>Example</span>
-                        <Textarea className="mt-1" rows="25" placeholder="Enter some long form content." value={sample} />
+                        <Textarea className="mt-1" rows="30" placeholder="Enter some long form content." value={sample} />
                     </Label>
 
                     <Label className="">
@@ -62,8 +85,7 @@ Embedding an image
 
             }
 
-
-            <Button className="my-3" onClick={e => hideExample(!isExampleHidden)}>{isExampleHidden ? "Display" : "Hide"}  Example</Button>
+            <Button className="mb-3" onClick={e => hideExample(!isExampleHidden)}>{isExampleHidden ? "Display" : "Hide"}  Example</Button>
             <div className="grid gap-6 md:grid-cols-2">
 
                 <Label className="">
@@ -77,6 +99,16 @@ Embedding an image
                         {Preview(description)}
                     </div>
                 </Label>
+            </div>
+
+            <div className="flex justify-between">
+                <div className="mt-4">
+                    <Button icon={CheckIcon} layout="link" aria-label="Save" onClick={handleSubmission} />
+                </div>
+                <div className="mt-4">
+                    <Button icon={CrossIcon} layout="link" aria-label="Cancel"
+                        onClick={e => setToggleCancel(!toggleCancel)} />
+                </div>
             </div>
 
         </>
