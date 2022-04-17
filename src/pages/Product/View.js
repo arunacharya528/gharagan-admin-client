@@ -48,13 +48,10 @@ function View() {
 
 
     const [modalData, setModalData] = useState({ title: undefined, body: undefined });
-
     const [isModalOpen, setIsModalOpen] = useState(false)
-
     function openModal() {
         setIsModalOpen(true)
     }
-
     function closeModal() {
         setIsModalOpen(false)
     }
