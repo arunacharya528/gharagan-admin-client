@@ -16,6 +16,7 @@ export const GeneralInfoEdit = () => {
     const [categories, setCategories] = useState([]);
     const [brands, setBrands] = useState(undefined)
     const location = useLocation();
+    const [toggleCancel, setToggleCancel] = useState(false);
 
     useEffect(() => {
         getCategories()
@@ -25,7 +26,9 @@ export const GeneralInfoEdit = () => {
         getBrands()
             .then(response => { setBrands(response.data) })
             .catch(error => console.log(error))
+    }, [])
 
+    useEffect(() => {
         getProduct(location.pathname.split('/')[3])
             .then(response => {
 
@@ -36,7 +39,7 @@ export const GeneralInfoEdit = () => {
                 setBrandId(product.brand_id)
             })
             .catch(error => console.log(error))
-    }, [])
+    }, [toggleCancel])
 
     const handleSubmission = (e) => {
 
@@ -104,7 +107,7 @@ export const GeneralInfoEdit = () => {
                     <Button icon={CheckIcon} layout="link" aria-label="Save" onClick={handleSubmission} />
                 </div>
                 <div className="mt-4">
-                    <Button icon={CrossIcon} layout="link" aria-label="Cancel" />
+                    <Button icon={CrossIcon} layout="link" aria-label="Cancel" onClick={e => setToggleCancel(!toggleCancel)} />
                 </div>
             </div>
 
