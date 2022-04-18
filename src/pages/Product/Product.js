@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-// import PageTitle from '../components/Typography/PageTitle'
 import {
     Table,
     TableHeader,
@@ -8,26 +7,15 @@ import {
     TableRow,
     TableFooter,
     TableContainer,
-    Badge,
-    Avatar,
     Button,
-    Pagination,
-    Modal, ModalHeader, ModalBody, ModalFooter
+    Modal, ModalHeader, ModalBody
 } from '@windmill/react-ui'
 
-// import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from '@windmill/react-ui'
-
-import { EditIcon, TrashIcon } from '../../icons'
-
-// PageTitle
-
-import response from '../../utils/demo/productData'
+import { EyeIcon, TrashIcon } from '../../icons'
 import PageTitle from '../../components/Typography/PageTitle'
 import { Link } from 'react-router-dom'
 import { getProducts } from '../../adapters/product'
-// import { Modal, MyModal } from '../../components/Modal/MyModal'
-// make a copy of the data, for the second table
-const response2 = response.concat([])
+
 
 function Tables() {
 
@@ -115,7 +103,7 @@ function Tables() {
                                 <TableCell>
                                     <div className="flex items-center space-x-4">
                                         <Link layout="link" size="icon" aria-label="Edit" to={"/app/product/" + product.id}>
-                                            <EditIcon className="w-5 h-5" aria-hidden="true" />
+                                            <EyeIcon className="w-5 h-5" aria-hidden="true" />
                                         </Link>
                                         <Button layout="link" size="icon" aria-label="Delete">
                                             <TrashIcon className="w-5 h-5" aria-hidden="true" />

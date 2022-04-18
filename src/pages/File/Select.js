@@ -82,7 +82,7 @@ export const FileSelect = ({ selectedIds }) => {
                 </Button>
 
                 <Button size="large" className="w-full text-left mt-3 " onClick={handleSubmission}>
-                    OK
+                    Insert Selected Images
                 </Button>
             </div>
 

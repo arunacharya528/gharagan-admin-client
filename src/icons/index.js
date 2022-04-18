@@ -30,9 +30,7 @@ import { ReactComponent as CheckIcon } from './check.svg'
 import { ReactComponent as CrossIcon } from './cross.svg'
 import { ReactComponent as MinusIcon } from './minus.svg'
 import { ReactComponent as PlusIcon } from './plus.svg'
-
-
-
+import { ReactComponent as EyeIcon } from './eye.svg'
 
 export {
   ButtonsIcon,
@@ -66,5 +64,6 @@ export {
   CheckIcon,
   CrossIcon,
   MinusIcon,
-  PlusIcon
+  PlusIcon,
+  EyeIcon
 }

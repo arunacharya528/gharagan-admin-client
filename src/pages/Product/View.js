@@ -19,7 +19,6 @@ function View() {
     useEffect(() => {
         getProduct(location.pathname.split('/')[3])
             .then(response => {
-                console.log(response.data)
                 setData(response.data)
             })
             .catch(error => console.log(error))
@@ -165,7 +164,7 @@ function View() {
                                         <th className='py-2'>Quantity</th>
                                         <th className='py-2'>Discount %</th>
                                         <th className='py-2'>Amount</th>
-                                        <th className='py-2'>Status</th>
+                                        <th className='py-2'>Discount Status</th>
                                     </tr>
                                     {data.inventories.map((inventory, index) =>
                                         <tr key={index}>

@@ -31,7 +31,7 @@ export const ImageHandler = () => {
             product_id: productId,
             image_url: url
         })
-            .then(response => { console.log(response.data); setRefresh(!isRefreshed); setUrl(''); })
+            .then(response => { setRefresh(!isRefreshed); setUrl(''); })
             .catch(error => console.log(error))
 
     }
@@ -61,7 +61,6 @@ export const ImageHandler = () => {
             <div className="grid gap-5 sm:grid-cols-3 md:grid-cols-5">
                 {images.map((image, index) =>
                     <div className="relative" key={index}>
-                        {console.log(image)}
                         <img src={image.file ? process.env.REACT_APP_FILE_PATH + "/" + image.file.path : image.image_url} className="rounded" />
                         <CrossIcon className="absolute bottom-0 right-0 rounded bg-red-800 h-8 w-8 p-2" onClick={e => handleImageDeletion(image.id)} />
                     </div>
