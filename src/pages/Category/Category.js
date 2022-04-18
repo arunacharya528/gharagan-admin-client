@@ -16,7 +16,7 @@ import {
 } from '@windmill/react-ui'
 
 
-import { EditIcon, TrashIcon } from '../../icons'
+import { EditIcon, PlusIcon, TrashIcon } from '../../icons'
 
 // PageTitle
 
@@ -24,6 +24,8 @@ import PageTitle from '../../components/Typography/PageTitle'
 // import { getProducts } from './adapter'
 import { Link } from 'react-router-dom'
 import { getCategories } from '../../adapters/category'
+import { Edit } from './Edit'
+import { Add } from './Add'
 
 function Category() {
 
@@ -39,6 +41,7 @@ function Category() {
     // const [totalResults, setTotalResults] = useState(10);
 
     const [modalData, setModalData] = useState({ title: undefined, body: undefined });
+    const [isRefreshed, setRefresh] = useState(true);
 
     // pagination change control
     // function onPageChangeTable(p) {
@@ -66,18 +69,41 @@ function Category() {
                 // setTotalResults(response.data.length)
             })
             .catch(error => console.log(error));
-    }, [])
+    }, [isRefreshed])
 
-    const handleEditButtonPress = () => {
+    const handleAddButtonPress = () => {
         openModal();
         setModalData({
-            title: "Edit data",
-            body: <div>Hello there</div>
+            title: "Add Category",
+            body: <Add categories={dataTable} afterSubmission={() => {
+                closeModal();
+                setRefresh(!isRefreshed);
+            }} />
         });
     }
+
+    const handleEditButtonPress = (id) => {
+        openModal();
+        setModalData({
+            title: "Edit Category",
+            body: <Edit id={id} categories={dataTable} afterSubmission={() => {
+                closeModal();
+                setRefresh(!isRefreshed);
+            }} />
+        });
+    }
+
+
     return (
         <>
-            <PageTitle>Categories</PageTitle>
+            <PageTitle>
+                <div className="flex justify-between">
+                    <span>Categories</span>
+                    <Button layout="link" onClick={handleAddButtonPress}>
+                        <PlusIcon className="w-5 h-5" aria-hidden="true" />
+                    </Button>
+                </div>
+            </PageTitle>
             <Modal isOpen={isModalOpen} onClose={closeModal}>
                 <ModalHeader>{modalData.title}</ModalHeader>
                 <ModalBody>
@@ -112,9 +138,9 @@ function Category() {
 
                                     <TableCell>
                                         <div className="flex items-center space-x-4">
-                                            <Link layout="link" size="icon" aria-label="Edit">
+                                            <Button layout='link' size="icon" onClick={e => handleEditButtonPress(category.id)}>
                                                 <EditIcon className="w-5 h-5" aria-hidden="true" />
-                                            </Link>
+                                            </Button>
                                             <Button layout="link" size="icon" aria-label="Delete">
                                                 <TrashIcon className="w-5 h-5" aria-hidden="true" />
                                             </Button>
@@ -137,9 +163,9 @@ function Category() {
 
                                                 <TableCell>
                                                     <div className="flex items-center space-x-4">
-                                                        <Link layout="link" size="icon" aria-label="Edit">
+                                                        <Button layout='link' size="icon" onClick={e => handleEditButtonPress(child_category.id)}>
                                                             <EditIcon className="w-5 h-5" aria-hidden="true" />
-                                                        </Link>
+                                                        </Button>
                                                         <Button layout="link" size="icon" aria-label="Delete">
                                                             <TrashIcon className="w-5 h-5" aria-hidden="true" />
                                                         </Button>
