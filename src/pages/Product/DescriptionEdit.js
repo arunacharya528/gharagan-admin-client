@@ -39,6 +39,8 @@ Embedding an image
     `;
 
     const [isExampleHidden, hideExample] = useState(true);
+
+
     const Preview = (text) => {
         return (
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{text}</ReactMarkdown>
@@ -58,7 +60,7 @@ Embedding an image
 
 
     const handleSubmission = () => {
-        putProduct({ description: description })
+        putProduct({ description: description }, location.pathname.split('/')[3])
             .catch((error) => {
                 console.log(error);
             });

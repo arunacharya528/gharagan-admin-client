@@ -25,12 +25,27 @@ export const getProduct = (id) => {
     return axios(config);
 }
 
-export const putProduct = (productData) => {
+export const postProduct = (data) => {
+    data = qs.stringify(data);
+    let config = {
+        method: 'post',
+        url: `${apiURL}/product`,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        maxRedirects: 0,
+        data: data
+    };
+
+    return axios(config)
+}
+
+export const putProduct = (productData, id) => {
 
     let data = qs.stringify(productData);
     let config = {
         method: 'put',
-        url: `${apiURL}/product/1`,
+        url: `${apiURL}/product/${id}`,
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },

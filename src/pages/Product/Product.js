@@ -11,7 +11,7 @@ import {
     Modal, ModalHeader, ModalBody
 } from '@windmill/react-ui'
 
-import { EyeIcon, TrashIcon } from '../../icons'
+import { EyeIcon, TrashIcon, PlusIcon } from '../../icons'
 import PageTitle from '../../components/Typography/PageTitle'
 import { Link } from 'react-router-dom'
 import { getProducts } from '../../adapters/product'
@@ -61,13 +61,19 @@ function Tables() {
     }
     return (
         <>
-            <PageTitle>Products</PageTitle>
+            <PageTitle>
+                <div className="flex justify-between align-middle">
+                    <span>Products</span>
+                    <Link layout="link" size="icon" aria-label="Edit" to={"/app/product/add"}>
+                        <PlusIcon className="w-5 h-5" aria-hidden="true" />
+                    </Link>
+                </div>
+            </PageTitle>
             <Modal isOpen={isModalOpen} onClose={closeModal}>
                 <ModalHeader>{modalData.title}</ModalHeader>
                 <ModalBody>
                     {modalData.body}
                 </ModalBody>
-
             </Modal>
             <TableContainer className="mb-8">
                 <Table>
@@ -92,10 +98,10 @@ function Tables() {
                                     {product.category.name}
                                 </TableCell>
                                 <TableCell>
-                                    {product.brand.name}
+                                    {product.brand ? product.brand.name : ''}
                                 </TableCell>
                                 <TableCell>
-                                    {getAverageRating(product.ratings)}
+                                    {product.ratings ? getAverageRating(product.ratings) : '0'}
                                 </TableCell>
                                 <TableCell>
                                     {product.views}

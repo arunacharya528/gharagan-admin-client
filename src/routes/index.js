@@ -10,11 +10,13 @@ const Modals = lazy(() => import('../pages/Modals'))
 const Tables = lazy(() => import('../pages/Tables'))
 const Page404 = lazy(() => import('../pages/404'))
 const Blank = lazy(() => import('../pages/Blank'))
+
 const Product = lazy(() => import('../pages/Product/Product'))
+const ProductAdd = lazy(() => import('../pages/Product/Add'))
 const ProductView = lazy(() => import('../pages/Product/View'))
-const Category = lazy(() => import('../pages/Category/Category'))
 const ProductEdit = lazy(() => import('../pages/Product/Edit'))
 
+const Category = lazy(() => import('../pages/Category/Category'))
 
 
 /**
@@ -67,6 +69,10 @@ const routes = [
   {
     path: '/product',
     component: Product
+  },
+  {
+    path: '/product/add',
+    component: ProductAdd
   },
   {
     path: '/product/:productId',

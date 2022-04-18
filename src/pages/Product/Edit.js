@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Input, HelperText, Label, Select, Textarea } from '@windmill/react-ui'
-import { HeartIcon, PeopleIcon, EditIcon, TrashIcon } from '../../icons'
+import { HeartIcon, PeopleIcon, EditIcon, TrashIcon, EyeIcon } from '../../icons'
 
 
 // import React, { useState, useEffect } from 'react'
@@ -21,6 +21,7 @@ import { ImageHandler } from "./ImageHandler";
 
 
 const Edit = () => {
+    const location = useLocation();
 
     return (
         <>
@@ -29,7 +30,9 @@ const Edit = () => {
                 <div className="flex justify-between">
                     <span>Edit Product</span>
                     <div className='flex space-x-5'>
-
+                        <Link to={"/app/product/"+location.pathname.split('/')[3]}>
+                            <EyeIcon className="w-5 h-5" aria-hidden="true" />
+                        </Link>
                     </div>
                 </div>
             </PageTitle>
