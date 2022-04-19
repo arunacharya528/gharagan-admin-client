@@ -18,6 +18,7 @@ const ProductEdit = lazy(() => import('../pages/Product/Edit'))
 
 const Category = lazy(() => import('../pages/Category/Category'))
 
+const Brand = lazy(() => import('../pages/Brand/Brand'))
 
 /**
  * ⚠ These are internal routes!
@@ -85,6 +86,10 @@ const routes = [
   {
     path: '/category',
     component: Category
+  },
+  {
+    path: '/brand',
+    component: Brand
   },
 ]
 
