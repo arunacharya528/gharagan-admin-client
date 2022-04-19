@@ -20,6 +20,7 @@ const Category = lazy(() => import('../pages/Category/Category'))
 
 const Brand = lazy(() => import('../pages/Brand/Brand'))
 
+const File = lazy(() => import('../pages/File/File'))
 /**
  * ⚠ These are internal routes!
  * They will be rendered inside the app, using the default `containers/Layout`.
@@ -91,6 +92,10 @@ const routes = [
     path: '/brand',
     component: Brand
   },
+  {
+    path: '/file',
+    component: File
+  }
 ]
 
 export default routes
