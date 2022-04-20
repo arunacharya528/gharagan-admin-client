@@ -32,7 +32,7 @@ import { ReactComponent as MinusIcon } from './minus.svg'
 import { ReactComponent as PlusIcon } from './plus.svg'
 import { ReactComponent as EyeIcon } from './eye.svg'
 import { ReactComponent as BackIcon } from './back.svg'
-
+import { ReactComponent as FileIcon } from './file.svg'
 
 export {
   ButtonsIcon,
@@ -68,5 +68,6 @@ export {
   MinusIcon,
   PlusIcon,
   EyeIcon,
-  BackIcon
+  BackIcon,
+  FileIcon
 }

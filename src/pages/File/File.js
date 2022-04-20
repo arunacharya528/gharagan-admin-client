@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { deleteFile, getFiles } from "../../adapters/file";
 import { Card, CardBody, Modal, ModalHeader, ModalBody, ModalFooter, Button } from '@windmill/react-ui'
-import { PlusIcon, TrashIcon } from "../../icons";
+import { FileIcon, PlusIcon, TrashIcon } from "../../icons";
 import { Add } from "./Add";
 import Buttons from "../Buttons";
 
@@ -22,6 +22,10 @@ const File = () => {
     const [toggleAdd, setToggleAdd] = useState(false);
 
 
+    function isImgLink(url) {
+        if (typeof url !== 'string') return false;
+        return (url.match(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp|svg)(\?(.*))?$/gmi) != null);
+    }
 
     //===================================
     //
@@ -40,14 +44,23 @@ const File = () => {
     }
 
 
-    const viewImage = (file) => {
+    const viewFile = (file) => {
         setModalData({
             title: file.name,
             body:
                 <>
-                    <a href={process.env.REACT_APP_FILE_PATH + "/" + file.path} target="_blank" title={file.name + " image"}>
-                        <img src={process.env.REACT_APP_FILE_PATH + "/" + file.path}
-                            alt={file.name + " image"} className="rounded" />
+                    <a href={process.env.REACT_APP_FILE_PATH + "/" + file.path} target="_blank" title={file.name}>
+                        {
+                            isImgLink(process.env.REACT_APP_FILE_PATH + "/" + file.path) ?
+                                <img src={process.env.REACT_APP_FILE_PATH + "/" + file.path}
+                                    alt={file.name + " image"} className="rounded" />
+                                :
+                                <span className="font-bold text-gray-500 flex">
+                                    Click here to download file
+                                </span>
+                        }
+
+
                     </a>
 
                     <div className="pt-4">
@@ -121,7 +134,7 @@ const File = () => {
                     <Card className="mt-8 shadow-md">
                         <CardBody>
                             <div className="mb-4 font-semibold text-gray-600 dark:text-gray-300 flex justify-between">
-                                <span>General Info</span>
+                                <span>Add new Files</span>
 
                             </div>
                             <div className="text-gray-600 dark:text-gray-400">
@@ -136,7 +149,7 @@ const File = () => {
 
             <Card className="mb-8 shadow-md">
                 <CardBody>
-                    <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-5">
+                    <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-5 items-stretch">
                         {
                             files.map((file, index) =>
                                 <div
@@ -144,8 +157,17 @@ const File = () => {
                                     key={index}
                                     title={`P (${file.number_of_product_images}) | B(${file.number_of_brands}) | A(${file.number_of_advertisements})`}
                                 >
+                                    <div onClick={e => viewFile(file)} >
+                                        {
+                                            isImgLink(process.env.REACT_APP_FILE_PATH + "/" + file.path) ?
+                                                <img src={process.env.REACT_APP_FILE_PATH + "/" + file.path} alt={file.name + "image"} className="rounded-t" />
+                                                :
+                                                <span className="flex items-center  dark:text-white text-gray-700 justify-center">
+                                                    <FileIcon className="w-16 m-5 p-2" />
+                                                </span>
+                                        }
+                                    </div>
 
-                                    <img src={process.env.REACT_APP_FILE_PATH + "/" + file.path} alt={file.name + "image"} className="rounded-t" onClick={e => viewImage(file)} />
 
                                     <div className="absolute top-0 right-0 p-2 bg-red-600 text-white rounded" onClick={e => handleDeletion(file)}>
                                         <TrashIcon className="w-5 h-5" />
