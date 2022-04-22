@@ -23,6 +23,7 @@ import { BackIcon, CrossIcon, EditIcon, EyeIcon, PlusIcon, TrashIcon } from '../
 
 import PageTitle from '../../components/Typography/PageTitle'
 import { View } from './View';
+import { Link } from 'react-router-dom';
 
 const moment = require('moment');
 const Advertisement = () => {
@@ -67,13 +68,6 @@ const Advertisement = () => {
         setFilteredAd(filteredData)
     }, [advertisements, name, type, page, status, from, to]);
 
-    // useEffect(() => {
-    //     setFilteredAd(advertisements)
-    // }, [])
-
-    // console.table({ name, type, page, status, from, to });
-    // console.log(!name && type === "None" && page === "None" && status === 'All' && !from && !to);
-
     const setDefaultFilter = () => {
         setName('')
         setType('None')
@@ -103,9 +97,9 @@ const Advertisement = () => {
                 <div className='flex justify-between align-middle'>
                     <span>Advertisements</span>
                     <div>
-                        <span>
-                            <PlusIcon className='w-5 h-5'/>
-                        </span>
+                        <Link to={"/app/advertisement/add"}>
+                            <PlusIcon className='w-5 h-5' />
+                        </Link>
                     </div>
                 </div>
 

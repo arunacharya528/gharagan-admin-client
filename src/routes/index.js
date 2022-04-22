@@ -23,6 +23,8 @@ const Brand = lazy(() => import('../pages/Brand/Brand'))
 const File = lazy(() => import('../pages/File/File'))
 
 const Advertisement = lazy(() => import('../pages/Advertisement/Advertisement'))
+const AdvertisementAdd = lazy(() => import('../pages/Advertisement/Add'))
+
 
 /**
  * ⚠ These are internal routes!
@@ -102,6 +104,10 @@ const routes = [
   {
     path: '/advertisement',
     component: Advertisement
+  },
+  {
+    path: '/advertisement/add',
+    component: AdvertisementAdd
   }
 ]
 

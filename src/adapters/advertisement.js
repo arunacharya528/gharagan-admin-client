@@ -1,6 +1,6 @@
 const axios = require('axios');
 const apiURL = process.env.REACT_APP_API_URL;
-
+const qs = require('qs');
 
 export const getAdvertisements = () => {
     let config = {
@@ -11,4 +11,20 @@ export const getAdvertisements = () => {
     };
 
     return axios(config);
+}
+
+
+export const postAdvertisement = (data) => {
+    data = qs.stringify(data);
+    let config = {
+        method: 'post',
+        url: `${apiURL}/advertisement`,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        maxRedirects: 0,
+        data: data
+    };
+
+    return axios(config)
 }
