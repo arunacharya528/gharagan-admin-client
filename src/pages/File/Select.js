@@ -67,7 +67,7 @@ export const FileSelect = ({ selectedIds }) => {
                 </span>
 
                 <img src={process.env.REACT_APP_FILE_PATH + "/" + file.path} alt={file.name + "image"} className="rounded-t" checked={false} />
-                <div className="font-light text-center w-full bg-gray-700 rounded-b text-white">{file.name}</div>
+                <div className="font-light text-center w-full bg-gray-700 rounded-b text-white truncate">{file.name}</div>
             </div>
         );
     }
@@ -87,29 +87,32 @@ export const FileSelect = ({ selectedIds }) => {
             </div>
 
             <div class="flex-1 flex overflow-hidden md:col-span-3">
-                {
-                    isToggleAll ?
-                        <div class="flex-1 overflow-y-scroll">
-                            <div className="grid gap-4 sm:grid-cols-3 md:grid-cols-4 pr-4">
-                                {allFiles.map((file, index) =>
-                                    <ImageDisplay file={file} key={index} />
-                                )}
-                            </div>
-                        </div>
-                        : ''
-                }
-                {
-                    isToggleSelected ?
-                        <div class="flex-1 overflow-y-scroll">
-                            <div className="grid gap-4 sm:grid-cols-3 md:grid-cols-4 pr-4">
-                                {allFiles.filter((file) => file.selected === true).map((file, index) =>
-                                    <ImageDisplay file={file} key={index} />
-                                )}
-                            </div>
-                        </div>
-                        : ''
-                }
+                <div class="flex-1 overflow-y-scroll">
+                    <div className="grid gap-4 sm:grid-cols-3 md:grid-cols-4 pr-4">
 
+                        {
+                            isToggleAll ?
+                                <>
+                                    {
+                                        allFiles.map((file, index) =>
+                                            <ImageDisplay file={file} key={index} />
+                                        )
+                                    }
+                                </>
+
+                                : ''
+                        }
+                        {
+                            isToggleSelected ?
+                                <>
+                                    {allFiles.filter((file) => file.selected === true).map((file, index) =>
+                                        <ImageDisplay file={file} key={index} />
+                                    )}
+                                </>
+                                : ''
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     );
