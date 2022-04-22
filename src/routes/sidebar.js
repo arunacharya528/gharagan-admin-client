@@ -62,6 +62,11 @@ const routes = [
     icon: 'TablesIcon',
     name: 'File Manager',
   },
+  {
+    path: '/app/advertisement',
+    icon: 'TablesIcon',
+    name: 'Advertisement Manager',
+  }
   // {
   //   icon: 'PagesIcon',
   //   name: 'Pages',
