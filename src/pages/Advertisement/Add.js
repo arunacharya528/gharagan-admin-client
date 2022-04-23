@@ -1,4 +1,4 @@
-import React, { createRef, useContext, useState } from "react";
+import React, { createRef, useContext, useEffect, useState } from "react";
 import { Card, CardBody, Label, Input, Textarea, Select, WindmillContext, Button } from '@windmill/react-ui';
 import PageTitle from '../../components/Typography/PageTitle'
 import AnalogTimePicker from "react-multi-date-picker/plugins/time_picker";
@@ -11,12 +11,17 @@ import { Calendar } from "react-multi-date-picker"
 import { FileSelect } from "../File/Select";
 import { postAdvertisement } from "../../adapters/advertisement";
 import { useHistory } from "react-router-dom";
+import { FileContext } from "../../context/FileContext";
+import { ImageThumbnail } from "../File/ImageThumbnail";
+import { MinusIcon } from "../../icons";
 
 const moment = require('moment')
 
 const Add = () => {
 
     const { mode } = useContext(WindmillContext)
+    const { files } = useContext(FileContext)
+
     const [name, setName] = useState(undefined);
     const [summary, setSummary] = useState(undefined);
     const [page, setPage] = useState(undefined);
@@ -25,6 +30,15 @@ const Add = () => {
     const [active, setActive] = useState(undefined);
     const [fileId, setFileId] = useState(undefined);
     const [dateRange, setDateRange] = useState([new Date(), new Date()]);
+    const [selectedImage, setSelectedImage] = useState(undefined);
+
+    useEffect(() => {
+        files.map((file) => {
+            if (file.id === fileId) {
+                setSelectedImage(file);
+            }
+        })
+    }, [files, fileId])
 
     const history = useHistory();
     const [isSelectorDisplayed, setSelectorTodisplay] = useState(false);
@@ -155,28 +169,30 @@ const Add = () => {
                             <br />
 
                             {
-                                fileId ?
-                                    <>
-
-                                        <span>File is stored for uploading</span>
-                                        <br />
-                                        <Button className="mt-4" onClick={e => { setFileId(null) }}>
-                                            Clear stored image
-                                        </Button>
-                                    </>
+                                selectedImage ?
+                                    <div className="grid grid-cols-4 gap-5">
+                                        <ImageThumbnail
+                                            viewAction={() => { }}
+                                            removalAction={{
+                                                icon: <MinusIcon className="w-8 h-8 p-2" />,
+                                                action: () => { setFileId(undefined); setSelectedImage(undefined) }
+                                            }}
+                                            file={selectedImage}
+                                        />
+                                    </div>
                                     :
-                                    <Button className={"mt-4 mb-5 "} onClick={() => setSelectorTodisplay(!isSelectorDisplayed)}>
-                                        {isSelectorDisplayed ? 'Close Selection Mode' : 'Select Image from Database'}
-                                    </Button>
+                                    ''
                             }
-                            <br />
-                            {isSelectorDisplayed && !fileId ?
-                                <>
-                                    <span className='my-2 block'>Only the image selected at first would be selected </span>
-                                    <FileSelect selectedIds={(ids) => setFileId(ids[0])} />
-                                </>
-                                : ''}
 
+                            <Button className={"mt-4 mb-5 "} onClick={() => setSelectorTodisplay(!isSelectorDisplayed)}>
+                                {isSelectorDisplayed ? 'Close Selection Mode' : 'Select Image from Database'}
+                            </Button>
+                            <br />
+
+                            {isSelectorDisplayed ?
+                                <FileSelect selectedIds={(ids) => setFileId(ids[0])} />
+                                : ''
+                            }
                         </div>
 
                         <Button

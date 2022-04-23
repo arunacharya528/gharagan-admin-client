@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button } from '@windmill/react-ui'
-import { Input, HelperText, Label, Select, Textarea } from '@windmill/react-ui'
 import { MinusIcon, PlusIcon } from "../../icons";
-import { getFiles } from "../../adapters/file";
+import { FileContext } from "../../context/FileContext";
+import { ImageThumbnail } from "./ImageThumbnail";
 
 export const FileSelect = ({ selectedIds }) => {
 
@@ -10,17 +10,13 @@ export const FileSelect = ({ selectedIds }) => {
     const [isToggleSelected, toggleSelected] = useState(false);
     const [isToggleAll, toggleAll] = useState(true);
 
+    const { files } = useContext(FileContext);
     const [allFiles, setAllFiles] = useState([]);
 
-
     useEffect(() => {
-        getFiles()
-            .then(response => { setAllFiles(response.data) })
-            .catch(error => console.log(error))
-    }, []);
+        setAllFiles(files);
+    }, [files])
 
-
-    const [selectedFiles, setSelectedFiles] = useState([]);
 
     const setDefault = () => {
         toggleSelected(false);
@@ -57,20 +53,7 @@ export const FileSelect = ({ selectedIds }) => {
         const ids = allFiles.filter((file) => file.selected === true).map((file, index) => { return file.id });
         selectedIds(ids)
     }
-    const ImageDisplay = ({ file }) => {
-        return (
-            <div className="relative cursor-copy " onClick={e => handleSelection(file.id)}>
-                <span className=" absolute right-0 top-0 bg-gray-700 rounded p-2">
-                    {file.selected ?
-                        <MinusIcon className="w-5 h-5 fill-white" aria-hidden="true" />
-                        : <PlusIcon className="w-5 h-5" aria-hidden="true" />}
-                </span>
 
-                <img src={process.env.REACT_APP_FILE_PATH + "/" + file.path} alt={file.name + "image"} className="rounded-t" checked={false} />
-                <div className="font-light text-center w-full bg-gray-700 rounded-b text-white truncate">{file.name}</div>
-            </div>
-        );
-    }
     return (
         <div class="h-screen grid gap-6 md:grid-cols-4">
             <div class="relative">
@@ -95,7 +78,17 @@ export const FileSelect = ({ selectedIds }) => {
                                 <>
                                     {
                                         allFiles.map((file, index) =>
-                                            <ImageDisplay file={file} key={index} />
+                                            <ImageThumbnail
+                                                file={file}
+                                                key={index}
+                                                viewAction={() => { }}
+                                                removalAction={{
+                                                    icon: file.selected ?
+                                                        <MinusIcon className="w-8 h-8 p-2" />
+                                                        : <PlusIcon className="w-8 h-8 p-2" />,
+                                                    action: () => { handleSelection(file.id) }
+                                                }}
+                                            />
                                         )
                                     }
                                 </>
@@ -106,7 +99,17 @@ export const FileSelect = ({ selectedIds }) => {
                             isToggleSelected ?
                                 <>
                                     {allFiles.filter((file) => file.selected === true).map((file, index) =>
-                                        <ImageDisplay file={file} key={index} />
+                                        <ImageThumbnail
+                                            file={file}
+                                            key={index}
+                                            viewAction={() => { }}
+                                            removalAction={{
+                                                icon: file.selected ?
+                                                    <MinusIcon className="w-8 h-8 p-2" />
+                                                    : <PlusIcon className="w-8 h-8 p-2" />,
+                                                action: () => { handleSelection(file.id) }
+                                            }}
+                                        />
                                     )}
                                 </>
                                 : ''
