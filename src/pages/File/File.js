@@ -1,26 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { deleteFile, getFiles } from "../../adapters/file";
 import { Card, CardBody, Modal, ModalHeader, ModalBody, ModalFooter, Button } from '@windmill/react-ui'
 import { FileIcon, PlusIcon, TrashIcon } from "../../icons";
 import { Add } from "./Add";
 import Buttons from "../Buttons";
+import { FileContext } from "../../context/FileContext";
 
 const File = () => {
 
-    const [files, setFiles] = useState([]);
-    const [isRefreshed, setRefresh] = useState(false);
-
-    useEffect(() => {
-
-        getFiles()
-            .then(response => {
-                setFiles(response.data)
-            })
-            .catch(error => console.log(error));
-    }, [isRefreshed])
+    const { files, updateFiles } = useContext(FileContext)
 
     const [toggleAdd, setToggleAdd] = useState(false);
-
 
     function isImgLink(url) {
         if (typeof url !== 'string') return false;
@@ -86,8 +76,8 @@ const File = () => {
     const confirmDeletion = (id) => {
         deleteFile(id)
             .then(response => {
+                updateFiles();
                 closeModal();
-                setRefresh(!isRefreshed);
             })
             .catch(error => console.log(error))
     }
@@ -138,7 +128,7 @@ const File = () => {
 
                             </div>
                             <div className="text-gray-600 dark:text-gray-400">
-                                <Add afterSubmission={() => { setToggleAdd(!toggleAdd); setRefresh(!isRefreshed) }} />
+                                <Add afterSubmission={() => { setToggleAdd(!toggleAdd); updateFiles() }} />
                             </div>
                         </CardBody>
                     </Card>
@@ -146,7 +136,6 @@ const File = () => {
             }
 
             <Button icon={PlusIcon} className="my-4" onClick={e => setToggleAdd(!toggleAdd)}>{toggleAdd ? 'Close Adding Form' : "Add new file"}</Button>
-
             <Card className="mb-8 shadow-md">
                 <CardBody>
                     <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-5 items-stretch">
