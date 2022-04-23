@@ -24,6 +24,7 @@ const File = lazy(() => import('../pages/File/File'))
 
 const Advertisement = lazy(() => import('../pages/Advertisement/Advertisement'))
 const AdvertisementAdd = lazy(() => import('../pages/Advertisement/Add'))
+const AdvertisementEdit = lazy(() => import('../pages/Advertisement/Edit'))
 
 
 /**
@@ -108,6 +109,10 @@ const routes = [
   {
     path: '/advertisement/add',
     component: AdvertisementAdd
+  },
+  {
+    path: '/advertisement/:advertisementId/edit',
+    component: AdvertisementEdit
   }
 ]
 

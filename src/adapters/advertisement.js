@@ -28,3 +28,18 @@ export const postAdvertisement = (data) => {
 
     return axios(config)
 }
+
+export const putAdvertisement = (data, id) => {
+    data = qs.stringify(data);
+    let config = {
+        method: 'put',
+        url: `${apiURL}/advertisement/${id}`,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        maxRedirects: 0,
+        data: data
+    };
+
+    return axios(config)
+}

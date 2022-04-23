@@ -28,7 +28,7 @@ import { Link } from 'react-router-dom';
 const moment = require('moment');
 const Advertisement = () => {
 
-    const [advertisements, setAdvertisements] = useContext(AdvertisementContext);
+    const { advertisements, updateAdvertisements } = useContext(AdvertisementContext);
 
     const [isRefreshed, setRefresh] = useState(true);
 
@@ -228,9 +228,9 @@ const Advertisement = () => {
                                             <div>
                                                 <Button icon={EyeIcon} layout="link" aria-label="View" onClick={e => previewAdvertisement(ad)} />
                                             </div>
-                                            <div>
+                                            <Link to={"/app/advertisement/" + ad.id + "/edit"}>
                                                 <Button icon={EditIcon} layout="link" aria-label="Edit" />
-                                            </div>
+                                            </Link>
                                             <div>
                                                 <Button icon={TrashIcon} layout="link" aria-label="Delete" />
                                             </div>

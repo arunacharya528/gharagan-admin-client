@@ -6,16 +6,20 @@ export const AdvertisementContext = createContext();
 export const AdvertisementProvider = ({ children }) => {
 
     const [advertisements, setAdvertisements] = useState([]);
+    const [refresh, setRefreshed] = useState(false);
 
     useEffect(() => {
         getAdvertisements()
             .then(response => {
-                // console.log(response);
                 setAdvertisements(response.data)
             })
             .catch(error => console.log(error))
-    }, []);
+    }, [refresh]);
 
+    const updateAds = () => {
+        setRefreshed(!refresh)
+    }
 
-    return <AdvertisementContext.Provider value={[advertisements, setAdvertisements]}>{children}</AdvertisementContext.Provider>
+    return <AdvertisementContext.Provider value={{ advertisements, updateAds }
+    }>{children}</AdvertisementContext.Provider>
 }
