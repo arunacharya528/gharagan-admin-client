@@ -90,9 +90,36 @@ const Advertisement = () => {
     }
 
 
+    const [modalData, setModalData] = useState({ title: undefined, body: undefined });
+
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    function openModal() {
+        setIsModalOpen(true)
+    }
+
+    function closeModal() {
+        setIsModalOpen(false)
+    }
+
+    const previewAdvertisement = (data) => {
+        setModalData({
+            title: "Detail of advertisement " + data.name,
+            body: <View ad={data} />
+        })
+
+        openModal();
+    }
+
     return (
         <>
+            <Modal isOpen={isModalOpen} onClose={closeModal}>
+                <ModalHeader>{modalData.title}</ModalHeader>
+                <ModalBody>
+                    {modalData.body}
+                </ModalBody>
 
+            </Modal>
             <PageTitle>
                 <div className='flex justify-between align-middle'>
                     <span>Advertisements</span>
@@ -102,7 +129,6 @@ const Advertisement = () => {
                         </Link>
                     </div>
                 </div>
-
             </PageTitle>
             <div class="h-screen grid gap-6 md:grid-cols-4 text-gray-600 dark:text-gray-400">
                 <div class="relative">
@@ -200,7 +226,7 @@ const Advertisement = () => {
 
                                         <div className='flex items-center'>
                                             <div>
-                                                <Button icon={EyeIcon} layout="link" aria-label="View" />
+                                                <Button icon={EyeIcon} layout="link" aria-label="View" onClick={e => previewAdvertisement(ad)} />
                                             </div>
                                             <div>
                                                 <Button icon={EditIcon} layout="link" aria-label="Edit" />
