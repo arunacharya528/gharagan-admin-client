@@ -5,17 +5,20 @@ import { FileIcon, PlusIcon, TrashIcon } from "../../icons";
 import { Add } from "./Add";
 import Buttons from "../Buttons";
 import { FileContext } from "../../context/FileContext";
+import { ImageThumbnail } from "./ImageThumbnail";
+import { isImgLink } from "../../utils/helper/checkImageLink";
 
 const File = () => {
 
     const { files, updateFiles } = useContext(FileContext)
 
-    const [toggleAdd, setToggleAdd] = useState(false);
+    const [fileList, setFileList] = useState([])
 
-    function isImgLink(url) {
-        if (typeof url !== 'string') return false;
-        return (url.match(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp|svg)(\?(.*))?$/gmi) != null);
-    }
+    useEffect(() => {
+        setFileList(files)
+    }, [files])
+
+    const [toggleAdd, setToggleAdd] = useState(false);
 
     //===================================
     //
@@ -140,32 +143,15 @@ const File = () => {
                 <CardBody>
                     <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-5 items-stretch">
                         {
-                            files.map((file, index) =>
-                                <div
-                                    className="relative overflow-auto"
+                            fileList.map((file, index) =>
+                                <ImageThumbnail
+                                    file={file}
                                     key={index}
-                                    title={`P (${file.number_of_product_images}) | B(${file.number_of_brands}) | A(${file.number_of_advertisements})`}
-                                >
-                                    <div onClick={e => viewFile(file)} >
-                                        {
-                                            isImgLink(process.env.REACT_APP_FILE_PATH + "/" + file.path) ?
-                                                <img src={process.env.REACT_APP_FILE_PATH + "/" + file.path} alt={file.name + "image"} className="rounded-t" />
-                                                :
-                                                <span className="flex items-center  dark:text-white text-gray-700 justify-center">
-                                                    <FileIcon className="w-16 m-5 p-2" />
-                                                </span>
-                                        }
-                                    </div>
-
-
-                                    <div className="absolute top-0 right-0 p-2 bg-red-600 text-white rounded" onClick={e => handleDeletion(file)}>
-                                        <TrashIcon className="w-5 h-5" />
-                                    </div>
-                                    <div className="bg-gray-700 text-white text-center rounded-b" title={file.name}>
-                                        <span className="p-1 block truncate">{file.name}</span>
-                                    </div>
-
-                                </div>
+                                    viewAction={(e) => viewFile(file)}
+                                    removalAction={{
+                                        icon: <TrashIcon className="w-5 h-5" />,
+                                        action: () => handleDeletion(file)
+                                    }} />
                             )
                         }
                     </div>
@@ -174,8 +160,6 @@ const File = () => {
 
 
         </>
-
-
     );
 }
 
