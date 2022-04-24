@@ -26,6 +26,9 @@ const Advertisement = lazy(() => import('../pages/Advertisement/Advertisement'))
 const AdvertisementAdd = lazy(() => import('../pages/Advertisement/Add'))
 const AdvertisementEdit = lazy(() => import('../pages/Advertisement/Edit'))
 
+const Order = lazy(() => import('../pages/Order/Order'))
+const OrderView = lazy(() => import('../pages/Order/View'))
+
 
 /**
  * ⚠ These are internal routes!
@@ -113,6 +116,14 @@ const routes = [
   {
     path: '/advertisement/:advertisementId/edit',
     component: AdvertisementEdit
+  },
+  {
+    path: '/order',
+    component: Order
+  },
+  {
+    path: '/order/:orderId/view',
+    component: OrderView
   }
 ]
 
