@@ -31,6 +31,7 @@ const OrderView = lazy(() => import('../pages/Order/View'))
 
 const Cart = lazy(() => import('../pages/Cart/Cart'))
 
+const Discount = lazy(() => import('../pages/Discount/Discount'))
 
 
 /**
@@ -131,6 +132,10 @@ const routes = [
   {
     path: '/cart',
     component: Cart
+  },
+  {
+    path: '/discount',
+    component: Discount
   },
 ]
 

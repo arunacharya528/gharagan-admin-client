@@ -57,6 +57,12 @@ const routes = [
     icon: 'TablesIcon',
     name: 'Brands',
   },
+
+  {
+    path: '/app/discount',
+    icon: 'TablesIcon',
+    name: 'Discounts',
+  },
   {
     path: '/app/file',
     icon: 'TablesIcon',
