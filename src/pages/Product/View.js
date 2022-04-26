@@ -7,6 +7,8 @@ import { HeartIcon, PeopleIcon, EditIcon, TrashIcon } from '../../icons'
 import InfoCard from '../../components/Cards/InfoCard'
 import RoundIcon from '../../components/RoundIcon'
 import { Link } from 'react-router-dom'
+
+import { QAView } from "../QuestionAnswer/View"
 // import { EditGeneralInfo } from './Edit'
 
 const moment = require('moment');
@@ -16,13 +18,14 @@ function View() {
     const [data, setData] = useState(undefined)
     const location = useLocation();
 
+    const [isRefreshed, setRefresh] = useState(false)
     useEffect(() => {
         getProduct(location.pathname.split('/')[3])
             .then(response => {
                 setData(response.data)
             })
             .catch(error => console.log(error))
-    }, [])
+    }, [isRefreshed])
 
 
     const getStatusBadge = (status) => {
@@ -220,23 +223,7 @@ function View() {
 
                             <div className="text-gray-600 dark:text-gray-300">
                                 {data.questions.map((question, index) =>
-                                    <div class="p-6 rounded-xl flex space-x-4 flex-col">
-                                        <div>
-                                            <div class="text-md font-bold">{question.user.first_name + ' ' + question.user.last_name}</div>
-                                            <p class="text-slate-500">{question.query}</p>
-                                            <span className='italic font-light text-gray-400'>{moment(question.created_at).calendar()}</span>
-                                            {
-                                                question.answers.length != 0
-                                                    ?
-                                                    <div className='pl-6 pt-3'>
-                                                        <div class="text-md font-bold">Replied</div>
-                                                        <p class="text-slate-500">{question.answers[0].query}</p>
-                                                        <span className='italic font-light text-gray-400'>{moment(question.created_at).calendar()}</span>
-                                                    </div>
-                                                    : ""
-                                            }
-                                        </div>
-                                    </div>
+                                    <QAView question={question} refresh={() => { setRefresh(!isRefreshed) }} key={index} />
                                 )}
                             </div>
                         </CardBody>
