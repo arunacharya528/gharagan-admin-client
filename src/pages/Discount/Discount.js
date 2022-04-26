@@ -5,6 +5,7 @@ import PageTitle from '../../components/Typography/PageTitle'
 import { getDiscounts } from '../../adapters/discount';
 import { EditIcon, PlusIcon } from '../../icons';
 import { Edit } from './Edit';
+import { Add } from './Add';
 
 const Discount = () => {
 
@@ -29,10 +30,15 @@ const Discount = () => {
         setIsModalOpen(false)
     }
 
+    const handleAddition = () => { 
+        setModalData({
+            title: "Add discount",
+            body: <Add afterSubmission={() => { setREfresh(!isRefreshed); closeModal() }} />
+        })
+        openModal();
+    }
 
     const handleEdit = (data) => {
-
-
         setModalData({
             title: "Edit discount",
             body: <Edit data={data} afterSubmission={() => { setREfresh(!isRefreshed); closeModal() }} />
@@ -47,7 +53,7 @@ const Discount = () => {
                 <div className='flex justify-between'>
                     <span>Discounts</span>
                     <div>
-                        <Button icon={PlusIcon} layout="link" aria-label="Add" />
+                        <Button icon={PlusIcon} layout="link" aria-label="Add" onClick={handleAddition} />
                     </div>
                 </div>
             </PageTitle>

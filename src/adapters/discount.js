@@ -15,6 +15,20 @@ export const getDiscounts = () => {
     return axios(config)
 }
 
+export const postDiscount = (data) => {
+    data = qs.stringify(data);
+    let config = {
+        method: 'post',
+        url: `${apiURL}/discount`,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        maxRedirects: 0,
+        data: data
+    };
+
+    return axios(config)
+}
 
 export const putDiscount = (data, id) => {
 
