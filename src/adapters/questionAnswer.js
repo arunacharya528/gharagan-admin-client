@@ -28,3 +28,15 @@ export const postQA = (data) => {
 
     return axios(config)
 }
+
+export const deleteQA = (id) => {
+
+    let config = {
+        method: 'delete',
+        url: `${apiURL}/questionAnswer/${id}`,
+        headers: {},
+        maxRedirects: 0
+    };
+
+    return axios(config)
+}
