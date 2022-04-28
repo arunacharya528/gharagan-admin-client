@@ -33,6 +33,7 @@ import { ReactComponent as PlusIcon } from './plus.svg'
 import { ReactComponent as EyeIcon } from './eye.svg'
 import { ReactComponent as BackIcon } from './back.svg'
 import { ReactComponent as FileIcon } from './file.svg'
+import { ReactComponent as StarIcon } from './star.svg'
 
 export {
   ButtonsIcon,
@@ -69,5 +70,6 @@ export {
   PlusIcon,
   EyeIcon,
   BackIcon,
-  FileIcon
+  FileIcon,
+  StarIcon
 }

@@ -35,6 +35,8 @@ const Discount = lazy(() => import('../pages/Discount/Discount'))
 
 const QuestionAnswer = lazy(() => import('../pages/QuestionAnswer/QuestionAnswer'))
 
+const Rating = lazy(() => import('../pages/Rating/Rating'))
+
 
 
 /**
@@ -144,6 +146,10 @@ const routes = [
     path: '/qa',
     component: QuestionAnswer
   },
+  {
+    path: '/rating',
+    component: Rating
+  }
 ]
 
 export default routes

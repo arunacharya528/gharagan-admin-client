@@ -87,7 +87,12 @@ const routes = [
     path: '/app/qa',
     icon: 'TablesIcon',
     name: 'Question Answer',
-  }
+  },
+  {
+    path: '/app/rating',
+    icon: 'TablesIcon',
+    name: 'Ratings',
+  },
   // {
   //   icon: 'PagesIcon',
   //   name: 'Pages',
