@@ -12,3 +12,14 @@ export const getRatings = () => {
 
     return axios(config)
 }
+
+export const deleteRating = (id) => {
+    let config = {
+        method: 'delete',
+        url: `${apiURL}/productRating/${id}`,
+        headers: {},
+        maxRedirects: 0
+    };
+
+    return axios(config)
+}

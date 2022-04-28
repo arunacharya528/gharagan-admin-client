@@ -4,8 +4,17 @@ import React from 'react';
 import { StarRate } from '../../components/Rating/StarRate';
 import { TrashIcon } from '../../icons';
 import { HashLink } from 'react-router-hash-link'
+import { deleteRating } from '../../adapters/rating';
 
-export const RatingView = ({ rating }) => {
+export const RatingView = ({ rating, refresh }) => {
+
+
+    const handleDeletion = (id) => {
+
+        deleteRating(id)
+            .then(response => refresh())
+            .catch(error => console.log(error))
+    }
 
     return (
         <Card className="mb-4">
@@ -33,7 +42,7 @@ export const RatingView = ({ rating }) => {
                         </div>
                     </div>
                     <div className="w-16">
-                        <Button icon={TrashIcon} layout="link" aria-label="Like" />
+                        <Button icon={TrashIcon} layout="link" aria-label="Like" onClick={e => handleDeletion(rating.id)} />
                     </div>
                 </div>
 

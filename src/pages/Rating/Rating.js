@@ -10,12 +10,13 @@ const moment = require('moment');
 
 const Rating = () => {
     const [ratings, setRatings] = useState([]);
+    const [isRefreshed, setRefresh] = useState(false);
 
     useEffect(() => {
         getRatings()
             .then(response => setRatings(response.data))
             .catch(error => console.log(error))
-    }, [])
+    }, [isRefreshed])
 
     return (
         <>
@@ -29,7 +30,7 @@ const Rating = () => {
             <div className='text-gray-600 dark:text-gray-400'>
                 {ratings.length !== 0 ?
                     ratings.map((rating, index) =>
-                        <RatingView rating={rating} key={index} />
+                        <RatingView rating={rating} key={index} refresh={() => setRefresh(!isRefreshed)} />
                     )
                     : ''
                 }
