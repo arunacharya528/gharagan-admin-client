@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Table, TableCell, TableBody, TableContainer, TableHeader, TableRow, Button } from '@windmill/react-ui'
+import { Table, TableCell, TableBody, TableContainer, TableHeader, TableRow, Button, Badge } from '@windmill/react-ui'
 
 import PageTitle from '../../components/Typography/PageTitle'
-import { getUsers } from "../../adapters/user";
-import { EditIcon, TrashIcon } from "../../icons";
+import { deleteUser, getUsers } from "../../adapters/user";
+import { EditIcon, PlusIcon, TrashIcon } from "../../icons";
+import { Link } from "react-router-dom";
 
 const User = () => {
     const [users, setUsers] = useState([]);
+    const [isRefreshed, setRefresh] = useState(false);
+
     useEffect(() => {
         getUsers()
             .then(response => setUsers(response.data))
             .catch(error => console.log(error))
-    }, [])
+    }, [isRefreshed])
 
     const getUserType = (userType) => {
         switch (userType) {
@@ -24,10 +27,21 @@ const User = () => {
         }
     }
 
+    const handleDeletion = (id) => {
+        deleteUser(id)
+            .then(response => setRefresh(!isRefreshed))
+            .catch(error => console.log(error))
+    }
+
     return (
         <>
             <PageTitle>
-                Users
+                <div className="flex justify-between">
+                    <span>Users</span>
+                    <Link to={"/app/user/add"}>
+                        <Button icon={PlusIcon} layout="link" aria-label="Like" />
+                    </Link>
+                </div>
             </PageTitle>
 
             <TableContainer className="mb-8">
@@ -52,70 +66,21 @@ const User = () => {
                                     <TableCell>{user.contact}</TableCell>
                                     <TableCell>{getUserType(user.type)}</TableCell>
                                     <TableCell>
-                                        <div className="flex items-center space-x-4">
-                                            <Button layout="link" size="icon" aria-label="Delete">
-                                                <TrashIcon className="w-5 h-5" aria-hidden="true" />
-                                            </Button>
-                                        </div>
+                                        {
+                                            user.type !== 1 ?
+                                                <div className="flex items-center space-x-4">
+                                                    <Button layout="link" size="icon" aria-label="Delete" onClick={e => handleDeletion(user.id)}>
+                                                        <TrashIcon className="w-5 h-5" aria-hidden="true" />
+                                                    </Button>
+                                                </div>
+                                                :
+                                                <Badge type="warning">cannot be deleted</Badge>
+                                        }
                                     </TableCell>
 
                                 </TableRow>
                             )
                         }
-                        {/* {dataTable.map((category, i) => (
-                            <>
-                                <TableRow key={i}>
-                                    <TableCell>
-                                        None
-                                    </TableCell>
-                                    <TableCell className="bg-gray-700 text-white border-l-4 border-gray-700">
-                                        {category.name}
-                                    </TableCell>
-                                    <TableCell>
-                                        {category.description}
-                                    </TableCell>
-
-                                    <TableCell>
-                                        <div className="flex items-center space-x-4">
-                                            <Button layout='link' size="icon" onClick={e => handleEditButtonPress(category.id)}>
-                                                <EditIcon className="w-5 h-5" aria-hidden="true" />
-                                            </Button>
-                                            <Button layout="link" size="icon" aria-label="Delete">
-                                                <TrashIcon className="w-5 h-5" aria-hidden="true" />
-                                            </Button>
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
-                                {
-                                    category.child_categories.map((child_category, i) => (
-                                        <>
-                                            <TableRow key={i}>
-                                                <TableCell >
-                                                    {category.name}
-                                                </TableCell>
-                                                <TableCell className="border-l-4 border-gray-700">
-                                                    {child_category.name}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {child_category.description}
-                                                </TableCell>
-
-                                                <TableCell>
-                                                    <div className="flex items-center space-x-4">
-                                                        <Button layout='link' size="icon" onClick={e => handleEditButtonPress(child_category.id)}>
-                                                            <EditIcon className="w-5 h-5" aria-hidden="true" />
-                                                        </Button>
-                                                        <Button layout="link" size="icon" aria-label="Delete">
-                                                            <TrashIcon className="w-5 h-5" aria-hidden="true" />
-                                                        </Button>
-                                                    </div>
-                                                </TableCell>
-                                            </TableRow>
-                                        </>
-                                    ))
-                                }
-                            </>
-                        ))} */}
 
                     </TableBody>
                 </Table>

@@ -38,6 +38,7 @@ const QuestionAnswer = lazy(() => import('../pages/QuestionAnswer/QuestionAnswer
 const Rating = lazy(() => import('../pages/Rating/Rating'))
 
 const User = lazy(() => import('../pages/User/User'))
+const UserAdd = lazy(() => import('../pages/User/Add'))
 
 
 /**
@@ -154,6 +155,10 @@ const routes = [
   {
     path: '/user',
     component: User
+  },
+  {
+    path: '/user/add',
+    component: UserAdd
   }
 ]
 
