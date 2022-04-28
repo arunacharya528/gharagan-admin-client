@@ -37,6 +37,7 @@ const QuestionAnswer = lazy(() => import('../pages/QuestionAnswer/QuestionAnswer
 
 const Rating = lazy(() => import('../pages/Rating/Rating'))
 
+const User = lazy(() => import('../pages/User/User'))
 
 
 /**
@@ -149,6 +150,10 @@ const routes = [
   {
     path: '/rating',
     component: Rating
+  },
+  {
+    path: '/user',
+    component: User
   }
 ]
 
