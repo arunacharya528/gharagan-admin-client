@@ -9,7 +9,7 @@ import RoundIcon from '../../components/RoundIcon'
 import { Link } from 'react-router-dom'
 
 import { QAView } from "../QuestionAnswer/View"
-// import { EditGeneralInfo } from './Edit'
+import { RatingView } from '../Rating/View'
 
 const moment = require('moment');
 
@@ -202,15 +202,7 @@ function View() {
                             <p className="mb-4 font-semibold text-gray-600 dark:text-gray-300">Ratings</p>
                             <div className="text-gray-600 dark:text-gray-300">
                                 {data.ratings.map((rating, index) =>
-                                    <div class="p-6 rounded-xl flex items-center space-x-4">
-                                        <div>
-                                            <div class="text-md font-bold flex">{rating.user.first_name + ' ' + rating.user.last_name} &nbsp;
-                                                ({rating.rate} <HeartIcon className='w-5 h-5' />)
-                                            </div>
-                                            <p class="text-slate-500">{rating.comment}</p>
-                                            <span className='italic font-light text-gray-400'>{moment(rating.created_at).calendar()}</span>
-                                        </div>
-                                    </div>
+                                    <RatingView rating={rating} key={index} />
                                 )}
                             </div>
                         </CardBody>
