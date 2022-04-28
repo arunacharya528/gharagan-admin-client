@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { DropdownIcon } from '../../icons'
 import * as Icons from '../../icons'
 import { Transition } from '@windmill/react-ui'
+import { NavLink } from 'react-router-dom'
+import { useLocation } from 'react-router-dom/cjs/react-router-dom.min'
 
 function Icon({ icon, ...props }) {
   const Icon = Icons[icon]
@@ -11,11 +13,16 @@ function Icon({ icon, ...props }) {
 
 function SidebarSubmenu({ route }) {
   const [isDropdownMenuOpen, setIsDropdownMenuOpen] = useState(false)
-
+  const location = useLocation();
   function handleDropdownMenuClick() {
     setIsDropdownMenuOpen(!isDropdownMenuOpen)
   }
 
+  const urlHasRoute = (routes) => {
+    var contains = false;
+    routes.map((route) => route.path === location.pathname ? contains = true : '')
+    return contains
+  }
   return (
     <li className="relative px-6 py-3" key={route.name}>
       <button
@@ -30,7 +37,7 @@ function SidebarSubmenu({ route }) {
         <DropdownIcon className="w-4 h-4" aria-hidden="true" />
       </button>
       <Transition
-        show={isDropdownMenuOpen}
+        show={urlHasRoute(route.routes) || isDropdownMenuOpen}
         enter="transition-all ease-in-out duration-300"
         enterFrom="opacity-25 max-h-0"
         enterTo="opacity-100 max-h-xl"
@@ -47,9 +54,9 @@ function SidebarSubmenu({ route }) {
               className="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
               key={r.name}
             >
-              <Link className="w-full" to={r.path}>
+              <NavLink className="w-full" to={r.path} activeClassName='text-black dark:text-white font-bold'>
                 {r.name}
-              </Link>
+              </NavLink>
             </li>
           ))}
         </ul>

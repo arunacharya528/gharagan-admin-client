@@ -11,120 +11,68 @@ const routes = [
     icon: 'HomeIcon', // the component being exported from icons/index.js
     name: 'Dashboard', // name that appear in Sidebar
   },
-  // {
-  //   path: '/app/forms',
-  //   icon: 'FormsIcon',
-  //   name: 'Forms',
-  // },
-  // {
-  //   path: '/app/cards',
-  //   icon: 'CardsIcon',
-  //   name: 'Cards',
-  // },
-  // {
-  //   path: '/app/charts',
-  //   icon: 'ChartsIcon',
-  //   name: 'Charts',
-  // },
-  // {
-  //   path: '/app/buttons',
-  //   icon: 'ButtonsIcon',
-  //   name: 'Buttons',
-  // },
-  // {
-  //   path: '/app/modals',
-  //   icon: 'ModalsIcon',
-  //   name: 'Modals',
-  // },
-  // {
-  //   path: '/app/tables',
-  //   icon: 'TablesIcon',
-  //   name: 'Tables',
-  // },
   {
-    path: '/app/product',
-    icon: 'TablesIcon',
-    name: 'Products',
-  },
-  {
-    path: '/app/category',
-    icon: 'TablesIcon',
-    name: 'Categories',
-  },
-
-  {
-    path: '/app/brand',
-    icon: 'TablesIcon',
-    name: 'Brands',
+    icon: "FormsIcon",
+    name: "Catalog",
+    routes: [
+      {
+        path: '/app/product',
+        name: 'Products'
+      }, {
+        path: '/app/category',
+        name: 'Categories'
+      },
+      {
+        path: '/app/brand',
+        name: 'Brands'
+      }
+    ]
   },
 
   {
     path: '/app/discount',
-    icon: 'TablesIcon',
+    icon: 'PercentIcon',
     name: 'Discounts',
   },
   {
     path: '/app/file',
-    icon: 'TablesIcon',
+    icon: 'FileIcon',
     name: 'File Manager',
   },
   {
+    icon: 'StarIcon',
+    name: "Reviews",
+    routes: [
+      {
+        name: "Ratings",
+        path: "/app/rating"
+      },
+      {
+        name: "QAs",
+        path: "/app/qa"
+      }
+    ]
+  },
+  {
     path: '/app/advertisement',
-    icon: 'TablesIcon',
-    name: 'Advertisement Manager',
+    icon: 'AdvertisementIcon',
+    name: 'Advertisements',
   },
   {
     path: '/app/order',
-    icon: 'TablesIcon',
-    name: 'Order Manager',
+    icon: 'OrderIcon',
+    name: 'Orders',
   },
   {
     path: '/app/cart',
-    icon: 'TablesIcon',
-    name: 'Cart Manager',
-  },
-  {
-    path: '/app/qa',
-    icon: 'TablesIcon',
-    name: 'Question Answer',
-  },
-  {
-    path: '/app/rating',
-    icon: 'TablesIcon',
-    name: 'Ratings',
+    icon: 'BagShoppingIcon',
+    name: 'Sessions',
   },
   {
     path: '/app/user',
-    icon: 'TablesIcon',
+    icon: 'PeopleIcon',
     name: 'Users',
-  }
-  // {
-  //   icon: 'PagesIcon',
-  //   name: 'Pages',
-  //   routes: [
-  //     // submenu
-  //     {
-  //       path: '/login',
-  //       name: 'Login',
-  //     },
-  //     {
-  //       path: '/create-account',
-  //       name: 'Create account',
-  //     },
-  //     {
-  //       path: '/forgot-password',
-  //       name: 'Forgot password',
-  //     },
-  //     {
-  //       path: '/app/404',
-  //       name: '404',
-  //     },
-  //     {
-  //       path: '/app/blank',
-  //       name: 'Blank',
-  //     },
-  //   ],
-  // },
+  },
 ]
 
 export default routes

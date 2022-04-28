@@ -34,6 +34,11 @@ import { ReactComponent as EyeIcon } from './eye.svg'
 import { ReactComponent as BackIcon } from './back.svg'
 import { ReactComponent as FileIcon } from './file.svg'
 import { ReactComponent as StarIcon } from './star.svg'
+import { ReactComponent as AdvertisementIcon } from './advertisement.svg'
+import { ReactComponent as BagShoppingIcon } from './bag-shopping.svg'
+import { ReactComponent as OrderIcon } from './order.svg'
+import { ReactComponent as PercentIcon } from './percent.svg'
+
 
 export {
   ButtonsIcon,
@@ -71,5 +76,9 @@ export {
   EyeIcon,
   BackIcon,
   FileIcon,
-  StarIcon
+  StarIcon,
+  AdvertisementIcon,
+  BagShoppingIcon,
+  OrderIcon,
+  PercentIcon
 }
