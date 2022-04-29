@@ -4,6 +4,8 @@ import { Card, CardBody, TableContainer, Table, TableCell, TableHeader, TableBod
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import PageTitle from "../../components/Typography/PageTitle";
 import { getOrder } from "../../adapters/orderDetail";
+import moment from "moment";
+import { date } from "faker/lib/locales/az";
 
 const View = () => {
 
@@ -27,7 +29,7 @@ const View = () => {
     }
 
     const getTotal = (price, discount, quantity) => {
-        console.log(getDiscountedPrice(price, discount));
+        // console.log(getDiscountedPrice(price, discount));
 
         var returningPrice = 0;
         if (!discount) {
@@ -38,6 +40,8 @@ const View = () => {
 
         return Math.round((returningPrice + Number.EPSILON) * 100) / 100;
     }
+
+    console.log(order)
     return (
         <>
             <PageTitle>
@@ -50,12 +54,22 @@ const View = () => {
                     {order ?
                         <>
                             <div className="flex flex-row justify-between items-center my-4">
-                                <div className="text-xl font-bold w-16">GHARAGAN</div>
-                                <div className="flex flex-col space-y-2">
-                                    <span>Ordered By: </span>
-                                    <span className="">{order.user.first_name + " " + order.user.last_name}</span>
-                                    <span className="">{order.user.contact}</span>
-                                    <span className="">{order.user.email}</span>
+                                <div className="text-xl font-bold w-16 p-5">GHARAGAN</div>
+                                <div className="flex flex-col space-y-4 p-5">
+
+                                    <div className="flex flex-col">
+                                        <span className="font-bold ">Ordered By: </span>
+                                        <span className="">{order.user.first_name + " " + order.user.last_name}</span>
+                                        <span className="">{order.user.contact}</span>
+                                        <span className="">{order.user.email}</span>
+                                    </div>
+
+                                    <div className="flex flex-col">
+                                        <span className="font-bold">Ordered date</span>
+                                        <span>{moment(order.created_at).format("DD/MM/YYYY hh:mm:ss a")}</span>
+                                    </div>
+
+
                                 </div>
                             </div>
                             <div className="text-lg underline text-center font-bold py-3 uppercase">Order slip</div>
@@ -90,7 +104,7 @@ const View = () => {
                                 </div>
                             )}
 
-                            
+
                             <div className="grid grid-cols-6 border-b py-3">
                                 <div className="col-span-4"></div>
                                 <div className="col-span-2">
@@ -102,7 +116,62 @@ const View = () => {
                             </div>
 
 
-                            
+                            <div className="grid grid-cols-6 mt-8">
+                                <div className="col-span-2">
+                                    <div className="grid grid-cols-2 border-b py-3">
+                                        <span className="uppercase font-semibold">Total</span>
+                                        <span>Rs. {order.total}</span>
+                                    </div>
+                                    <div className="grid grid-cols-2 border-b py-3">
+
+                                        <span className="uppercase font-semibold">Delivery Amount</span>
+                                        <span>-</span>
+                                    </div>
+                                    <div className="grid grid-cols-2 border-b py-3">
+
+                                        <span className="uppercase font-semibold">Discount Amount</span>
+                                        <span>-</span>
+                                    </div>
+                                    <div className="grid grid-cols-2 border-b py-3">
+                                        <span className="uppercase font-semibold">Grand Total</span>
+                                        <span>Rs. 00000</span>
+                                    </div>
+                                    <div className="grid grid-cols-2 border-b py-3">
+                                        <span className="uppercase font-semibold">Paid Amount</span>
+                                        <span>Rs. 0000</span>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 border-b py-3">
+                                        <span className="uppercase font-semibold">Merchant </span>
+                                        <span>esewa</span>
+                                    </div>
+                                    <div className="grid grid-cols-2 border-b py-3">
+                                        <span className="uppercase font-semibold">Paid Time</span>
+                                        <span>{moment().format('MMMM Do YYYY, h:mm:ss a')}</span>
+                                    </div>
+
+                                </div>
+
+                                <div></div>
+
+                                <div className="col-span-3 ml-5">
+
+                                    <div></div>
+                                    <div className="mt-4 flex flex-col">
+                                        <div className="font-bold">Delivery address: </div>
+                                        <span>{order.address.address_line1}</span>
+                                        <span>{order.address.address_line2}</span>
+                                        <span>{order.address.city}</span>
+                                        <span>{order.address.telephone}</span>
+                                        <span>{order.address.mobile}</span>
+
+                                    </div>
+                                </div>
+                                {/* <div className="col-span-4"></div> */}
+                            </div>
+
+
+
                             {/* <div className="grid grid-cols-5">
                                 <div className="col-span-3"></div>
                                 <div className="col-span-2">

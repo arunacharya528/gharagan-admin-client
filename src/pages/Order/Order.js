@@ -65,6 +65,58 @@ const Order = () => {
         setIsModalOpen(false)
     }
 
+    const getStatus = (status) => {
+        var level = 0;
+
+        // switch (() => status.toLowercase()) {
+        //     case "Order Placed".toLowerCase():
+        //         level = 1;
+        //         break;
+        //     case "Product collected for delivery".toLowerCase():
+        //         level = 2;
+        //         break;
+        //     case "Product being shipped".toLowerCase():
+        //         level = 3;
+        //         break;
+        //     case "Product received".toLowerCase():
+        //         level = 4;
+        //         break;
+        // }
+
+        if (status.toLowerCase() === "Order Placed".toLowerCase()) {
+            level = 1
+        } else if (status.toLowerCase() === "Product collected for delivery".toLowerCase()) {
+            level = 2
+        } else if (status.toLowerCase() === "Product being shipped".toLowerCase()) {
+            level = 3
+        } else if (status.toLowerCase() === "Product received".toLowerCase()) {
+            level = 4
+        }
+
+        const determineColor = (levelValue) => {
+            if (level < levelValue) {
+                return 'bg-gray-300 dark:bg-gray-700'
+            } else {
+                return 'bg-purple-300 dark:bg-purple-700'
+            }
+        }
+        return (
+            <>
+                <div className={"text-gray-700 dark:text-white p-2 rounded-md " + determineColor(1)}>
+                    Order Placed
+                </div>
+                <div className={"text-gray-700 dark:text-white p-2 rounded-md " + determineColor(2)}>
+                    Product collected for delivery
+                </div>
+                <div className={"text-gray-700 dark:text-white p-2 rounded-md " + determineColor(3)}>
+                    Product being shipped
+                </div>
+                <div className={"text-gray-700 dark:text-white p-2 rounded-md " + determineColor(4)}>
+                    Product received
+                </div></>
+        );
+    }
+
     return (
         <>
             <Modal isOpen={isModalOpen} onClose={closeModal}>
@@ -84,10 +136,11 @@ const Order = () => {
 
                 <Card className="mb-4 sticky top-0">
                     <CardBody>
-                        <div className="grid grid-cols-7 gap-5 font-bold text-center">
+                        <div className="grid grid-cols-8 gap-5 font-bold">
                             <span>Order ID</span>
                             <span>Status</span>
                             <span className="col-span-2">Order Detail</span>
+                            <span>Ordered by</span>
                             <span>Total</span>
                             <span>Date of actions</span>
                             <span>Action</span>
@@ -97,17 +150,14 @@ const Order = () => {
                 {orders.map((order, index) =>
                     <Card className="mb-4" key={index}>
                         <CardBody>
-                            <div className="grid grid-cols-7 gap-2 items-center">
+                            <div className="grid grid-cols-8 gap-5 items-center">
 
-                                <div className="text-center">
+                                <div className="">
                                     {order.id}
                                 </div>
-                                <div className="">
-                                    {order.status}
-                                </div>
 
 
-                                <div className="flex flex-col col-span-2">
+                                <div className="flex flex-col col-span-3">
                                     <div className="border p-2 rounded-lg flex flex-col">
                                         {
                                             order.order_items.length !== 0 ?
@@ -159,40 +209,12 @@ const Order = () => {
                                     </span>
                                 </div>
 
-                                {/* <div className="col-span-4">
-                                    <div className="grid grid-cols-3 gap-2">
-                                        <b>Name</b>
-                                        <span className="col-span-2">{order.user.first_name}</span>
+                                <div className="flex flex-col">
+                                    <span>{order.user.first_name + " " + order.user.last_name}</span>
+                                    <span>{order.user.contact}</span>
+                                </div>
 
-                                        <b>Contact</b>
-                                        <span className="col-span-2">{order.user.contact}</span>
-
-                                        <b>Email</b>
-                                        <span className="col-span-2">{order.user.email}</span>
-
-                                        {order.address ?
-                                            <>
-                                                <b>Address 1</b>
-                                                <span className="col-span-2">{order.address.address_line1}</span>
-
-                                                <b>Address 2</b>
-                                                <span className="col-span-2">{order.address.address_line2}</span>
-
-                                                <b>City</b>
-                                                <span className="col-span-2">{order.address.city}</span>
-
-                                                <b>Telephone</b>
-                                                <span className="col-span-2">{order.address.telephone}</span>
-
-                                                <b>Mobile</b>
-                                                <span className="col-span-2">{order.address.mobile}</span>
-                                            </>
-
-                                            : <span>No address provided</span>
-                                        }
-                                    </div>
-                                </div> */}
-                                <div className="text-center">
+                                <div className="">
                                     {order.total}
                                 </div>
 
@@ -201,11 +223,14 @@ const Order = () => {
                                     <span><b>U: </b>{moment(order.updated_at).fromNow()}</span>
                                 </div>
 
-                                <div className="flex justify-center">
+                                <div className="flex">
                                     <Link to={"/app/order/" + order.id + "/view"}>
                                         <Button icon={EyeIcon} layout="link" aria-label="Like" />
 
                                     </Link>
+                                </div>
+                                <div className="col-span-8 grid grid-cols-4 items-stretch gap-5">
+                                    {getStatus(order.status)}
                                 </div>
                             </div>
                         </CardBody>
@@ -215,10 +240,11 @@ const Order = () => {
 
                 <Card className="mb-4 sticky bottom-0">
                     <CardBody>
-                        <div className="grid grid-cols-7 gap-5 font-bold text-center">
+                        <div className="grid grid-cols-8 gap-5 font-bold">
                             <span>Order ID</span>
                             <span>Status</span>
                             <span className="col-span-2">Order Detail</span>
+                            <span>Ordered by</span>
                             <span>Total</span>
                             <span>Date of actions</span>
                             <span>Action</span>
