@@ -20,12 +20,6 @@ const QuesitonAnswer = () => {
             .catch(error => console.log(error))
     }, [isRefreshed]);
 
-    const handleDeletion = (id) => {
-        deleteQA(id)
-            .then(response => setRefresh(!isRefreshed))
-            .catch(error => console.log(error))
-    }
-
     return (
         <>
             <PageTitle>

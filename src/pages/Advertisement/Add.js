@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 import { FileContext } from "../../context/FileContext";
 import { ImageThumbnail } from "../File/ImageThumbnail";
 import { MinusIcon } from "../../icons";
+import toast from "react-hot-toast";
 
 const moment = require('moment')
 
@@ -51,19 +52,26 @@ const Add = () => {
 
 
     const handleSubmission = () => {
-        postAdvertisement({
-            name: name,
-            summary: summary,
-            page: page,
-            type: type,
-            file_id: fileId,
-            url_slug: url,
-            active: parseInt(active),
-            active_from: moment(Date.parse(dateRange[0])).format('YYYY-MM-DD HH:mm:ss'),
-            active_to: moment(Date.parse(dateRange[1])).format('YYYY-MM-DD HH:mm:ss'),
-        })
-            .then(response => history.push("/app/advertisement"))
-            .catch(error => console.log(error))
+        toast.promise(
+            postAdvertisement({
+                name: name,
+                summary: summary,
+                page: page,
+                type: type,
+                file_id: fileId,
+                url_slug: url,
+                active: parseInt(active),
+                active_from: moment(Date.parse(dateRange[0])).format('YYYY-MM-DD HH:mm:ss'),
+                active_to: moment(Date.parse(dateRange[1])).format('YYYY-MM-DD HH:mm:ss'),
+            })
+                .then(response => history.push("/app/advertisement"))
+            ,
+            {
+                loading: "Saving advertisement",
+                success: "Advertisement saved",
+                error: (error) => error.message
+            }
+        )
     }
     return (
         <>

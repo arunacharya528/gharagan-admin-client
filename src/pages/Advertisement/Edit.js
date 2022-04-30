@@ -16,6 +16,7 @@ import { useLocation } from "react-router-dom";
 import { AdvertisementContext } from "../../context/AdvertisementContext";
 import { ImageThumbnail } from "../File/ImageThumbnail";
 import { MinusIcon } from "../../icons";
+import toast from "react-hot-toast";
 
 const moment = require('moment')
 
@@ -73,7 +74,7 @@ const Edit = () => {
 
 
     const handleSubmission = () => {
-        putAdvertisement({
+        toast.promise(putAdvertisement({
             name: name,
             summary: summary,
             page: page,
@@ -88,6 +89,13 @@ const Edit = () => {
                 updateAds();
                 history.push("/app/advertisement")
             })
+            , {
+                loading: "Updating advertisement",
+                success: "Updated advertisement",
+                error: "Error updating advertisement"
+            }
+        )
+
             .catch(error => console.log(error))
     }
 

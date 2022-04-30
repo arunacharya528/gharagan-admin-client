@@ -5,6 +5,7 @@ import PageTitle from '../../components/Typography/PageTitle'
 import { deleteUser, getUsers } from "../../adapters/user";
 import { EditIcon, PlusIcon, TrashIcon } from "../../icons";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const User = () => {
     const [users, setUsers] = useState([]);
@@ -28,9 +29,19 @@ const User = () => {
     }
 
     const handleDeletion = (id) => {
-        deleteUser(id)
-            .then(response => setRefresh(!isRefreshed))
-            .catch(error => console.log(error))
+        toast.promise(
+            deleteUser(id)
+                .then(response => setRefresh(!isRefreshed))
+            ,
+            {
+                loading: "Deleting user account",
+                success: "Deleted user account",
+                error: "Error deleting user account"
+            }
+        )
+        // deleteUser(id)
+        //     .then(response => setRefresh(!isRefreshed))
+        //     .catch(error => console.log(error))
     }
 
     return (

@@ -3,6 +3,7 @@ import { Label, Input, Card, CardBody, Button } from '@windmill/react-ui'
 import PageTitle from '../../components/Typography/PageTitle'
 import { postUser } from '../../adapters/user'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
+import toast from 'react-hot-toast'
 
 const Add = () => {
 
@@ -15,18 +16,27 @@ const Add = () => {
 
     const history = useHistory();
 
-    
+
     const handleSubmission = () => {
-        postUser({
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            contact: contact,
-            password: defaultPassword,
-            type: 2
-        })
-            .then(response => history.push("/app/user"))
-            .catch(error => console.log(error))
+        toast.promise(
+            postUser({
+                first_name: firstName,
+                last_name: lastName,
+                email: email,
+                contact: contact,
+                password: defaultPassword,
+                type: 2
+            })
+                .then(response => history.push("/app/user"))
+
+            , {
+                loading: "Adding new admin account",
+                success: "Added new admin account",
+                error: "Error adding admin account"
+            }
+        )
+
+
     }
     return (
         <>

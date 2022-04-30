@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Input, HelperText, Label, Select, Textarea, Button } from '@windmill/react-ui'
 import { CrossIcon } from "../../icons";
 import { postFile } from "../../adapters/file";
+import toast from "react-hot-toast";
 
 export const Add = ({ afterSubmission }) => {
 
@@ -33,13 +34,19 @@ export const Add = ({ afterSubmission }) => {
 
     const handleUpload = () => {
         uploadingData.map((data) => {
-            postFile({
-                file: data.file,
-                name: data.name
-            })
-                .then(response => afterSubmission())
-                .catch(error => console.log(error))
-        });
+            toast.promise(
+                postFile({
+                    file: data.file,
+                    name: data.name
+                })
+                    .then(response => afterSubmission())
+                , {
+                    loading: "Uploading file",
+                    success: "Uploaded file",
+                    error: "Error uploading file"
+                }
+            )
+        })
     }
 
     return (

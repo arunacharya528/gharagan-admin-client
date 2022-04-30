@@ -5,15 +5,22 @@ import { StarRate } from '../../components/Rating/StarRate';
 import { TrashIcon } from '../../icons';
 import { HashLink } from 'react-router-hash-link'
 import { deleteRating } from '../../adapters/rating';
+import toast from 'react-hot-toast';
 
 export const RatingView = ({ rating, refresh }) => {
 
 
     const handleDeletion = (id) => {
+        toast.promise(
+            deleteRating(id)
+                .then(response => refresh())
+            , {
+                loading: "Deleting rating",
+                success: "Deleted rating",
+                error: "Error deleting rating"
+            }
+        )
 
-        deleteRating(id)
-            .then(response => refresh())
-            .catch(error => console.log(error))
     }
 
     return (

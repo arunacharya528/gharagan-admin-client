@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Label, Input, Textarea, Select, Button } from '@windmill/react-ui'
 import { postDiscount, putDiscount } from "../../adapters/discount";
+import toast from "react-hot-toast";
 export const Add = ({ afterSubmission }) => {
 
     const [name, setName] = useState('');
@@ -10,14 +11,20 @@ export const Add = ({ afterSubmission }) => {
     const [status, setStatus] = useState(0);
 
     const handleSubmission = (e) => {
-        postDiscount({
-            name: name,
-            description: description,
-            discount_percent: percent,
-            active: status
-        })
-            .then(response => afterSubmission())
-            .catch(error => console.log(error))
+        toast.promise(
+            postDiscount({
+                name: name,
+                description: description,
+                discount_percent: percent,
+                active: status
+            })
+                .then(response => afterSubmission())
+            , {
+                loading: "Adding new discount",
+                success: "New discount added",
+                error: "Error adding new discount"
+            }
+        )
     }
 
     return (<div>

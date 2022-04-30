@@ -6,14 +6,21 @@ import { Reply } from "./Reply";
 import { Link } from "react-router-dom";
 
 import { HashLink } from 'react-router-hash-link'
+import toast from "react-hot-toast";
 const moment = require('moment');
 
 export const QAView = ({ question, refresh }) => {
 
     const handleDeletion = (id) => {
-        deleteQA(id)
-            .then(response => refresh())
-            .catch(error => console.log(error))
+        toast.promise(
+            deleteQA(id)
+                .then(response => refresh())
+            , {
+                loading: "Deleting selected query",
+                success: "Deleted selected query",
+                error: "Error deleting selected query"
+            }
+        )
     }
     return (
         <Card className="mb-4" >

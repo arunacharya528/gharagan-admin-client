@@ -7,6 +7,8 @@ import Buttons from "../Buttons";
 import { FileContext } from "../../context/FileContext";
 import { ImageThumbnail } from "./ImageThumbnail";
 import { isImgLink } from "../../utils/helper/checkImageLink";
+import toast from "react-hot-toast";
+import PageTitle from "../../components/Typography/PageTitle";
 
 const File = () => {
 
@@ -77,12 +79,18 @@ const File = () => {
 
 
     const confirmDeletion = (id) => {
-        deleteFile(id)
-            .then(response => {
-                updateFiles();
-                closeModal();
-            })
-            .catch(error => console.log(error))
+        toast.promise(
+            deleteFile(id)
+                .then(response => {
+                    updateFiles();
+                    closeModal();
+                })
+            , {
+                loading: "Deleting file",
+                success: "Deleted file",
+                error: "Error deleting file"
+            }
+        )
     }
 
     const handleDeletion = (file) => {
@@ -121,10 +129,12 @@ const File = () => {
                 </ModalBody>
 
             </Modal>
-
+            <PageTitle>
+                File Manager
+            </PageTitle>
             {
                 toggleAdd ?
-                    <Card className="mt-8 shadow-md">
+                    <Card className="shadow-md">
                         <CardBody>
                             <div className="mb-4 font-semibold text-gray-600 dark:text-gray-300 flex justify-between">
                                 <span>Add new Files</span>
@@ -138,7 +148,7 @@ const File = () => {
                     : ''
             }
 
-            <Button icon={PlusIcon} className="my-4" onClick={e => setToggleAdd(!toggleAdd)}>{toggleAdd ? 'Close Adding Form' : "Add new file"}</Button>
+            <Button icon={PlusIcon} className="mb-4" onClick={e => setToggleAdd(!toggleAdd)}>{toggleAdd ? 'Close Adding Form' : "Add new file"}</Button>
             <Card className="mb-8 shadow-md">
                 <CardBody>
                     <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-5 items-stretch">
