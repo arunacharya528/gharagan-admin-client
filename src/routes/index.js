@@ -21,6 +21,9 @@ const CategoryAdd = lazy(() => import('../pages/Category/Add'))
 const CategoryEdit = lazy(() => import('../pages/Category/Edit'))
 
 const Brand = lazy(() => import('../pages/Brand/Brand'))
+const BrandAdd = lazy(() => import('../pages/Brand/Add'))
+const BrandEdit = lazy(() => import('../pages/Brand/Edit'))
+
 
 const File = lazy(() => import('../pages/File/File'))
 
@@ -121,6 +124,14 @@ const routes = [
   {
     path: '/brand',
     component: Brand
+  },
+  {
+    path: '/brand/add',
+    component: BrandAdd
+  },
+  {
+    path: '/brand/:brandId/edit',
+    component: BrandEdit
   },
   {
     path: '/file',

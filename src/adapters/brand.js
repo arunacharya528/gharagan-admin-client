@@ -12,11 +12,36 @@ export const getBrands = () => {
     return axios(config)
 }
 
+export const getBrand = (id) => {
+    let config = {
+        method: 'get',
+        url: `${apiURL}/brand/${id}`,
+        headers: {},
+        maxRedirects: 0
+    };
+    return axios(config)
+}
+
 export const postBrand = (data) => {
     data = qs.stringify(data);
     let config = {
         method: 'post',
         url: `${apiURL}/brand`,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        maxRedirects: 0,
+        data: data
+    };
+
+    return axios(config)
+}
+
+export const putBrand = (data,id) => {
+    data = qs.stringify(data);
+    let config = {
+        method: 'put',
+        url: `${apiURL}/brand/${id}`,
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },

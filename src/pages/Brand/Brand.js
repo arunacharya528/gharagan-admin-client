@@ -96,9 +96,9 @@ function Brand() {
 
                                     <TableCell>
                                         <div className="flex items-center space-x-4">
-                                            <Button layout='link' size="icon" >
+                                            <Link to={"/app/brand/" + brand.id + "/edit"} layout='link' size="icon" >
                                                 <EditIcon className="w-5 h-5" aria-hidden="true" />
-                                            </Button>
+                                            </Link>
                                             <Button layout="link" size="icon" aria-label="Delete" onClick={e => handleDeletion(brand.id)}>
                                                 <TrashIcon className="w-5 h-5" aria-hidden="true" />
                                             </Button>
