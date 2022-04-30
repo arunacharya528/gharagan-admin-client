@@ -30,6 +30,7 @@
         "react-chartjs-2": "2.9.0",
         "react-dom": "^16.14.0",
         "react-focus-lock": "2.4.0",
+        "react-hot-toast": "^2.2.0",
         "react-markdown": "^8.0.2",
         "react-multi-date-picker": "^3.3.0",
         "react-router-dom": "5.2.0",

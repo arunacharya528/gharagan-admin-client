@@ -17,6 +17,8 @@ const ProductView = lazy(() => import('../pages/Product/View'))
 const ProductEdit = lazy(() => import('../pages/Product/Edit'))
 
 const Category = lazy(() => import('../pages/Category/Category'))
+const CategoryAdd = lazy(() => import('../pages/Category/Add'))
+const CategoryEdit = lazy(() => import('../pages/Category/Edit'))
 
 const Brand = lazy(() => import('../pages/Brand/Brand'))
 
@@ -107,6 +109,14 @@ const routes = [
   {
     path: '/category',
     component: Category
+  },
+  {
+    path: '/category/add',
+    component: CategoryAdd
+  },
+  {
+    path: '/category/:categoryId/edit',
+    component: CategoryEdit
   },
   {
     path: '/brand',

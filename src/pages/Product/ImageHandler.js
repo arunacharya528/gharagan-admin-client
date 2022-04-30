@@ -5,6 +5,7 @@ import { Input, HelperText, Label, Select, Textarea } from '@windmill/react-ui'
 import { deleteProductImage, getProductImages, postProductImage } from "../../adapters/productImage";
 import { useLocation } from "react-router-dom";
 import { CrossIcon } from "../../icons";
+import toast from "react-hot-toast";
 
 
 export const ImageHandler = () => {
@@ -24,36 +25,48 @@ export const ImageHandler = () => {
             .catch(error => console.log(error))
     }, [isRefreshed])
 
-
+    const imageSavingjson = {
+        loading: "Adding image",
+        success: "Successfully added image",
+        error: 'Error adding image'
+    };
     const handleUrlSubmission = () => {
-
-        postProductImage({
-            product_id: productId,
-            image_url: url
-        })
-            .then(response => { setRefresh(!isRefreshed); setUrl(''); })
-            .catch(error => console.log(error))
-
+        toast.promise(
+            postProductImage({
+                product_id: productId,
+                image_url: url
+            })
+                .then(response => { setRefresh(!isRefreshed); setUrl(''); }),
+            imageSavingjson)
     }
 
 
     const handleFileSubmission = (data) => {
 
         data.map((id) => {
-            postProductImage({
-                product_id: productId,
-                file_id: id
-            })
-                .then(response => { setRefresh(!isRefreshed) })
-                .catch(error => console.log(error))
+
+            toast.promise(
+                postProductImage({
+                    product_id: productId,
+                    file_id: id
+                })
+                    .then(response => { setRefresh(!isRefreshed) })
+                , imageSavingjson
+            )
         })
 
     }
 
     const handleImageDeletion = (id) => {
-        deleteProductImage(id)
-            .then(response => { setRefresh(!isRefreshed) })
-            .catch(error => console.log(error))
+        toast.promise(
+            deleteProductImage(id)
+                .then(response => { setRefresh(!isRefreshed) })
+            , {
+                loading: "Deleting image",
+                success: "Deleted image",
+                error: "Error deleting image"
+            }
+        )
     }
 
     return (

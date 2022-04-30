@@ -30,7 +30,7 @@ const Edit = () => {
                 <div className="flex justify-between">
                     <span>Edit Product</span>
                     <div className='flex space-x-5'>
-                        <Link to={"/app/product/"+location.pathname.split('/')[3]}>
+                        <Link to={"/app/product/" + location.pathname.split('/')[3]}>
                             <EyeIcon className="w-5 h-5" aria-hidden="true" />
                         </Link>
                     </div>
@@ -71,25 +71,6 @@ const Edit = () => {
 
                     <div className="text-gray-600 dark:text-gray-300">
                         <ImageHandler />
-                    </div>
-                </CardBody>
-            </Card>
-            <Card className="mb-8 shadow-md ">
-                <CardBody>
-                    <p className="mb-4 font-semibold text-gray-600 dark:text-gray-300">Ratings</p>
-                    <div className="text-gray-600 dark:text-gray-300">
-
-                    </div>
-                </CardBody>
-            </Card>
-
-            <Card className="mb-8 shadow-md ">
-                <CardBody>
-                    <p className="mb-4 font-semibold text-gray-600 dark:text-gray-300">Questions and Answers</p>
-
-
-                    <div className="text-gray-600 dark:text-gray-300">
-
                     </div>
                 </CardBody>
             </Card>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Input, HelperText, Label, Select, Textarea, Badge, Button } from '@windmill/react-ui'
 import { getDiscountedPrice } from "../../utils/helper/discount";
 import { putInventory } from "../../adapters/inventory";
+import toast from "react-hot-toast";
 
 
 export const InventoryUpdate = ({ inventory, discounts, submitted }) => {
@@ -19,15 +20,22 @@ export const InventoryUpdate = ({ inventory, discounts, submitted }) => {
     }, [])
 
     const handleSubmission = () => {
-        putInventory(inventory.id, {
-            type: type,
-            price: price,
-            quantity: quantity,
-            discount_id: discount
-        }).then(reponse => {
-            submitted()
-        })
-            .catch(error => console.log(error))
+        toast.promise(
+            putInventory(inventory.id, {
+                type: type,
+                price: price,
+                quantity: quantity,
+                discount_id: discount
+            }).then(reponse => {
+                submitted()
+            }),
+
+            {
+                loading: "Updating inventory item",
+                success: "Updated inventory item",
+                error: "Error updating inventory item"
+            }
+        )
     }
 
     return (

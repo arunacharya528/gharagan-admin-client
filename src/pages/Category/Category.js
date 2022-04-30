@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-// import PageTitle from '../components/Typography/PageTitle'
 import {
     Table,
     TableHeader,
@@ -18,35 +17,18 @@ import {
 
 import { EditIcon, PlusIcon, TrashIcon } from '../../icons'
 
-// PageTitle
-
 import PageTitle from '../../components/Typography/PageTitle'
-// import { getProducts } from './adapter'
 import { Link } from 'react-router-dom'
 import { getCategories } from '../../adapters/category'
-import { Edit } from './Edit'
-import { Add } from './Add'
+// import { Edit } from './Edit'
 
 function Category() {
 
-    // setup pages control for every table
-    // const [pageTable, setPageTable] = useState(1)
-
-    // setup data for every table
     const [dataTable, setDataTable] = useState([])
 
-    // pagination setup
-    // const resultsPerPage = 10
-    // const totalResults = response.length
-    // const [totalResults, setTotalResults] = useState(10);
-
     const [modalData, setModalData] = useState({ title: undefined, body: undefined });
-    const [isRefreshed, setRefresh] = useState(true);
 
-    // pagination change control
-    // function onPageChangeTable(p) {
-    //     setPageTable(p)
-    // }
+    const [isRefreshed, setRefresh] = useState(true);
 
     const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -58,40 +40,36 @@ function Category() {
         setIsModalOpen(false)
     }
 
-    // on page change, load new sliced data
-    // here you would make another server request for new data
     useEffect(() => {
 
         getCategories()
             .then(response => {
-                // console.log(response.data)
                 setDataTable(response.data)
-                // setTotalResults(response.data.length)
             })
             .catch(error => console.log(error));
     }, [isRefreshed])
 
-    const handleAddButtonPress = () => {
-        openModal();
-        setModalData({
-            title: "Add Category",
-            body: <Add categories={dataTable} afterSubmission={() => {
-                closeModal();
-                setRefresh(!isRefreshed);
-            }} />
-        });
-    }
+    // const handleAddButtonPress = () => {
+    //     openModal();
+    //     setModalData({
+    //         title: "Add Category",
+    //         body: <Add categories={dataTable} afterSubmission={() => {
+    //             closeModal();
+    //             setRefresh(!isRefreshed);
+    //         }} />
+    //     });
+    // }
 
-    const handleEditButtonPress = (id) => {
-        openModal();
-        setModalData({
-            title: "Edit Category",
-            body: <Edit id={id} categories={dataTable} afterSubmission={() => {
-                closeModal();
-                setRefresh(!isRefreshed);
-            }} />
-        });
-    }
+    // const handleEditButtonPress = (id) => {
+    //     openModal();
+    //     setModalData({
+    //         title: "Edit Category",
+    //         body: <Edit id={id} categories={dataTable} afterSubmission={() => {
+    //             closeModal();
+    //             setRefresh(!isRefreshed);
+    //         }} />
+    //     });
+    // }
 
 
     return (
@@ -99,9 +77,9 @@ function Category() {
             <PageTitle>
                 <div className="flex justify-between">
                     <span>Categories</span>
-                    <Button layout="link" onClick={handleAddButtonPress}>
+                    <Link layout="link" to="/app/category/add">
                         <PlusIcon className="w-5 h-5" aria-hidden="true" />
-                    </Button>
+                    </Link>
                 </div>
             </PageTitle>
             <Modal isOpen={isModalOpen} onClose={closeModal}>
@@ -138,9 +116,9 @@ function Category() {
 
                                     <TableCell>
                                         <div className="flex items-center space-x-4">
-                                            <Button layout='link' size="icon" onClick={e => handleEditButtonPress(category.id)}>
+                                            <Link layout='link' size="icon" to={"/app/category/" + category.id + "/edit"}>
                                                 <EditIcon className="w-5 h-5" aria-hidden="true" />
-                                            </Button>
+                                            </Link>
                                             <Button layout="link" size="icon" aria-label="Delete">
                                                 <TrashIcon className="w-5 h-5" aria-hidden="true" />
                                             </Button>
@@ -163,9 +141,9 @@ function Category() {
 
                                                 <TableCell>
                                                     <div className="flex items-center space-x-4">
-                                                        <Button layout='link' size="icon" onClick={e => handleEditButtonPress(child_category.id)}>
+                                                        <Link to={"/app/category/" + child_category.id + "/edit"}>
                                                             <EditIcon className="w-5 h-5" aria-hidden="true" />
-                                                        </Button>
+                                                        </Link>
                                                         <Button layout="link" size="icon" aria-label="Delete">
                                                             <TrashIcon className="w-5 h-5" aria-hidden="true" />
                                                         </Button>

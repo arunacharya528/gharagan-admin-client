@@ -5,6 +5,7 @@ import { getCategories } from "../../adapters/category";
 import { getBrands } from "../../adapters/brand";
 import { getProduct, putProduct } from "../../adapters/product";
 import { useLocation } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export const GeneralInfoEdit = () => {
 
@@ -42,16 +43,19 @@ export const GeneralInfoEdit = () => {
     }, [toggleCancel])
 
     const handleSubmission = (e) => {
-
-        putProduct({
-            name: name,
-            summary: summary,
-            category_id: categoryId,
-            brand_id: brandId
-        })
-            .catch((error) => {
-                console.log(error);
-            });
+        toast.promise(
+            putProduct({
+                name: name,
+                summary: summary,
+                category_id: categoryId,
+                brand_id: brandId
+            }, location.pathname.split("/")[3])
+            ,
+            {
+                loading: "Updating",
+                success: "Updated general info",
+                error: "Error updating general info"
+            })
     }
 
     return (

@@ -8,6 +8,7 @@ import { getBrands } from "../../adapters/brand";
 import { CheckIcon, CrossIcon } from "../../icons";
 import { postProduct } from "../../adapters/product";
 import { useHistory } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Add = () => {
 
@@ -33,13 +34,26 @@ const Add = () => {
 
 
     const handleSubmission = () => {
-        postProduct({
-            name: name,
-            summary: summary,
-            category_id: categoryId,
-            brand_id: brandId
-        }).then(response => { history.push("/app/product/" + response.data.id + "/edit") })
-            .catch(error => console.log(error))
+        toast.promise(
+            postProduct({
+                name: name,
+                summary: summary,
+                category_id: categoryId,
+                brand_id: brandId
+            })
+                .then(response => {
+                    history.push("/app/product/" + response.data.id + "/edit");
+                    toast(<div>
+                        Make sure to add other information to this product like <b>Inventory</b> and <b>Images</b>
+                    </div>, { duration: 6000 })
+                })
+            ,
+            {
+                loading: "Saving product",
+                success: "Successfully saved product",
+                error: "There was an error saving the product"
+            }
+        )
     }
 
     return (

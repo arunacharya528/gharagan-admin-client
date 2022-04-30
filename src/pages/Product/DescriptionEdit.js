@@ -7,6 +7,7 @@ import "./default.scss";
 import { CheckIcon, CrossIcon } from "../../icons";
 import { getProduct, putProduct } from "../../adapters/product";
 import { useLocation } from "react-router-dom";
+import toast from "react-hot-toast";
 export const DescriptionEdit = () => {
 
 
@@ -60,10 +61,14 @@ Embedding an image
 
 
     const handleSubmission = () => {
-        putProduct({ description: description }, location.pathname.split('/')[3])
-            .catch((error) => {
-                console.log(error);
-            });
+        toast.promise(
+            putProduct({ description: description }, location.pathname.split('/')[3]),
+            {
+                loading: "Updating",
+                success: "Updated description",
+                error: "Error updating description"
+            }
+        )
     }
 
 

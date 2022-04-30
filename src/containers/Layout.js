@@ -9,6 +9,7 @@ import ThemedSuspense from '../components/ThemedSuspense'
 import { SidebarContext } from '../context/SidebarContext'
 import { AdvertisementProvider } from '../context/AdvertisementContext'
 import { FileProvider } from '../context/FileContext'
+import { Toaster } from 'react-hot-toast'
 
 const Page404 = lazy(() => import('../pages/404'))
 
@@ -29,6 +30,7 @@ function Layout() {
       <div className="flex flex-col flex-1 w-full">
         <Header />
         <Main>
+          <Toaster position='bottom-right' toastOptions={{ className: "dark:bg-gray-700 dark:text-white" }} />
           <Suspense fallback={<ThemedSuspense />}>
             <FileProvider>
               <AdvertisementProvider>

@@ -8,6 +8,7 @@ import { getDiscounts } from '../../adapters/discount';
 import { Card, CardBody, Modal, ModalHeader, ModalBody } from '@windmill/react-ui'
 import { InventoryUpdate } from './InventoryUpdate';
 import { getDiscountedPrice } from '../../utils/helper/discount';
+import toast from 'react-hot-toast';
 
 
 export const InventoryEdit = () => {
@@ -101,9 +102,13 @@ export const InventoryEdit = () => {
     }
 
     const handleDeletion = (id) => {
-        deleteInventory(id)
-            .then(response => { setRefresh(!isRefreshed); })
-            .catch(error => console.log(error))
+        toast.promise(deleteInventory(id)
+            .then(response => { setRefresh(!isRefreshed); }),
+            {
+                loading: "Deleting",
+                success: "Deleted inventory item",
+                error: "Error deleting inventory item"
+            })
     }
 
     return (
