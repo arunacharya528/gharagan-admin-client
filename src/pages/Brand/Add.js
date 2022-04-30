@@ -1,35 +1,30 @@
 import {
-    Table,
-    TableHeader,
-    TableCell,
-    TableBody,
-    TableRow,
-    TableFooter,
-    TableContainer,
-    Badge,
-    Avatar,
     Button,
-    Pagination,
-    Modal, ModalHeader, ModalBody, ModalFooter
 } from '@windmill/react-ui'
 
 import { Card, CardBody } from '@windmill/react-ui'
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Input, HelperText, Label, Select, Textarea } from '@windmill/react-ui'
 
 import PageTitle from '../../components/Typography/PageTitle'
-import { PlusIcon } from '../../icons';
+import { CrossIcon, PlusIcon } from '../../icons';
 import { FileSelect } from '../File/Select';
 import { postBrand } from '../../adapters/brand';
+import { FileContext } from '../../context/FileContext';
+import { ImageThumbnail } from '../File/ImageThumbnail';
+import toast from 'react-hot-toast';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 
-export const Add = ({ afterSubmission }) => {
+const Add = () => {
     const [name, setName] = useState('');
     const [url, setUrl] = useState(null);
     const [fileId, setFileId] = useState(null);
+    const { files } = useContext(FileContext);
 
     const [isSelectorDisplayed, setSelectorTodisplay] = useState(false);
+    const history = useHistory();
 
     const handleBrandSubmission = (e) => {
         var data = { name: name }
@@ -37,18 +32,23 @@ export const Add = ({ afterSubmission }) => {
             ...data, ...{ image_url: url }
         }
 
-        console.log(data);
-        postBrand(data)
-            .then(response => { afterSubmission() })
-            .catch(error => console.log(error))
+        toast.promise(
+            postBrand(data)
+                .then(response => { history.push("/app/brand") })
+            ,
+            {
+                loading: "Saving Brand",
+                success: "Brand saved",
+                error: "Error saving brand"
+            }
+        )
     }
 
-    const handleFileSubmission = (ids) => {
-        setFileId(ids[0])
-        setSelectorTodisplay(!isSelectorDisplayed);
-    }
     return (
         <>
+            <PageTitle>
+                Add Brand
+            </PageTitle>
             <Card className="mb-8 shadow-md">
                 <CardBody>
                     <div className="mb-4 font-semibold text-gray-600 dark:text-gray-300 flex justify-between">
@@ -82,33 +82,49 @@ export const Add = ({ afterSubmission }) => {
 
                         {
                             fileId ?
-                                <>
-                                    <Label className="mt-4">
-                                        <span>File is stored for uploading</span>
-                                    </Label>
-                                    <Button className="mt-4" onClick={e => { setFileId(null) }}>
-                                        Clear stored image
-                                    </Button>
-                                </>
-                                :
-                                <Button className={"mt-4 mb-5 " + (isSelectorDisplayed ? 'bg-red-700' : '')} onClick={e => setSelectorTodisplay(!isSelectorDisplayed)}>
-                                    {isSelectorDisplayed ? 'Close Selection Mode' : 'Select Image from Database'}
-                                </Button>
+                                <div className="grid grid-cols-4 gap-5 mt-4">
+
+                                    {files.filter((file) => file.id === fileId).map((file, index) =>
+                                        <ImageThumbnail
+                                            file={file}
+
+                                            removalAction={{
+                                                action: () => { setFileId(null) },
+                                                icon: <CrossIcon className='w-8 h-8 p-2' />
+                                            }}
+
+                                            viewAction={() => { }}
+                                            key={index}
+                                        />
+                                    )}
+                                </div>
+                                : ''
                         }
-                        <br />
-                        {isSelectorDisplayed ?
-                            <>
-                                <span className='my-2 block'>Only the image selected at first qould be selected </span>
-                                <FileSelect selectedIds={handleFileSubmission} />
-                            </>
-                            : ''}
-                        <br />
-                        <Button className="mt-4" onClick={handleBrandSubmission}>
-                            Create
+
+
+
+                        <Button className={"mt-4"} onClick={e => setSelectorTodisplay(!isSelectorDisplayed)}>
+                            {isSelectorDisplayed ? 'Close Selection Mode' : 'Select Image from Database'}
                         </Button>
+
+                        {
+                            isSelectorDisplayed ?
+                                <div className='mt-4'>
+                                    <FileSelect selectedIds={ids => setFileId(ids[0])} />
+                                </div>
+                                : ''
+                        }
+                        <div>
+                            <Button className="mt-4" onClick={handleBrandSubmission}>
+                                Create
+                            </Button>
+                        </div>
+
                     </div>
                 </CardBody>
             </Card>
         </>
     );
 }
+
+export default Add;
