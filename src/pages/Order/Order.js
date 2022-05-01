@@ -3,7 +3,7 @@ import { getOrders } from "../../adapters/orderDetail";
 
 import { Card, CardBody, Modal, ModalHeader, ModalBody, Button } from '@windmill/react-ui'
 import PageTitle from '../../components/Typography/PageTitle'
-import { Summary } from "./Summary";
+import { OrderSummary } from "./Summary";
 
 const moment = require('moment');
 const Order = () => {
@@ -26,7 +26,7 @@ const Order = () => {
 
             <div className="text-gray-600 dark:text-gray-400">
                 {orders.map((order, index) =>
-                    <Summary order={order} key="index" />
+                    <OrderSummary order={order} key="index" />
                 )}
             </div>
         </>

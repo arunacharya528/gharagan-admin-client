@@ -3,7 +3,7 @@ import { Card, CardBody, Button } from '@windmill/react-ui'
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { EyeIcon } from "../../icons";
-export const Summary = ({ order }) => {
+export const OrderSummary = ({ order }) => {
     const calculateTotal = (itemList, discount) => {
 
         const prices = itemList.map((item) => {

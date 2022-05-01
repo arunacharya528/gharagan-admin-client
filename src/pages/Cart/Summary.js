@@ -7,7 +7,7 @@ import { ModalContext } from "../../context/ModalContext";
 import { deleteCartItem } from "../../adapters/shoppingSessions";
 import toast from "react-hot-toast";
 
-export const Summary = ({ session, refresh }) => {
+export const SessionSummary = ({ session, refresh }) => {
 
     const { setModalData, openModal, closeModal } = useContext(ModalContext)
     const handleDeletebuttonPress = (id) => {
