@@ -29,8 +29,6 @@ const View = () => {
     }
 
     const getTotal = (price, discount, quantity) => {
-        // console.log(getDiscountedPrice(price, discount));
-
         var returningPrice = 0;
         if (!discount) {
             returningPrice = price * quantity
