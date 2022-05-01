@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import {
     Table,
     TableHeader,
@@ -21,13 +21,15 @@ import PageTitle from '../../components/Typography/PageTitle'
 import { deleteBrand, getBrands } from '../../adapters/brand'
 import { Link } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import { ModalContext } from '../../context/ModalContext'
 
 function Brand() {
 
     const [brands, setBrands] = useState([])
 
-    const [modalData, setModalData] = useState({ title: undefined, body: undefined });
+    // const [modalData, setModalData] = useState({ title: undefined, body: undefined });
     const [isRefreshed, setRefresh] = useState(true);
+    const { setModalData, openModal, closeModal } = useContext(ModalContext)
 
 
     useEffect(() => {
@@ -39,19 +41,35 @@ function Brand() {
             .catch(error => console.log(error));
     }, [isRefreshed])
 
-    const handleDeletion = (id) => {
-        toast.promise(
-            deleteBrand(id)
-                .then(response => { setRefresh(!isRefreshed) }),
-            {
-                loading: "Deleting brand",
-                success: "Deleted brand",
-                error: "Errod deleting brand"
-            }
-        )
+    const handleDeleteButtonPress = (id) => {
+        const handleDeletion = () => {
+            toast.promise(
+                deleteBrand(id)
+                    .then(response => { setRefresh(!isRefreshed) }),
+                {
+                    loading: "Deleting brand",
+                    success: () => {
+                        setRefresh(!isRefreshed)
+                        closeModal();
+                        return "Deleted Brand";
+                    },
+                    error: "Errod deleting brand"
+                }
+            )
 
-            .catch(error => console.log(error))
+                .catch(error => console.log(error))
+        }
+        setModalData({
+            title: "Are you sure you want to delete this brand?",
+            body:
+                <div>
+                    <p>The product of related brand would be set to null</p>
+                    <Button className="mt-4" onClick={handleDeletion}>Confirm deletion</Button>
+                </div>
+        })
+        openModal();
     }
+
 
     return (
         <>
@@ -99,7 +117,7 @@ function Brand() {
                                             <Link to={"/app/brand/" + brand.id + "/edit"} layout='link' size="icon" >
                                                 <EditIcon className="w-5 h-5" aria-hidden="true" />
                                             </Link>
-                                            <Button layout="link" size="icon" aria-label="Delete" onClick={e => handleDeletion(brand.id)}>
+                                            <Button layout="link" size="icon" aria-label="Delete" onClick={e => handleDeleteButtonPress(brand.id)}>
                                                 <TrashIcon className="w-5 h-5" aria-hidden="true" />
                                             </Button>
                                         </div>
