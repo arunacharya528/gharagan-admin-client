@@ -56,3 +56,14 @@ export const putCategory = (data, id) => {
 
     return axios(config)
 }
+
+export const deleteCategory = (id) => {
+    let config = {
+        method: 'delete',
+        url: `${apiURL}/productCategory/${id}`,
+        headers: {},
+        maxRedirects: 0
+    };
+
+    return axios(config)
+}

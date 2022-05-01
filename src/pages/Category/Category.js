@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import {
     Table,
     TableHeader,
@@ -19,58 +19,51 @@ import { EditIcon, PlusIcon, TrashIcon } from '../../icons'
 
 import PageTitle from '../../components/Typography/PageTitle'
 import { Link } from 'react-router-dom'
-import { getCategories } from '../../adapters/category'
-// import { Edit } from './Edit'
+import { deleteCategory, getCategories } from '../../adapters/category'
+import { ModalContext } from '../../context/ModalContext'
+import toast from 'react-hot-toast'
 
 function Category() {
 
-    const [dataTable, setDataTable] = useState([])
-
-    const [modalData, setModalData] = useState({ title: undefined, body: undefined });
-
+    const [categories, setCategories] = useState([])
     const [isRefreshed, setRefresh] = useState(true);
-
-    const [isModalOpen, setIsModalOpen] = useState(false)
-
-    function openModal() {
-        setIsModalOpen(true)
-    }
-
-    function closeModal() {
-        setIsModalOpen(false)
-    }
+    const { setModalData, openModal, closeModal } = useContext(ModalContext)
 
     useEffect(() => {
 
         getCategories()
             .then(response => {
-                setDataTable(response.data)
+                setCategories(response.data)
             })
             .catch(error => console.log(error));
     }, [isRefreshed])
 
-    // const handleAddButtonPress = () => {
-    //     openModal();
-    //     setModalData({
-    //         title: "Add Category",
-    //         body: <Add categories={dataTable} afterSubmission={() => {
-    //             closeModal();
-    //             setRefresh(!isRefreshed);
-    //         }} />
-    //     });
-    // }
-
-    // const handleEditButtonPress = (id) => {
-    //     openModal();
-    //     setModalData({
-    //         title: "Edit Category",
-    //         body: <Edit id={id} categories={dataTable} afterSubmission={() => {
-    //             closeModal();
-    //             setRefresh(!isRefreshed);
-    //         }} />
-    //     });
-    // }
-
+    const handleDeleteButtonPress = (id) => {
+        const handleDeletion = () => {
+            toast.promise(
+                deleteCategory(id)
+                ,
+                {
+                    loading: "Deleting category",
+                    success: () => {
+                        setRefresh(!isRefreshed)
+                        closeModal()
+                        return "Deleted category"
+                    },
+                    error: "Error deleting category"
+                }
+            )
+        }
+        setModalData({
+            title: "Are you sure you want to delete this category?",
+            body:
+                <div>
+                    <p>All related child category would remain with no parent and related product would have no category</p>
+                    <Button className="mt-4" onClick={handleDeletion}>Confirm delete</Button>
+                </div>
+        })
+        openModal();
+    }
 
     return (
         <>
@@ -82,13 +75,7 @@ function Category() {
                     </Link>
                 </div>
             </PageTitle>
-            <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <ModalHeader>{modalData.title}</ModalHeader>
-                <ModalBody>
-                    {modalData.body}
-                </ModalBody>
 
-            </Modal>
             <TableContainer className="mb-8">
                 <Table className="table-fixed">
                     <TableHeader>
@@ -101,7 +88,7 @@ function Category() {
                         </tr>
                     </TableHeader>
                     <TableBody>
-                        {dataTable.map((category, i) => (
+                        {categories.map((category, i) => (
                             <>
                                 <TableRow key={i}>
                                     <TableCell>
@@ -119,7 +106,7 @@ function Category() {
                                             <Link layout='link' size="icon" to={"/app/category/" + category.id + "/edit"}>
                                                 <EditIcon className="w-5 h-5" aria-hidden="true" />
                                             </Link>
-                                            <Button layout="link" size="icon" aria-label="Delete">
+                                            <Button layout="link" size="icon" aria-label="Delete" onClick={e => handleDeleteButtonPress(category.id)}>
                                                 <TrashIcon className="w-5 h-5" aria-hidden="true" />
                                             </Button>
                                         </div>
@@ -144,7 +131,7 @@ function Category() {
                                                         <Link to={"/app/category/" + child_category.id + "/edit"}>
                                                             <EditIcon className="w-5 h-5" aria-hidden="true" />
                                                         </Link>
-                                                        <Button layout="link" size="icon" aria-label="Delete">
+                                                        <Button layout="link" size="icon" aria-label="Delete" onClick={e => handleDeleteButtonPress(child_category.id)}>
                                                             <TrashIcon className="w-5 h-5" aria-hidden="true" />
                                                         </Button>
                                                     </div>
