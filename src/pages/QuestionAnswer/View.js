@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Card, CardBody, Button } from '@windmill/react-ui'
 import { TrashIcon } from "../../icons";
 import { deleteQA } from "../../adapters/questionAnswer";
@@ -7,20 +7,37 @@ import { Link } from "react-router-dom";
 
 import { HashLink } from 'react-router-hash-link'
 import toast from "react-hot-toast";
+import { ModalContext } from "../../context/ModalContext";
 const moment = require('moment');
 
 export const QAView = ({ question, refresh }) => {
 
-    const handleDeletion = (id) => {
-        toast.promise(
-            deleteQA(id)
-                .then(response => refresh())
-            , {
-                loading: "Deleting selected query",
-                success: "Deleted selected query",
-                error: "Error deleting selected query"
-            }
-        )
+    const { setModalData, openModal, closeModal } = useContext(ModalContext);
+
+    const handleDeleteButtonPress = (id) => {
+        const handleDeletion = () => {
+            toast.promise(
+                deleteQA(id)
+                , {
+                    loading: "Deleting selected instance",
+                    success: () => {
+                        refresh();
+                        closeModal();
+                        return "Deleted selected instance"
+                    },
+                    error: "Error deleting selected query"
+                }
+            )
+        }
+        setModalData({
+            title: "Are you sure you want to delete this instance of question answer?",
+            body:
+                <div>
+                    <p>The instance would be permanently deleted from database</p>
+                    <Button className="mt-4" onClick={handleDeletion}>Confirm deletion</Button>
+                </div>
+        });
+        openModal();
     }
     return (
         <Card className="mb-4" >
@@ -38,7 +55,7 @@ export const QAView = ({ question, refresh }) => {
                         <span className="text-gray-600 dark:text-gray-500 italic">{moment(question.created_at).fromNow()}</span>
                     </div>
                     <div className="w-16">
-                        <Button icon={TrashIcon} layout="link" aria-label="Like" onClick={e => handleDeletion(question.id)} />
+                        <Button icon={TrashIcon} layout="link" aria-label="Like" onClick={e => handleDeleteButtonPress(question.id)} />
                     </div>
 
                 </div>
@@ -54,7 +71,7 @@ export const QAView = ({ question, refresh }) => {
                                     <span className="text-gray-600 dark:text-gray-500 italic">{moment(answer.created_at).fromNow()}</span>
                                 </div>
                                 <div className="w-16">
-                                    <Button icon={TrashIcon} layout="link" aria-label="Like" onClick={e => handleDeletion(answer.id)} />
+                                    <Button icon={TrashIcon} layout="link" aria-label="Like" onClick={e => handleDeleteButtonPress(answer.id)} />
                                 </div>
                             </div>
                         )
