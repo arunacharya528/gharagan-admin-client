@@ -55,3 +55,14 @@ export const putProduct = (productData, id) => {
 
     return axios(config);
 }
+
+export const deleteProduct = (id) => {
+    let config = {
+        method: 'delete',
+        url: `${apiURL}/product/${id}`,
+        headers: {},
+        maxRedirects: 0
+    };
+
+    return axios(config);
+}
