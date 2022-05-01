@@ -5,6 +5,7 @@ import * as Icons from '../../icons'
 import { Transition } from '@windmill/react-ui'
 import { NavLink } from 'react-router-dom'
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min'
+import { Route } from 'react-router-dom'
 
 function Icon({ icon, ...props }) {
   const Icon = Icons[icon]
@@ -20,7 +21,7 @@ function SidebarSubmenu({ route }) {
 
   const urlHasRoute = (routes) => {
     var contains = false;
-    routes.map((route) => route.path === location.pathname ? contains = true : '')
+    routes.map((route) => location.pathname.includes(route.path) ? contains = true : '')
     return contains
   }
   return (
@@ -54,7 +55,17 @@ function SidebarSubmenu({ route }) {
               className="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
               key={r.name}
             >
-              <NavLink className="w-full" to={r.path} activeClassName='text-black dark:text-white font-bold'>
+              <NavLink
+                exact
+                className={"w-full " + (location.pathname.includes(r.path) ? 'text-black dark:text-white font-bold' : '')}
+                to={r.path}
+              >
+                <Route path={route.path} exact={route.exact}>
+                  <span
+                    className="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
+                    aria-hidden="true"
+                  ></span>
+                </Route>
                 {r.name}
               </NavLink>
             </li>
