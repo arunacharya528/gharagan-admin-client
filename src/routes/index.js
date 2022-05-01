@@ -44,6 +44,8 @@ const Rating = lazy(() => import('../pages/Rating/Rating'))
 
 const User = lazy(() => import('../pages/User/User'))
 const UserAdd = lazy(() => import('../pages/User/Add'))
+const UserView = lazy(() => import('../pages/User/View'))
+
 
 
 /**
@@ -180,6 +182,10 @@ const routes = [
   {
     path: '/user/add',
     component: UserAdd
+  },
+  {
+    path: '/user/:userId/view',
+    component: UserView
   }
 ]
 

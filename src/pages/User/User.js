@@ -3,7 +3,7 @@ import { Table, TableCell, TableBody, TableContainer, TableHeader, TableRow, But
 
 import PageTitle from '../../components/Typography/PageTitle'
 import { deleteUser, getUsers } from "../../adapters/user";
-import { EditIcon, PlusIcon, TrashIcon } from "../../icons";
+import { CrossIcon, EditIcon, EyeIcon, PlusIcon, TrashIcon } from "../../icons";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
@@ -39,9 +39,6 @@ const User = () => {
                 error: "Error deleting user account"
             }
         )
-        // deleteUser(id)
-        //     .then(response => setRefresh(!isRefreshed))
-        //     .catch(error => console.log(error))
     }
 
     return (
@@ -76,17 +73,23 @@ const User = () => {
                                     <TableCell className="truncate" title={user.email}>{user.email}</TableCell>
                                     <TableCell>{user.contact}</TableCell>
                                     <TableCell>{getUserType(user.type)}</TableCell>
-                                    <TableCell>
-                                        {
-                                            user.type !== 1 ?
-                                                <div className="flex items-center space-x-4">
+                                    <TableCell className="">
+                                        <div className="flex items-center space-x-4">
+                                            <Link to={"/app/user/" + user.id + "/view"} layout="link" size="icon" aria-label="View">
+                                                <EyeIcon className="w-5 h-5" aria-hidden="true" />
+                                            </Link>
+                                            {
+                                                user.type !== 1 ?
                                                     <Button layout="link" size="icon" aria-label="Delete" onClick={e => handleDeletion(user.id)}>
                                                         <TrashIcon className="w-5 h-5" aria-hidden="true" />
                                                     </Button>
-                                                </div>
-                                                :
-                                                <Badge type="warning">cannot be deleted</Badge>
-                                        }
+                                                    :
+                                                    <Badge type="warning">
+                                                        <CrossIcon className="w-5 h-5" />
+                                                    </Badge>
+                                            }
+                                        </div>
+
                                     </TableCell>
 
                                 </TableRow>

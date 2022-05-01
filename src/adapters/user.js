@@ -14,6 +14,17 @@ export const getUsers = () => {
     return axios(config)
 }
 
+export const getUser = (id) => {
+    let config = {
+        method: 'get',
+        url: `${apiURL}/user/${id}`,
+        headers: {},
+        maxRedirects: 0
+    };
+
+    return axios(config)
+}
+
 export const postUser = (data) => {
     data = qs.stringify(data);
     let config = {
