@@ -45,3 +45,14 @@ export const putDiscount = (data, id) => {
 
     return axios(config)
 }
+
+export const deleteDiscount = (id) => { 
+    let config = {
+        method: 'delete',
+        url: `${apiURL}/discount/${id}`,
+        headers: {},
+        maxRedirects: 0
+    };
+
+    return axios(config)
+}

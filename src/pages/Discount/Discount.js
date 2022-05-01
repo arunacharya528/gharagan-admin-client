@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 
 import { Table, TableCell, TableBody, TableContainer, TableHeader, TableRow, Button, Modal, ModalHeader, ModalBody, Badge } from "@windmill/react-ui"
 import PageTitle from '../../components/Typography/PageTitle'
-import { getDiscounts } from '../../adapters/discount';
-import { EditIcon, PlusIcon } from '../../icons';
+import { deleteDiscount, getDiscounts } from '../../adapters/discount';
+import { EditIcon, PlusIcon, TrashIcon } from '../../icons';
 import { Edit } from './Edit';
 import { Add } from './Add';
+import { ModalContext } from '../../context/ModalContext';
+import toast from 'react-hot-toast';
 
 const Discount = () => {
 
     const [discounts, setDiscounts] = useState([]);
-    const [isRefreshed, setREfresh] = useState(false);
+    const [isRefreshed, setRefresh] = useState(false);
 
     useEffect(() => {
         getDiscounts()
@@ -18,22 +20,12 @@ const Discount = () => {
             .catch(error => console.log(error))
     }, [isRefreshed])
 
+    const { setModalData, openModal, closeModal } = useContext(ModalContext)
 
-    const [isModalOpen, setIsModalOpen] = useState(false)
-    const [modalData, setModalData] = useState({ title: undefined, body: undefined });
-
-    function openModal() {
-        setIsModalOpen(true)
-    }
-
-    function closeModal() {
-        setIsModalOpen(false)
-    }
-
-    const handleAddition = () => { 
+    const handleAddition = () => {
         setModalData({
             title: "Add discount",
-            body: <Add afterSubmission={() => { setREfresh(!isRefreshed); closeModal() }} />
+            body: <Add afterSubmission={() => { setRefresh(!isRefreshed); closeModal() }} />
         })
         openModal();
     }
@@ -41,9 +33,36 @@ const Discount = () => {
     const handleEdit = (data) => {
         setModalData({
             title: "Edit discount",
-            body: <Edit data={data} afterSubmission={() => { setREfresh(!isRefreshed); closeModal() }} />
+            body: <Edit data={data} afterSubmission={() => { setRefresh(!isRefreshed); closeModal() }} />
         })
         openModal();
+    }
+
+    const handleDeleteButtonPress = (id) => {
+        const handleDeletion = () => {
+            toast.promise(
+                deleteDiscount(id)
+                ,
+                {
+                    loading: "Deleting discount",
+                    success: () => {
+                        setRefresh(!isRefreshed);
+                        closeModal();
+                        return "Discount deleted"
+                    },
+                    error: "Error deleting discount"
+                }
+            )
+        }
+        setModalData({
+            title: "Are you sure you want to delete this discount instance?",
+            body:
+                <div>
+                    <p>All the related discount in inventory would be set to null</p>
+                    <Button className="mt-4" onClick={handleDeletion}>Confirm deletion</Button>
+                </div>
+        })
+        openModal()
     }
 
 
@@ -57,12 +76,6 @@ const Discount = () => {
                     </div>
                 </div>
             </PageTitle>
-            <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <ModalHeader>{modalData.title}</ModalHeader>
-                <ModalBody>
-                    {modalData.body}
-                </ModalBody>
-            </Modal>
             <TableContainer className="mb-8">
                 <Table className="table-fixed">
                     <TableHeader>
@@ -89,8 +102,9 @@ const Discount = () => {
                                                 {discount.active === 1 ? 'Active' : "Inactive"}
                                             </Badge>
                                         </TableCell>
-                                        <TableCell>
-                                            <Button icon={EditIcon} layout="link" aria-label="Like" onClick={e => handleEdit(discount)} />
+                                        <TableCell className="flex">
+                                            <Button icon={EditIcon} layout="link" aria-label="Edit" onClick={e => handleEdit(discount)} />
+                                            <Button icon={TrashIcon} layout="link" aria-label="Delete" onClick={e => handleDeleteButtonPress(discount.id)} />
                                         </TableCell>
                                     </TableRow>
                                 )
