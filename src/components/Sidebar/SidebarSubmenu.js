@@ -25,9 +25,9 @@ function SidebarSubmenu({ route }) {
     return contains
   }
   return (
-    <li className="relative px-6 py-3" key={route.name}>
+    <li className="relative pb-3 px-6" key={route.name}>
       <button
-        className="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+        className="inline-flex items-center py-3 justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
         onClick={handleDropdownMenuClick}
         aria-haspopup="true"
       >
@@ -60,12 +60,6 @@ function SidebarSubmenu({ route }) {
                 className={"w-full " + (location.pathname.includes(r.path) ? 'text-black dark:text-white font-bold' : '')}
                 to={r.path}
               >
-                <Route path={route.path} exact={route.exact}>
-                  <span
-                    className="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
-                    aria-hidden="true"
-                  ></span>
-                </Route>
                 {r.name}
               </NavLink>
             </li>
