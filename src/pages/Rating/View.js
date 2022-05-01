@@ -1,32 +1,46 @@
 import { Card, CardBody, Button } from '@windmill/react-ui'
 import moment from 'moment';
-import React from 'react';
+import React, { useContext } from 'react';
 import { StarRate } from '../../components/Rating/StarRate';
 import { TrashIcon } from '../../icons';
 import { HashLink } from 'react-router-hash-link'
 import { deleteRating } from '../../adapters/rating';
 import toast from 'react-hot-toast';
+import { ModalContext } from '../../context/ModalContext';
 
 export const RatingView = ({ rating, refresh }) => {
 
+    const { setModalData, openModal, closeModal } = useContext(ModalContext)
+    const handleDeleteButtonPress = (id) => {
+        const handleDeletion = () => {
+            toast.promise(
+                deleteRating(id)
+                , {
+                    loading: "Deleting rating",
+                    success: () => {
+                        refresh();
+                        closeModal();
+                        return "Deleted rating";
+                    },
+                    error: "Error deleting rating"
+                }
+            )
 
-    const handleDeletion = (id) => {
-        toast.promise(
-            deleteRating(id)
-                .then(response => refresh())
-            , {
-                loading: "Deleting rating",
-                success: "Deleted rating",
-                error: "Error deleting rating"
-            }
-        )
-
+        }
+        setModalData({
+            title: "Are you sure you want to delete this rating?",
+            body:
+                <div>
+                    <p>The rating would be permanently be deleted and would affect the rating of product</p>
+                    <Button className="mt-4" onClick={handleDeletion}>Confirm deletion</Button>
+                </div>
+        })
+        openModal()
     }
 
     return (
         <Card className="mb-4">
             <CardBody>
-                {/* {console.log(rating.id)} */}
                 <div className="flex flex-row" id={"rating" + rating.id}>
                     <div className="w-full">
                         <div className='flex flex-col space-y-2'>
@@ -49,7 +63,7 @@ export const RatingView = ({ rating, refresh }) => {
                         </div>
                     </div>
                     <div className="w-16">
-                        <Button icon={TrashIcon} layout="link" aria-label="Like" onClick={e => handleDeletion(rating.id)} />
+                        <Button icon={TrashIcon} layout="link" aria-label="Like" onClick={e => handleDeleteButtonPress(rating.id)} />
                     </div>
                 </div>
 
