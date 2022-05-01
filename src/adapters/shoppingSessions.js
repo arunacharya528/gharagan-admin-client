@@ -13,3 +13,15 @@ export const getSessions = () => {
 
     return axios(config)
 }
+
+
+export const deleteCartItem = (id) => { 
+    let config = {
+        method: 'delete',
+        url: `${apiURL}/cartItem/${id}`,
+        headers: {},
+        maxRedirects: 0
+    };
+
+    return axios(config)
+}
