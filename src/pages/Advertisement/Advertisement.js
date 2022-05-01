@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { getAdvertisements } from '../../adapters/advertisement';
+import { deleteAdvertisement, getAdvertisements } from '../../adapters/advertisement';
 import { AdvertisementContext } from '../../context/AdvertisementContext';
 
 import {
@@ -24,15 +24,13 @@ import { BackIcon, CrossIcon, EditIcon, EyeIcon, PlusIcon, TrashIcon } from '../
 import PageTitle from '../../components/Typography/PageTitle'
 import { View } from './View';
 import { Link } from 'react-router-dom';
+import { ModalContext } from '../../context/ModalContext';
+import toast from 'react-hot-toast';
 
 const moment = require('moment');
 const Advertisement = () => {
 
-    const { advertisements, updateAdvertisements } = useContext(AdvertisementContext);
-
-    const [isRefreshed, setRefresh] = useState(true);
-
-    const [toggleAdd, setToggleAdd] = useState(false);
+    const { advertisements, updateAds } = useContext(AdvertisementContext);
 
     const [name, setName] = useState(undefined);
     const [type, setType] = useState('None');
@@ -78,9 +76,11 @@ const Advertisement = () => {
     }
 
     const getBadge = (status) => {
-        return <span className={'py-1 px-2 font-bold text-white rounded-full ' + (status ? 'bg-green-600 ' : 'bg-red-600')}>
-            {status ? "Active" : "Inactive"}
-        </span>
+        return <Badge type={status ? "success" : 'danger'}>
+            <div className="text-center w-full text-base p-1">
+                {status ? 'Active' : "Inactive"}
+            </div>
+        </Badge>
     }
 
     const determineValidation = (to) => {
@@ -89,19 +89,7 @@ const Advertisement = () => {
         }
     }
 
-
-    const [modalData, setModalData] = useState({ title: undefined, body: undefined });
-
-    const [isModalOpen, setIsModalOpen] = useState(false)
-
-    function openModal() {
-        setIsModalOpen(true)
-    }
-
-    function closeModal() {
-        setIsModalOpen(false)
-    }
-
+    const { setModalData, openModal, closeModal } = useContext(ModalContext)
     const previewAdvertisement = (data) => {
         setModalData({
             title: "Detail of advertisement " + data.name,
@@ -111,15 +99,37 @@ const Advertisement = () => {
         openModal();
     }
 
+    const handleDeleteButtonPress = (id) => {
+        const handleDeletion = () => {
+            toast.promise(
+                deleteAdvertisement(id),
+                {
+                    loading: "Deleting advertisement",
+                    success: () => {
+                        updateAds();
+                        closeModal();
+                        return "Deleted advertisement";
+                    },
+                    error: "Error deleting advertisement"
+                }
+            )
+        }
+        setModalData({
+            title: "Are you sure you want to delete this advertisement?",
+            body:
+                <div>
+                    <p>
+                        This advertisement would be permanently deleted from database.
+                        <br />
+                        Disabling this advertisement would also prevent from displaying this in client's side
+                    </p>
+                    <Button className="mt-4" onClick={handleDeletion}>Confirm deletion</Button>
+                </div>
+        })
+        openModal();
+    }
     return (
         <>
-            <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <ModalHeader>{modalData.title}</ModalHeader>
-                <ModalBody>
-                    {modalData.body}
-                </ModalBody>
-
-            </Modal>
             <PageTitle>
                 <div className='flex justify-between align-middle'>
                     <span>Advertisements</span>
@@ -130,9 +140,10 @@ const Advertisement = () => {
                     </div>
                 </div>
             </PageTitle>
-            <div class="h-screen grid gap-6 md:grid-cols-4 text-gray-600 dark:text-gray-400">
-                <div class="relative">
-                    <Card className="shadow-md">
+
+            <div className='grid gap-5 md:grid-cols-4 text-gray-600 dark:text-gray-400'>
+                <div>
+                    <Card className="shadow-md sticky top-0">
 
                         <CardBody>
                             <Label>
@@ -184,8 +195,8 @@ const Advertisement = () => {
                         </CardBody>
                     </Card>
                 </div>
-                <div class="flex-1 flex overflow-hidden md:col-span-3">
-                    <div class="flex-1 overflow-y-scroll">
+                <div className='col-span-3'>
+                    <div class="flex-1">
                         {filteredAd.map((ad, i) =>
                             <Card className="mb-4 shadow-md mr-4">
                                 <CardBody>
@@ -232,7 +243,7 @@ const Advertisement = () => {
                                                 <Button icon={EditIcon} layout="link" aria-label="Edit" />
                                             </Link>
                                             <div>
-                                                <Button icon={TrashIcon} layout="link" aria-label="Delete" />
+                                                <Button icon={TrashIcon} layout="link" aria-label="Delete" onClick={e => handleDeleteButtonPress(ad.id)} />
                                             </div>
                                         </div>
                                     </div>

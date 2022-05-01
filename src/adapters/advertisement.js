@@ -43,3 +43,15 @@ export const putAdvertisement = (data, id) => {
 
     return axios(config)
 }
+
+
+export const deleteAdvertisement = (id) => {
+    let config = {
+        method: 'delete',
+        url: `${apiURL}/advertisement/${id}`,
+        headers: {},
+        maxRedirects: 0
+    };
+
+    return axios(config);
+}

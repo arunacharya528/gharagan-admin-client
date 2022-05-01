@@ -1,5 +1,5 @@
 import {
-    Card, CardBody
+    Card, CardBody, Badge
 } from '@windmill/react-ui'
 import React from 'react';
 
@@ -8,11 +8,9 @@ const moment = require('moment');
 export const View = ({ ad, displayShort }) => {
 
     const getBadge = (status) => {
-
-        // status = status === 0 ? false : status === 1 ? true : undefined;
-        return <span className={'py-1 px-2 font-bold text-white rounded-full ' + (status ? 'bg-green-600' : ' bg-red-600')}>
-            {status ? 'Active' : 'Inactive'}
-        </span>
+        return <Badge type={status ? "success" : 'danger'}>
+            {status ? 'Active' : "Inactive"}
+        </Badge>
     }
     return (
         <>
