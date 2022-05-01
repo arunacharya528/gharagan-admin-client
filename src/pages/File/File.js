@@ -9,11 +9,11 @@ import { ImageThumbnail } from "./ImageThumbnail";
 import { isImgLink } from "../../utils/helper/checkImageLink";
 import toast from "react-hot-toast";
 import PageTitle from "../../components/Typography/PageTitle";
+import { ModalContext } from "../../context/ModalContext";
 
 const File = () => {
 
     const { files, updateFiles } = useContext(FileContext)
-
     const [fileList, setFileList] = useState([])
 
     useEffect(() => {
@@ -21,23 +21,7 @@ const File = () => {
     }, [files])
 
     const [toggleAdd, setToggleAdd] = useState(false);
-
-    //===================================
-    //
-    //      Model Data
-    //
-    //===================================
-    const [modalData, setModalData] = useState({ title: undefined, body: undefined });
-    const [isModalOpen, setIsModalOpen] = useState(false)
-
-    function openModal() {
-        setIsModalOpen(true)
-    }
-
-    function closeModal() {
-        setIsModalOpen(false)
-    }
-
+    const { setModalData, openModal, closeModal } = useContext(ModalContext)
 
     const viewFile = (file) => {
         setModalData({
@@ -78,22 +62,23 @@ const File = () => {
     }
 
 
-    const confirmDeletion = (id) => {
-        toast.promise(
-            deleteFile(id)
-                .then(response => {
-                    updateFiles();
-                    closeModal();
-                })
-            , {
-                loading: "Deleting file",
-                success: "Deleted file",
-                error: "Error deleting file"
-            }
-        )
-    }
+
 
     const handleDeletion = (file) => {
+        const confirmDeletion = (id) => {
+            toast.promise(
+                deleteFile(id)
+                , {
+                    loading: "Deleting file",
+                    success: () => {
+                        updateFiles();
+                        closeModal();
+                        return "Deleted file"
+                    },
+                    error: "Error deleting file"
+                }
+            )
+        }
         setModalData({
             title: "Are you sure you want to delete " + file.name,
             body:
@@ -122,13 +107,6 @@ const File = () => {
 
     return (
         <>
-            <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <ModalHeader>{modalData.title}</ModalHeader>
-                <ModalBody>
-                    {modalData.body}
-                </ModalBody>
-
-            </Modal>
             <PageTitle>
                 File Manager
             </PageTitle>
