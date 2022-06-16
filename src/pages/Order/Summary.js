@@ -2,181 +2,173 @@ import React from "react";
 import { Card, CardBody, Button } from '@windmill/react-ui'
 import { Link } from "react-router-dom";
 import moment from "moment";
-import { EyeIcon } from "../../icons";
-export const OrderSummary = ({ order }) => {
-    const calculateTotal = (itemList, discount) => {
+import { CrossIcon, EyeIcon, TrashIcon } from "../../icons";
+import { cancelOrder, deleteOrder, updateOrder } from "../../adapters/orderDetail";
+import toast from "react-hot-toast";
+import { useContext } from "react";
+import { ModalContext } from "../../context/ModalContext";
+export const OrderSummary = ({ order, change }) => {
 
-        const prices = itemList.map((item) => {
-            const priceByQuantity = item.inventory.price * item.quantity
-            const discountP = item.inventory.discount ? item.inventory.discount.discount_percent : 0;
-            return priceByQuantity - (0.01 * discountP * priceByQuantity)
-        })
-
-        var sum = 0;
-        for (let i = 0; i < prices.length; i++) {
-            sum += prices[i];
-        }
-
-        const initialPrice = Math.round((sum + Number.EPSILON) * 100) / 100;
-        if (discount !== null) {
-            sum = sum - (0.01 * discount.discount_percent * sum)
-        }
-
-        sum = Math.round((sum + Number.EPSILON) * 100) / 100
-        return (
-            <div className="grid grid-cols-3 gap-2">
-                <b>Price</b>
-                <span className="col-span-2">{initialPrice}</span>
-
-                <b>Discount</b>
-                <span className="col-span-2">{discount ? discount.discount_percent + "%" : "None"}</span>
-
-                <b>Final Price</b>
-                <span className="col-span-2">{sum}</span>
-            </div>
-        );
-    }
-
+    const { setModalData, openModal, closeModal } = useContext(ModalContext);
     const getStatus = (status) => {
-        var level = 0;
-
-        if (status.toLowerCase() === "Order Placed".toLowerCase()) {
-            level = 1
-        } else if (status.toLowerCase() === "Product collected for delivery".toLowerCase()) {
-            level = 2
-        } else if (status.toLowerCase() === "Product being shipped".toLowerCase()) {
-            level = 3
-        } else if (status.toLowerCase() === "Product received".toLowerCase()) {
-            level = 4
-        }
-
         const determineColor = (levelValue) => {
-            if (level < levelValue) {
+            if (status < levelValue) {
                 return 'bg-gray-300 dark:bg-gray-700'
             } else {
                 return 'bg-purple-300 dark:bg-purple-700'
             }
         }
+
+        const handleStatusChange = (status) => {
+
+            const confirm = () => {
+                toast.promise(
+                    updateOrder('', { status: status }, order.id)
+                    , {
+                        loading: "Updating status of order #" + order.id,
+                        success: () => {
+                            closeModal();
+                            change();
+                            return "Order status updated"
+                        },
+                        error: "Error updating order status"
+                    }
+                )
+            }
+
+            setModalData({
+                title: "Confirm status change of order #" + order.id,
+                body: <div>
+                    <p>Decision could be revert back but the client would notice changes</p>
+                    <Button onClick={confirm}>Confirm Change</Button>
+                </div>
+            })
+            openModal();
+
+        }
+
         return (
             <>
-                <div className={"text-gray-700 dark:text-white py-1 pl-5 rounded-l-full " + determineColor(1)}>
+                <button className={"text-gray-700 dark:text-white hover:bg-green-500 dark:hover:bg-green-700 py-1 pl-5 rounded-l-full " + determineColor(1)} onClick={e => handleStatusChange(1)}>
                     Order Placed
-                </div>
-                <div className={"text-gray-700 dark:text-white p-1 " + determineColor(2)}>
+                </button>
+                <button className={"text-gray-700 dark:text-white hover:bg-green-500 dark:hover:bg-green-700 p-1 " + determineColor(2)} onClick={e => handleStatusChange(2)}>
                     Product collected for delivery
-                </div>
-                <div className={"text-gray-700 dark:text-white p-1 " + determineColor(3)}>
+                </button>
+                <button className={"text-gray-700 dark:text-white hover:bg-green-500 dark:hover:bg-green-700 p-1 " + determineColor(3)} onClick={e => handleStatusChange(3)}>
                     Product being shipped
-                </div>
-                <div className={"text-gray-700 dark:text-white p-1  rounded-r-full " + determineColor(4)}>
+                </button>
+                <button className={"text-gray-700 dark:text-white hover:bg-green-500 dark:hover:bg-green-700 p-1  rounded-r-full " + determineColor(4)} onClick={e => handleStatusChange(4)}>
                     Product received
-                </div></>
+                </button></>
         );
     }
+
+    const handleOrderCancellation = (id) => {
+        const confirm = () => {
+            toast.promise(
+                cancelOrder('', order.id)
+                , {
+                    loading: "Cancelling order #" + order.id,
+                    success: () => {
+                        closeModal();
+                        change();
+                        return "Order cancelled"
+                    },
+                    error: "Error cancelling order"
+                }
+            )
+        }
+
+        setModalData({
+            title: "Confirm cancellation of order #" + order.id,
+            body: <div>
+                <p>Decision cannot be reverted and the client would notice changes</p>
+                <Button onClick={confirm}>Confirm</Button>
+            </div>
+        })
+        openModal();
+    }
+
+    const handleOrderDeletion = () => {
+        const confirm = () => {
+            toast.promise(
+                deleteOrder('', order.id)
+                , {
+                    loading: "Deleting order #" + order.id,
+                    success: () => {
+                        closeModal();
+                        change();
+                        return "Order deleted"
+                    },
+                    error: "Error deleting order"
+                }
+            )
+        }
+
+        setModalData({
+            title: "Confirm deletion of order #" + order.id,
+            body: <div>
+                <p>Decision cannot be reverted and the client would notice changes</p>
+                <Button onClick={confirm}>Confirm</Button>
+            </div>
+        })
+        openModal();
+    }
+
 
     return (
         <Card className="mb-4">
             <CardBody>
-                <div className="grid grid-cols-8 gap-5 items-center">
+                <div className="flex flex-col space-y-5">
 
-                    <div className="">
-                        {order.id}
-                    </div>
+                    <div className="flex flex-row">
+                        <div className="flex flex-row flex-grow space-x-8">
+                            <div className="">
+                                <div className="uppercase font-semibold text-sm">Invoice #</div>
+                                <div>{order.id}</div>
+                            </div>
 
+                            <div className="">
+                                <div className="uppercase font-semibold text-sm">Total</div>
+                                <div>Rs. {order.total}</div>
+                            </div>
+                        </div>
 
-                    <div className="flex flex-col col-span-3">
-                        <div className="border p-2 rounded-lg flex flex-col">
-                            {
-                                order.order_items.length !== 0 ?
-                                    <>
-                                        <div className="grid grid-cols-3 gap-2 font-bold">
-                                            <span>Product</span>
-                                            <span>Quantity</span>
-                                            <span>Discount</span>
-                                        </div>
-                                        {
-                                            order.order_items.map((item, index) =>
-                                                <div className="grid grid-cols-3 gap-2">
-                                                    <Link to={'/app/product/' + item.product.id + "/"} className="underline">
-                                                        {item.product.name}
-                                                    </Link>
-
-                                                    <span>
-                                                        {item.quantity}
-                                                    </span>
-
-                                                    <span>
-                                                        {item.inventory.discount
-                                                            ?
-                                                            <>
-                                                                <a href="" className="underline">
-                                                                    {item.inventory.discount.name}
-                                                                </a>
-                                                                {' - '}
-                                                                {item.inventory.discount.discount_percent + "%"}
-                                                            </>
-                                                            : ""
-                                                        }
-
-                                                    </span>
+                        <div className="flex">
+                            <a href={process.env.REACT_APP_WEB_URL + "/view/invoice/" + order.id} target="_blank">
+                                <Button iconLeft={EyeIcon}>
+                                    <span className="whitespace-no-wrap">View Invoice</span>
+                                </Button>
+                            </a>
 
 
-                                                </div>
-                                            )
-                                        }
-                                    </>
-                                    : <span className="text-center">No ordered items</span>
-
-                            }
                         </div>
 
 
-                        <span className="py-2 flex flex-col">
-                            {calculateTotal(order.order_items, order.discount)}
-                        </span>
                     </div>
 
-                    <div className="flex flex-col">
-                        <span>{order.user.first_name + " " + order.user.last_name}</span>
-                    </div>
-
-                    
-                    <div className="flex flex-col col-span-3">
-                        {
-                            order.address ?
-                                <>
-                                    <span>{order.address.address_line1}</span>
-                                    <span>{order.address.address_line2}</span>
-                                    <span>{order.address.city}</span>
-                                    <span>{order.address.telephone}</span>
-                                    <span>{order.address.mobile}</span>
-                                </>
-                                : ''
-                        }
-
-                    </div>
-                    
-                    
                     <div className="col-span-8 grid grid-cols-4 items-stretch text-xs">
                         {getStatus(order.status)}
                     </div>
 
-                    <div className="col-span-3 flex flex-col ">
-                        <span><b>Created: </b>{moment(order.created_at).fromNow()}</span>
-                        <span><b>Updated: </b>{moment(order.updated_at).fromNow()}</span>
-                    </div>
+                    <div className="flex flex-row space-x-8 items-center">
+                        <div className="col-span-3 flex flex-col flex-grow ">
+                            <span><b>Created: </b>{moment(order.created_at).calendar()}</span>
+                            <span><b>Updated: </b>{moment(order.updated_at).calendar()}</span>
+                            <span><b>Difference: </b>{moment(order.created_at).from(order.updated_at, true)}</span>
+                        </div>
 
-                    <div className="col-span-4">
-                        <b>Ordered total: </b>{order.total}
-                    </div>
-                    <div className="flex">
-                        <Link to={"/app/order/" + order.id + "/view"}>
-                            <Button icon={EyeIcon} layout="link" aria-label="Like" />
+                        <div className="flex space-x-5">
+                            <Button iconLeft={CrossIcon} layout="link" aria-label="Cancel" onClick={e => handleOrderCancellation(order.id)}>
+                                <span className="whitespace-no-wrap">Cancel order</span>
+                            </Button>
 
-                        </Link>
+                            <Button iconLeft={TrashIcon} layout="link" aria-label="Delete" onClick={e => handleOrderDeletion(order.id)}>
+                                <span className="whitespace-no-wrap">Delete order</span>
+                            </Button>
+                        </div>
                     </div>
-
-                   
                 </div>
             </CardBody>
         </Card>

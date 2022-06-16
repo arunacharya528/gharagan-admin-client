@@ -9,12 +9,12 @@ const moment = require('moment');
 const Order = () => {
 
     const [orders, setOrders] = useState([]);
-
+    const [isRefreshed, setRefresh] = useState(false);
     useEffect(() => {
         getOrders()
             .then(respose => setOrders(respose.data))
             .catch(error => console.log(error))
-    }, [])
+    }, [isRefreshed])
 
     return (
         <>
@@ -26,7 +26,7 @@ const Order = () => {
 
             <div className="text-gray-600 dark:text-gray-400">
                 {orders.map((order, index) =>
-                    <OrderSummary order={order} key="index" />
+                    <OrderSummary order={order} change={() => { setRefresh(!isRefreshed) }} key={index} />
                 )}
             </div>
         </>
