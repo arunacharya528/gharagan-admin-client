@@ -29,6 +29,21 @@ export const postQA = (data) => {
     return axios(config)
 }
 
+export const updateQA = (data, id) => {
+    data = qs.stringify(data);
+    let config = {
+        method: 'put',
+        url: `${apiURL}/questionAnswer/${id}`,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        maxRedirects: 0,
+        data: data
+    };
+
+    return axios(config)
+}
+
 export const deleteQA = (id) => {
 
     let config = {

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
 import { Label, Textarea, Button } from '@windmill/react-ui'
-import { postQA } from "../../adapters/questionAnswer";
+import { postQA, updateQA } from "../../adapters/questionAnswer";
 import toast from "react-hot-toast";
-export const Reply = ({ parentId, afterSUbmission }) => {
+export const Reply = ({ id, afterSUbmission }) => {
 
     const [isFormViewed, toggleForm] = useState(false);
 
@@ -11,7 +11,7 @@ export const Reply = ({ parentId, afterSUbmission }) => {
 
     const handleSubmission = () => {
         toast.promise(
-            postQA({ query, parent_id: parentId })
+            updateQA({ answer: query},id)
                 .then(response => { toggleForm(!isFormViewed); afterSUbmission() })
             ,
             {

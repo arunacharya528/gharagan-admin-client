@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Card, CardBody, Button } from '@windmill/react-ui'
 import { TrashIcon } from "../../icons";
-import { deleteQA } from "../../adapters/questionAnswer";
+import { deleteQA, updateQA } from "../../adapters/questionAnswer";
 import { Reply } from "./Reply";
 import { Link } from "react-router-dom";
 
@@ -39,6 +39,31 @@ export const QAView = ({ question, refresh }) => {
         });
         openModal();
     }
+
+    const handleAnswerRemoval = (id) => {
+        const confirm = () => {
+            toast.promise(
+                updateQA({ answer: null }, id)
+                , {
+                    loading: "Removing answer",
+                    success: () => {
+                        refresh();
+                        closeModal();
+                        return "Removed answer"
+                    },
+                    error: "Error removing answer"
+                }
+            )
+        }
+        setModalData({
+            title: "Are you sure you want to remove this answer?",
+            body:
+                <div>
+                    <Button className="mt-4" onClick={confirm}>Confirm deletion</Button>
+                </div>
+        });
+        openModal();
+    }
     return (
         <Card className="mb-4" >
             <CardBody>
@@ -51,7 +76,7 @@ export const QAView = ({ question, refresh }) => {
                                 : ''
                             }
                         </div>
-                        <div>{question.query}</div>
+                        <div>{question.question}</div>
                         <span className="text-gray-600 dark:text-gray-500 italic">{moment(question.created_at).fromNow()}</span>
                     </div>
                     <div className="w-16">
@@ -61,23 +86,19 @@ export const QAView = ({ question, refresh }) => {
                 </div>
 
                 {
-                    question.answers.length !== 0 ?
-
-                        question.answers.map((answer, index) =>
-                            <div className="flex flex-row ml-16 mt-5" key={index}>
-                                <div className="flex flex-col w-full">
-                                    <div className="font-bold">Replied</div>
-                                    <div>{answer.query}</div>
-                                    <span className="text-gray-600 dark:text-gray-500 italic">{moment(answer.created_at).fromNow()}</span>
-                                </div>
-                                <div className="w-16">
-                                    <Button icon={TrashIcon} layout="link" aria-label="Like" onClick={e => handleDeleteButtonPress(answer.id)} />
-                                </div>
+                    question.answer ?
+                        <div className="flex flex-row ml-16 mt-5" >
+                            <div className="flex flex-col w-full">
+                                <div className="font-bold">Replied</div>
+                                <div>{question.answer}</div>
+                                <span className="text-gray-600 dark:text-gray-500 italic">{moment(question.updated_at).fromNow()}</span>
                             </div>
-                        )
-
+                            <div className="w-16">
+                                <Button icon={TrashIcon} layout="link" aria-label="Like" onClick={e => handleAnswerRemoval(question.id)} />
+                            </div>
+                        </div>
                         :
-                        <Reply parentId={question.id} afterSUbmission={() => { refresh() }} />
+                        <Reply id={question.id} afterSUbmission={() => { refresh() }} />
                 }
             </CardBody>
         </Card>
