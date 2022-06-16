@@ -73,6 +73,19 @@ const routes = [
     icon: 'PeopleIcon',
     name: 'Users',
   },
+  {
+    icon: "FormsIcon",
+    name: "Page",
+    routes: [
+      {
+        path: '/app/page',
+        name: 'Pages'
+      }, {
+        path: '/app/pageLink',
+        name: 'Page Link'
+      }
+    ]
+  },
 ]
 
 export default routes

@@ -46,6 +46,13 @@ const User = lazy(() => import('../pages/User/User'))
 const UserAdd = lazy(() => import('../pages/User/Add'))
 const UserView = lazy(() => import('../pages/User/View'))
 
+const Page = lazy(() => import('../pages/Page/Page'))
+const PageView = lazy(() => import('../pages/Page/View'))
+
+const PageLink = lazy(() => import('../pages/PageLink/PageLink'))
+
+
+
 
 
 /**
@@ -186,6 +193,18 @@ const routes = [
   {
     path: '/user/:userId/view',
     component: UserView
+  },
+  {
+    path: '/page',
+    component: Page
+  },
+  {
+    path: '/page/:pageId',
+    component: PageView
+  },
+  {
+    path: '/pageLink',
+    component: PageLink
   }
 ]
 
