@@ -14,11 +14,11 @@ import { ModalContext } from "../../context/ModalContext";
 const File = () => {
 
     const { files, updateFiles } = useContext(FileContext)
-    const [fileList, setFileList] = useState([])
+    // const [fileList, setFileList] = useState([])
 
-    useEffect(() => {
-        setFileList(files)
-    }, [files])
+    // useEffect(() => {
+    //     setFileList(files)
+    // }, [files])
 
     const [toggleAdd, setToggleAdd] = useState(false);
     const { setModalData, openModal, closeModal } = useContext(ModalContext)
@@ -87,13 +87,13 @@ const File = () => {
                         The value would be set as empty in all the related tables:
                         <div className="grid grid-cols-2 gap-1 pt-4">
                             <span className="font-bold">Product</span>
-                            <span>{file.number_of_product_images}</span>
+                            <span>{file.product_images_count}</span>
 
                             <span className="font-bold">Brand</span>
-                            <span>{file.number_of_brands}</span>
+                            <span>{file.brands_count}</span>
 
                             <span className="font-bold">Advertisement</span>
-                            <span>{file.number_of_advertisements}</span>
+                            <span>{file.advertisements_count}</span>
                         </div>
                     </div>
 
@@ -131,7 +131,7 @@ const File = () => {
                 <CardBody>
                     <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-5 items-stretch">
                         {
-                            fileList.map((file, index) =>
+                            files.map((file, index) =>
                                 <ImageThumbnail
                                     file={file}
                                     key={index}

@@ -33,13 +33,17 @@ export const Add = ({ afterSubmission }) => {
     }
 
     const handleUpload = () => {
-        uploadingData.map((data) => {
+        uploadingData.map((data, index) => {
             toast.promise(
                 postFile({
                     file: data.file,
                     name: data.name
                 })
-                    .then(response => afterSubmission())
+                    .then(response => {
+                        if (uploadingData.length - 1 === index) {
+                            afterSubmission();
+                        }
+                    })
                 , {
                     loading: "Uploading file",
                     success: "Uploaded file",

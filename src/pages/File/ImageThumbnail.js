@@ -5,9 +5,7 @@ import { isImgLink } from "../../utils/helper/checkImageLink";
 export const ImageThumbnail = ({ file, viewAction, removalAction }) => {
 
     const getTitle = () => {
-        return file.number_of_advertisements || file.number_of_brands || file.number_of_product_images ?
-            `P (${file.number_of_product_images}) | B(${file.number_of_brands}) | A(${file.number_of_advertisements})`
-            : ''
+        return `P (${file.product_images_count}) | B(${file.brands_count}) | A(${file.advertisements_count})`
     }
     return (
         <div
@@ -17,7 +15,7 @@ export const ImageThumbnail = ({ file, viewAction, removalAction }) => {
             <div onClick={e => viewAction()} >
                 {
                     isImgLink(process.env.REACT_APP_FILE_PATH + "/" + file.path) ?
-                        <img src={process.env.REACT_APP_FILE_PATH + "/" + file.path} alt={file.name + "image"} className="rounded-t" />
+                        <img src={process.env.REACT_APP_FILE_PATH + "/" + file.path} alt={file.name + "image"} className="rounded-t object-contain h-auto w-full" />
                         :
                         <span className="flex items-center  dark:text-white text-gray-700 justify-center">
                             <FileIcon className="w-16 m-5 p-2" />
