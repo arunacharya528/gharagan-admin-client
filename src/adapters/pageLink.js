@@ -12,3 +12,19 @@ export const getPageLinks = () => {
 
     return axios(config)
 }
+
+
+export const postPageLink = (data) => {
+    data = qs.stringify(data);
+    let config = {
+        method: 'post',
+        url: `${apiURL}/pageLink`,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        maxRedirects: 0,
+        data: data
+    };
+
+    return axios(config)
+}

@@ -8,14 +8,14 @@ export const ContextList = ({ children }) => {
 
 
     return (
-        <ModalProvider>
-            <FileProvider>
-                <AdvertisementProvider>
-                    <PageProvider>
+        <FileProvider>
+            <AdvertisementProvider>
+                <PageProvider>
+                    <ModalProvider>
                         {children}
-                    </PageProvider>
-                </AdvertisementProvider>
-            </FileProvider>
-        </ModalProvider>
+                    </ModalProvider>
+                </PageProvider>
+            </AdvertisementProvider>
+        </FileProvider>
     )
 }

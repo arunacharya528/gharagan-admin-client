@@ -8,23 +8,30 @@ import PageTitle from '../../components/Typography/PageTitle'
 import { TableContainer, Table, TableHeader, TableCell, TableBody, TableRow, Button } from '@windmill/react-ui';
 import { CheckIcon, EditIcon, EyeIcon, PlusIcon, TrashIcon } from "../../icons";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { ModalContext } from "../../context/ModalContext";
+import { AddPageLink } from "./Add";
 const moment = require('moment')
 
 const PageLink = () => {
 
     const [pageLinks, setPageLinks] = useState([]);
+    const [toggleAdd, setToggleAdd] = useState(false);
+    const [isRefreshed, setRefresh] = useState(false);
 
     useEffect(() => {
         getPageLinks()
             .then(response => setPageLinks(response.data))
             .catch(error => console.log(error))
-    }, [])
+    }, [isRefreshed])
 
-    const handleEdit = () => { 
+    const { setModalData, openModal, closeModal } = useContext(ModalContext)
+
+    const handleEdit = () => {
 
     }
 
-    const handleDeletion = () => { 
+    const handleDeletion = () => {
 
     }
 
@@ -33,13 +40,16 @@ const PageLink = () => {
             <PageTitle>
                 <div className="flex justify-between">
                     <span>Page Links</span>
-
-                    <Link layout="link" size="icon" aria-label="Edit" to={"/app/page/add"}>
-                        <PlusIcon className="w-5 h-5" aria-hidden="true" />
-                    </Link>
+                    <Button icon={PlusIcon} layout="link" aria-label="Add" onClick={e => setToggleAdd(!toggleAdd)} />
                 </div>
 
             </PageTitle>
+
+            {
+                toggleAdd ?
+                    <AddPageLink onChange={() => { setRefresh(!isRefreshed); setToggleAdd(!toggleAdd) }} />
+                    : ''
+            }
             <TableContainer className="mb-8">
                 <Table className="table-auto">
                     <TableHeader>
