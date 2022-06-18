@@ -8,19 +8,13 @@ import { TableContainer, Table, TableHeader, TableCell, TableBody, TableRow, But
 import { CheckIcon, EditIcon, EyeIcon, PlusIcon } from "../../icons";
 import { Link } from "react-router-dom";
 import PublishedButton from "./PublishedButton";
+import { useContext } from "react";
+import { PageContext } from "../../context/PageContext";
 
 const moment = require('moment');
 
 const Page = () => {
-    const [pages, setPages] = useState({ loading: true, data: [] });
-
-    const [isRefreshed, setaRefresh] = useState(false);
-    useEffect(() => {
-        getPages()
-            .then(response => setPages({ loading: false, data: response.data }))
-            .catch(error => console.log(error))
-    }, [isRefreshed])
-
+    const { pages, updatePages } = useContext(PageContext)
 
     return (
 
@@ -49,15 +43,12 @@ const Page = () => {
                     </TableHeader>
                     <TableBody>
                         {
-                            pages.data.map((page, index) =>
+                            pages.map((page, index) =>
                                 <TableRow>
                                     <TableCell>{page.slug}</TableCell>
                                     <TableCell>{page.title}</TableCell>
                                     <TableCell>
-                                        {/* <button className="bg-green-600 p-2 rounded-md">
-                                            <CheckIcon className="w-5 h-5 text-white" />
-                                        </button> */}
-                                        <PublishedButton id={page.id} onChange={() => { setaRefresh(!isRefreshed) }} publishedState={page.published}  />
+                                        <PublishedButton id={page.id} onChange={() => { updatePages() }} publishedState={page.published} />
                                     </TableCell>
                                     <TableCell>{moment(page.created_at).calendar()}</TableCell>
                                     <TableCell>{moment(page.updated_at).calendar()}</TableCell>

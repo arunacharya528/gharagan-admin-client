@@ -11,6 +11,7 @@ import { AdvertisementProvider } from '../context/AdvertisementContext'
 import { FileProvider } from '../context/FileContext'
 import { Toaster } from 'react-hot-toast'
 import { ModalProvider } from '../context/ModalContext'
+import { ContextList } from '../context/ContextList'
 
 const Page404 = lazy(() => import('../pages/404'))
 
@@ -32,29 +33,24 @@ function Layout() {
         <Header />
         <Main>
           <Toaster position='bottom-right' toastOptions={{ className: "dark:bg-gray-700 dark:text-white" }} />
-          <ModalProvider>
           <Suspense fallback={<ThemedSuspense />}>
-            <FileProvider>
-              <AdvertisementProvider>
-                <Switch>
-                  {routes.map((route, i) => {
-                    return route.component ? (
-                      <Route
-                        key={i}
-                        exact={true}
-                        path={`/app${route.path}`}
-                        render={(props) => <route.component {...props} />}
-                      />
-                    ) : null
-                  })}
-                  <Redirect exact from="/app" to="/app/dashboard" />
-                  <Route component={Page404} />
-                </Switch>
-
-              </AdvertisementProvider>
-            </FileProvider>
-            </Suspense>
-          </ModalProvider>
+            <ContextList>
+              <Switch>
+                {routes.map((route, i) => {
+                  return route.component ? (
+                    <Route
+                      key={i}
+                      exact={true}
+                      path={`/app${route.path}`}
+                      render={(props) => <route.component {...props} />}
+                    />
+                  ) : null
+                })}
+                <Redirect exact from="/app" to="/app/dashboard" />
+                <Route component={Page404} />
+              </Switch>
+            </ContextList>
+          </Suspense>
         </Main>
       </div>
     </div>

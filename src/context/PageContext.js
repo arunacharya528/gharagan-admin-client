@@ -1,0 +1,22 @@
+import React from "react";
+import { createContext, useEffect, useState } from "react";
+import { getPages } from "../adapters/page";
+
+export const PageContext = createContext();
+
+export const PageProvider = ({ children }) => {
+
+    const [pages, setPages] = useState([]);
+    const [isRefreshed, setRefresh] = useState(false);
+    useEffect(() => {
+        getPages()
+            .then(response => setPages(response.data))
+            .catch(error => console.log(error))
+    }, [isRefreshed])
+
+
+    return <PageContext.Provider value={{
+        pages,
+        updatePages: () => { setRefresh(!isRefreshed) }
+    }}>{children}</PageContext.Provider>
+}
