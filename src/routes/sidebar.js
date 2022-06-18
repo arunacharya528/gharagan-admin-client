@@ -86,6 +86,11 @@ const routes = [
       }
     ]
   },
+  {
+    path: '/app/setting',
+    icon: 'PeopleIcon',
+    name: 'Setting',
+  },
 ]
 
 export default routes

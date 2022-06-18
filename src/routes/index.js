@@ -53,6 +53,9 @@ const PageAdd = lazy(() => import('../pages/Page/Add'))
 
 const PageLink = lazy(() => import('../pages/PageLink/PageLink'))
 
+const Setting = lazy(() => import('../pages/Setting/Setting'))
+
+
 
 
 
@@ -215,6 +218,10 @@ const routes = [
   {
     path: '/pageLink',
     component: PageLink
+  },
+  {
+    path: '/setting',
+    component: Setting
   }
 ]
 
