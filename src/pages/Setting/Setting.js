@@ -22,7 +22,6 @@ const Setting = () => {
         return siteData.data.filter((item) => item.name === name)[0];
     }
 
-    // console.log(getByName('social_links'))
     return (
         <>
             <PageTitle>
@@ -35,7 +34,7 @@ const Setting = () => {
                     <div className="p-5 space-y-5">
                         <Notification />
                         <SiteAddress />
-                        <Logo />
+                        <Logo logogSm={getByName('logo_url')} logoLg={getByName('lg_logo_url')} />
                         <SocialLinks socialLink={getByName('social_links')} />
                     </div>
                     : ''
