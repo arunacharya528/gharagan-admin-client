@@ -1,6 +1,8 @@
 import React from "react";
-import { FileIcon } from "../../icons";
+import toast from "react-hot-toast";
+import { CopyIcon, FileIcon } from "../../icons";
 import { isImgLink } from "../../utils/helper/checkImageLink";
+import { copyToClipboard } from "../../utils/helper/copyToClipboard";
 
 export const ImageThumbnail = ({ file, viewAction, removalAction }) => {
 
@@ -24,8 +26,11 @@ export const ImageThumbnail = ({ file, viewAction, removalAction }) => {
             </div>
 
 
-            <div className="absolute top-0 right-0 p-2 bg-black text-white rounded" onClick={removalAction.action}>
+            <div className="absolute top-0 right-0 p-2 bg-black text-white rounded cursor-pointer" onClick={removalAction.action}>
                 {removalAction.icon}
+            </div>
+            <div className="absolute top-0 left-0 p-2 bg-blue-500 text-white rounded cursor-pointer" onClick={e => { copyToClipboard(process.env.REACT_APP_FILE_PATH + "/" + file.path); toast.success("Copied image URL to clipboard") }}>
+                <CopyIcon className="w-5 h-5"/>
             </div>
             <div className="bg-gray-700 text-white text-center rounded-b" title={file.name}>
                 <span className="p-1 block truncate">{file.name}</span>

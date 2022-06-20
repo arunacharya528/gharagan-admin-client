@@ -24,6 +24,7 @@ const File = () => {
     const { setModalData, openModal, closeModal } = useContext(ModalContext)
 
     const viewFile = (file) => {
+        console.log(file)
         setModalData({
             title: file.name,
             body:
@@ -46,13 +47,13 @@ const File = () => {
                         Used State:
                         <div className="grid grid-cols-2 gap-1 pt-4">
                             <span className="font-bold">Product</span>
-                            <span>{file.number_of_product_images}</span>
+                            <span>{file.product_images_count}</span>
 
                             <span className="font-bold">Brand</span>
-                            <span>{file.number_of_brands}</span>
+                            <span>{file.brands_count}</span>
 
                             <span className="font-bold">Advertisement</span>
-                            <span>{file.number_of_advertisements}</span>
+                            <span>{file.advertisements_count}</span>
                         </div>
                     </div>
                 </>

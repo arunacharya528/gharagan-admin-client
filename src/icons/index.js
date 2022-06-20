@@ -38,6 +38,7 @@ import { ReactComponent as AdvertisementIcon } from './advertisement.svg'
 import { ReactComponent as BagShoppingIcon } from './bag-shopping.svg'
 import { ReactComponent as OrderIcon } from './order.svg'
 import { ReactComponent as PercentIcon } from './percent.svg'
+import { ReactComponent as CopyIcon } from './copy.svg'
 
 
 export {
@@ -80,5 +81,6 @@ export {
   AdvertisementIcon,
   BagShoppingIcon,
   OrderIcon,
-  PercentIcon
+  PercentIcon,
+  CopyIcon
 }
