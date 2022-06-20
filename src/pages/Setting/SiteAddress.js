@@ -1,9 +1,10 @@
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import { CKEditor } from '@ckeditor/ckeditor5-react';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import React, { useState } from "react";
 import toast from 'react-hot-toast';
 import { putSiteData } from '../../adapters/siteData';
 import { Button } from '@windmill/react-ui'
+import { RichTextEditor } from '../../components/Editor';
 
 export const SiteAddress = ({ address }) => {
 
@@ -26,14 +27,7 @@ export const SiteAddress = ({ address }) => {
         <div className="flex items-center">
             <div className="w-64 font-semibold">Site Address</div>
             <div className="flex-grow flex flex-col">
-                <CKEditor
-                    editor={ClassicEditor}
-                    data={siteAddress}
-                    onChange={(event, editor) => {
-                        const data = editor.getData();
-                        setSiteAddress(data)
-                    }}
-                />
+                <RichTextEditor text={{ value: siteAddress, setValue: setSiteAddress }} />
                 <div>
                     <Button onClick={handleUpdate} className="mt-4">Update</Button>
                 </div>

@@ -31,7 +31,7 @@ const Setting = () => {
             </PageTitle>
             {
                 !siteData.loading ?
-                    <div className="p-5 space-y-5">
+                    <div className="p-5 space-y-5 text-gray-700 dark:text-gray-400">
                         <Notification notification={getByName('notification')} />
                         <SiteAddress address={getByName('site_address')} />
                         <Logo logogSm={getByName('logo_url')} logoLg={getByName('lg_logo_url')} />

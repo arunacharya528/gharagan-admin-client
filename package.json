@@ -16,8 +16,6 @@
         "eject": "react-scripts eject"
     },
     "dependencies": {
-        "@ckeditor/ckeditor5-build-classic": "^34.1.0",
-        "@ckeditor/ckeditor5-react": "^5.0.2",
         "@testing-library/jest-dom": "4.2.4",
         "@testing-library/react": "9.5.0",
         "@testing-library/user-event": "7.2.1",
@@ -30,6 +28,7 @@
         "moment": "^2.29.2",
         "react": "^16.14.0",
         "react-chartjs-2": "2.9.0",
+        "react-ckeditor-component": "^1.1.0",
         "react-dom": "^16.14.0",
         "react-focus-lock": "2.4.0",
         "react-hot-toast": "^2.2.0",
