@@ -50,15 +50,6 @@ const Edit = () => {
 
             <Card className="mb-8 shadow-md ">
                 <CardBody>
-                    <p className="mb-4 font-semibold text-gray-600 dark:text-gray-300">Update Description</p>
-                    <p className='text-gray-600 dark:text-gray-400'>
-                        <DescriptionEdit />
-                    </p>
-
-                </CardBody>
-            </Card>
-            <Card className="mb-8 shadow-md ">
-                <CardBody>
                     <p className="mb-4 font-semibold text-gray-600 dark:text-gray-300">Inventory</p>
 
                     <InventoryEdit />

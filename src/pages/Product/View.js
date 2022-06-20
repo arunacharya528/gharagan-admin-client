@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 
 import { QAView } from "../QuestionAnswer/View"
 import { RatingView } from '../Rating/View'
-
+import { DescriptionEdit } from './DescriptionEdit'
 const moment = require('moment');
 
 function View() {
@@ -149,11 +149,11 @@ function View() {
 
                     <Card className="mb-8 shadow-md ">
                         <CardBody>
-                            <p className="mb-4 font-semibold text-gray-600 dark:text-gray-300">Description</p>
-                            <p className='text-gray-600 dark:text-gray-400'>
-                                {data.description}
-                            </p>
+                            {/* <p className="mb-4 font-semibold text-gray-600 dark:text-gray-300">Description</p>
+                         
 
+                            <div dangerouslySetInnerHTML={{ __html: data.description }} className="text-gray-600 dark:text-gray-400 unrest" /> */}
+<DescriptionEdit />
                         </CardBody>
                     </Card>
                     <Card className="mb-8 shadow-md ">
@@ -214,7 +214,7 @@ function View() {
 
 
                             <div className="text-gray-600 dark:text-gray-300">
-                                {data.questions.map((question, index) =>
+                                {data.question_answers.map((question, index) =>
                                     <QAView question={question} refresh={() => { setRefresh(!isRefreshed) }} key={index} />
                                 )}
                             </div>
