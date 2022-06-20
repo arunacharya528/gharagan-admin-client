@@ -32,8 +32,8 @@ const Setting = () => {
             {
                 !siteData.loading ?
                     <div className="p-5 space-y-5">
-                        <Notification />
-                        <SiteAddress />
+                        <Notification notification={getByName('notification')} />
+                        <SiteAddress address={getByName('site_address')} />
                         <Logo logogSm={getByName('logo_url')} logoLg={getByName('lg_logo_url')} />
                         <SocialLinks socialLink={getByName('social_links')} />
                     </div>
