@@ -8,24 +8,18 @@ import { Edit } from './Edit';
 import { Add } from './Add';
 import { ModalContext } from '../../context/ModalContext';
 import toast from 'react-hot-toast';
+import { DiscountContext } from '../../context/DiscountContext';
 
 const Discount = () => {
 
-    const [discounts, setDiscounts] = useState([]);
-    const [isRefreshed, setRefresh] = useState(false);
-
-    useEffect(() => {
-        getDiscounts()
-            .then(response => setDiscounts(response.data))
-            .catch(error => console.log(error))
-    }, [isRefreshed])
+    const { discounts, updateDiscount } = useContext(DiscountContext)
 
     const { setModalData, openModal, closeModal } = useContext(ModalContext)
 
     const handleAddition = () => {
         setModalData({
             title: "Add discount",
-            body: <Add afterSubmission={() => { setRefresh(!isRefreshed); closeModal() }} />
+            body: <Add afterSubmission={() => { updateDiscount(); closeModal() }} />
         })
         openModal();
     }
@@ -33,7 +27,7 @@ const Discount = () => {
     const handleEdit = (data) => {
         setModalData({
             title: "Edit discount",
-            body: <Edit data={data} afterSubmission={() => { setRefresh(!isRefreshed); closeModal() }} />
+            body: <Edit data={data} afterSubmission={() => { updateDiscount(); closeModal() }} />
         })
         openModal();
     }
@@ -46,7 +40,7 @@ const Discount = () => {
                 {
                     loading: "Deleting discount",
                     success: () => {
-                        setRefresh(!isRefreshed);
+                        updateDiscount()
                         closeModal();
                         return "Discount deleted"
                     },

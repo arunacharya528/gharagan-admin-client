@@ -9,6 +9,9 @@ import { Card, CardBody, Modal, ModalHeader, ModalBody } from '@windmill/react-u
 import { InventoryUpdate } from './InventoryUpdate';
 import { getDiscountedPrice } from '../../utils/helper/discount';
 import toast from 'react-hot-toast';
+import { useContext } from 'react';
+import { DiscountContext } from '../../context/DiscountContext';
+import { ModalContext } from '../../context/ModalContext';
 
 
 export const InventoryEdit = () => {
@@ -18,11 +21,11 @@ export const InventoryEdit = () => {
     const [type, setType] = useState('');
     const [price, setPrice] = useState(0);
     const [quantity, setQuantity] = useState(0);
-    const [discount, setDiscount] = useState(null);
+    const [discountId, setDiscountId] = useState(null);
 
     const location = useLocation();
 
-    const [discountList, setDiscountList] = useState([]);
+    const { discounts,getActiveDiscounts } = useContext(DiscountContext)
 
     const [isRefreshed, setRefresh] = useState(false);
     useEffect(() => {
@@ -35,14 +38,6 @@ export const InventoryEdit = () => {
             });
 
     }, [isRefreshed])
-
-    useEffect(() => {
-        getDiscounts()
-            .then(response => {
-                setDiscountList(response.data)
-            })
-    }, [])
-
 
     const getStatusBadge = (status) => {
         switch (status) {
@@ -58,13 +53,13 @@ export const InventoryEdit = () => {
         setType('');
         setPrice(0);
         setQuantity(0);
-        setDiscount(0);
+        setDiscountId(0);
     }
     const handleSubmission = () => {
         postInventory({
             type: type,
             product_id: location.pathname.split('/')[3],
-            discount_id: discount,
+            discount_id: discountId,
             price: price,
             type: type,
             quantity: quantity
@@ -78,14 +73,7 @@ export const InventoryEdit = () => {
     //=========================================
 
 
-    const [modalData, setModalData] = useState({ title: undefined, body: undefined });
-    const [isModalOpen, setIsModalOpen] = useState(false)
-    function openModal() {
-        setIsModalOpen(true)
-    }
-    function closeModal() {
-        setIsModalOpen(false)
-    }
+    const { setModalData, openModal, closeModal } = useContext(ModalContext)
 
     const handleEdit = (inventory) => {
         openModal();
@@ -97,30 +85,33 @@ export const InventoryEdit = () => {
 
         setModalData({
             title: "Update Inventory data",
-            body: <InventoryUpdate inventory={inventory} discounts={discountList} submitted={afterUpdate} />
+            body: <InventoryUpdate inventory={inventory} discounts={discounts} submitted={afterUpdate} />
         });
     }
 
     const handleDeletion = (id) => {
-        toast.promise(deleteInventory(id)
-            .then(response => { setRefresh(!isRefreshed); }),
-            {
-                loading: "Deleting",
-                success: "Deleted inventory item",
-                error: "Error deleting inventory item"
-            })
+        const confirmDeletion = () => {
+            toast.promise(deleteInventory(id)
+                .then(response => { setRefresh(!isRefreshed); closeModal() }),
+                {
+                    loading: "Deleting",
+                    success: "Deleted inventory item",
+                    error: "Error deleting inventory item"
+                })
+        }
+        setModalData({
+            title: "Are you sure you want to delete this inventory?",
+            body: <div>
+                <p>The inventory instance would be permanently deleted</p>
+                <Button onClick={confirmDeletion}>Confirm Delete</Button>
+            </div>
+        })
+        openModal()
     }
 
     return (
 
         <>
-            <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <ModalHeader>{modalData.title}</ModalHeader>
-                <ModalBody>
-                    {modalData.body}
-                </ModalBody>
-
-            </Modal>
             <table className='table-auto w-full text-gray-600 dark:text-gray-400 '>
                 <tbody>
                     <tr className='text-left text-gray-600 dark:text-gray-300'>
@@ -140,13 +131,17 @@ export const InventoryEdit = () => {
                                     <td>{inventory.quantity}</td>
                                     <td>
                                         {inventory.discount ?
-                                            inventory.discount.name + " " + inventory.discount.discount_percent + "%"
+                                            <>
+                                                {inventory.discount.name + " " + inventory.discount.discount_percent + "%"}
+                                                <Badge type={inventory.discount.active === 1 ? 'success' : 'danger'}>{inventory.discount.active === 1 ? 'active' : 'inactive'}</Badge>
+                                            </>
+
                                             : "None"}
 
                                     </td>
                                     <td>{
-                                        discountList.length !== 0 ?
-                                            getDiscountedPrice(inventory.price, inventory.discount ? inventory.discount.id : null, discountList)
+                                        discounts.length !== 0 ?
+                                            getDiscountedPrice(inventory.price, inventory.discount ? inventory.discount.id : null, discounts)
                                             : ''
                                     }</td>
                                     <td className='flex flex-row flex-no-wrap'>
@@ -168,16 +163,16 @@ export const InventoryEdit = () => {
                             <Input className="mt-1" type="number" placeholder="Available Quantity" value={quantity} onChange={e => setQuantity(e.target.value)} />
                         </th>
                         <th className='w-64'>
-                            <Select className="mt-1" value={discount} onChange={e => setDiscount(e.target.value === "None" ? null : e.target.value)}>
+                            <Select className="mt-1" value={discountId} onChange={e => setDiscountId(e.target.value === "None" ? null : e.target.value)}>
                                 <option>None</option>
-                                {discountList.map((discount, index) =>
+                                {getActiveDiscounts().map((discount, index) =>
                                     <option value={discount.id} key={index}>{discount.name} - {discount.discount_percent}%</option>
                                 )}
                             </Select>
                         </th>
                         <th className='w-32'>
 
-                            {getDiscountedPrice(price, discount, discountList)}
+                            {getDiscountedPrice(price, discountId, discounts)}
 
                         </th>
                         <th>
