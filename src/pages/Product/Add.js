@@ -8,21 +8,11 @@ import { GeneralInfoForm } from "../../components/Product/GeneralInfoForm";
 
 const Add = () => {
 
-    const [name, setName] = useState('');
-    const [summary, setSummary] = useState('');
-    const [categoryId, setCategoryId] = useState(0);
-    const [brandId, setBrandId] = useState(0);
-
     const history = useHistory();
 
-    const handleSubmission = () => {
+    const handleSubmission = (data) => {
         toast.promise(
-            postProduct({
-                name: name,
-                summary: summary,
-                category_id: categoryId,
-                brand_id: brandId
-            })
+            postProduct(data)
                 .then(response => {
                     history.push("/app/product/" + response.data.id + "/edit");
                     toast(<div>
@@ -51,10 +41,10 @@ const Add = () => {
 
                     <div className="text-gray-600 dark:text-gray-400">
                         <GeneralInfoForm {...{
-                            name: { value: name, setValue: setName },
-                            summary: { value: summary, setValue: setSummary },
-                            category: { value: categoryId, setValue: setCategoryId },
-                            brand: { value: brandId, setValue: setBrandId },
+                            name: '',
+                            summary: '',
+                            category: '',
+                            brand: '',
                             onSubmit: { value: "Create", action: handleSubmission }
                         }} />
                     </div>
