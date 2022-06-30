@@ -11,6 +11,8 @@ import {
   OutlineLogoutIcon,
 } from '../icons'
 import { Avatar, Badge, Input, Dropdown, DropdownItem, WindmillContext } from '@windmill/react-ui'
+import { UserContext } from '../context/UserContext'
+import { logout } from '../adapters/auth'
 
 function Header() {
   const { mode, toggleMode } = useContext(WindmillContext)
@@ -25,6 +27,19 @@ function Header() {
 
   function handleProfileClick() {
     setIsProfileMenuOpen(!isProfileMenuOpen)
+  }
+
+  const { user, setUser } = useContext(UserContext);
+
+  const handleLogout = () => {
+
+    logout(user.data.token)
+      .then(response => {
+        setUser({ loading: true, data: {} });
+        document.cookie = "";
+      })
+      .catch(error => console.log(error))
+
   }
 
   return (
@@ -128,7 +143,7 @@ function Header() {
                 <OutlineCogIcon className="w-4 h-4 mr-3" aria-hidden="true" />
                 <span>Settings</span>
               </DropdownItem>
-              <DropdownItem onClick={() => alert('Log out!')}>
+              <DropdownItem onClick={() => handleLogout()}>
                 <OutlineLogoutIcon className="w-4 h-4 mr-3" aria-hidden="true" />
                 <span>Log out</span>
               </DropdownItem>

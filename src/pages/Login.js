@@ -6,7 +6,11 @@ import ImageDark from '../assets/img/login-office-dark.jpeg'
 import { GithubIcon, TwitterIcon } from '../icons'
 import { Label, Input, Button } from '@windmill/react-ui'
 
-function Login() {
+function Login(props = {
+  email: { value: String, setValue: Function },
+  password: { value: String, setValue: Function },
+  onSubmit: Function
+}) {
   return (
     <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
       <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
@@ -30,15 +34,15 @@ function Login() {
               <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">Login</h1>
               <Label>
                 <span>Email</span>
-                <Input className="mt-1" type="email" placeholder="john@doe.com" />
+                <Input className="mt-1" type="email" placeholder="john@doe.com" value={props.email.value} onChange={e => props.email.setValue(e.target.value)} />
               </Label>
 
               <Label className="mt-4">
                 <span>Password</span>
-                <Input className="mt-1" type="password" placeholder="***************" />
+                <Input className="mt-1" type="password" placeholder="***************" value={props.password.value} onChange={e => props.password.setValue(e.target.value)} />
               </Label>
 
-              <Button className="mt-4" block tag={Link} to="/app">
+              <Button className="mt-4" block onClick={props.onSubmit}>
                 Log in
               </Button>
 
