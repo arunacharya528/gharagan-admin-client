@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Input, HelperText, Label, Select, Textarea, Button, Card, CardBody } from '@windmill/react-ui'
 import { getCategories, postCategory } from "../../adapters/category";
 import PageTitle from '../../components/Typography/PageTitle'
 import toast from "react-hot-toast";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { UserContext } from "../../context/UserContext";
 
 
 const Add = () => {
@@ -21,9 +22,11 @@ const Add = () => {
             .catch(error => console.log(error))
     }, []);
 
+    const { user } = useContext(UserContext)
+
     const handleSubmission = () => {
         toast.promise(
-            postCategory({
+            postCategory(user.data.token,{
                 name: name,
                 description: description,
                 is_parent: isParent ? 1 : 0,

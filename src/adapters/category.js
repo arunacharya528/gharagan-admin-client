@@ -6,7 +6,7 @@ const qs = require('qs');
 export const getCategories = () => {
     let config = {
         method: 'get',
-        url: `${apiURL}/productCategory`,
+        url: `${apiURL}/allCategory`,
         headers: {},
         maxRedirects: 0
     };
@@ -15,24 +15,27 @@ export const getCategories = () => {
 }
 
 
-export const getCategory = (id) => {
+export const getCategory = (token, id) => {
     let config = {
         method: 'get',
         url: `${apiURL}/productCategory/${id}`,
-        headers: {},
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
         maxRedirects: 0
     };
 
     return axios(config)
 }
 
-export const postCategory = (data) => { 
+export const postCategory = (token, data) => {
     data = qs.stringify(data);
     let config = {
         method: 'post',
         url: `${apiURL}/productCategory`,
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Bearer ${token}`
         },
         maxRedirects: 0,
         data: data
@@ -42,13 +45,14 @@ export const postCategory = (data) => {
 }
 
 
-export const putCategory = (data, id) => {
+export const putCategory = (token, data, id) => {
     data = qs.stringify(data);
     let config = {
         method: 'put',
         url: `${apiURL}/productCategory/${id}`,
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Bearer ${token}`
         },
         maxRedirects: 0,
         data: data
@@ -57,11 +61,13 @@ export const putCategory = (data, id) => {
     return axios(config)
 }
 
-export const deleteCategory = (id) => {
+export const deleteCategory = (token, id) => {
     let config = {
         method: 'delete',
         url: `${apiURL}/productCategory/${id}`,
-        headers: {},
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
         maxRedirects: 0
     };
 

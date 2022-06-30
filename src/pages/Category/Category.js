@@ -22,12 +22,15 @@ import { Link } from 'react-router-dom'
 import { deleteCategory, getCategories } from '../../adapters/category'
 import { ModalContext } from '../../context/ModalContext'
 import toast from 'react-hot-toast'
+import { UserContext } from '../../context/UserContext'
 
 function Category() {
 
     const [categories, setCategories] = useState([])
     const [isRefreshed, setRefresh] = useState(true);
     const { setModalData, openModal, closeModal } = useContext(ModalContext)
+
+    const { user } = useContext(UserContext)
 
     useEffect(() => {
 
@@ -41,7 +44,7 @@ function Category() {
     const handleDeleteButtonPress = (id) => {
         const handleDeletion = () => {
             toast.promise(
-                deleteCategory(id)
+                deleteCategory(user.data.token,id)
                 ,
                 {
                     loading: "Deleting category",

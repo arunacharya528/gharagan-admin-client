@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { getCategories, getCategory, putCategory } from "../../adapters/category";
 import { Input, HelperText, Label, Select, Textarea, Button, Card, CardBody } from '@windmill/react-ui'
 import Category from "./Category";
 import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import toast from "react-hot-toast";
 import PageTitle from "../../components/Typography/PageTitle";
+import { UserContext } from "../../context/UserContext";
 
 const Edit = () => {
-
-    // const [category, setCategory] = useState([]);
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -20,8 +19,9 @@ const Edit = () => {
     const history = useHistory();
 
     const id = location.pathname.split('/')[3]
+    const { user } = useContext(UserContext)
     useEffect(() => {
-        getCategory(id)
+        getCategory(user.data.token, id)
             .then(response => {
                 setName(response.data.name)
                 setDescription(response.data.description)
@@ -37,7 +37,7 @@ const Edit = () => {
 
     const handleSubmission = () => {
         toast.promise(
-            putCategory({ name: name, description: description, is_parent: isParent, parent_id: parentId }, id)
+            putCategory(user.data.token, { name: name, description: description, is_parent: isParent, parent_id: parentId }, id)
                 .then(response => { history.push("/app/category") })
             ,
             {
