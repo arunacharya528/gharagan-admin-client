@@ -15,6 +15,7 @@ import { FileContext } from '../../context/FileContext';
 import { ImageThumbnail } from '../File/ImageThumbnail';
 import toast from 'react-hot-toast';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { UserContext } from '../../context/UserContext';
 
 
 const Add = () => {
@@ -25,6 +26,7 @@ const Add = () => {
 
     const [isSelectorDisplayed, setSelectorTodisplay] = useState(false);
     const history = useHistory();
+    const { user } = useContext(UserContext)
 
     const handleBrandSubmission = (e) => {
         var data = { name: name }
@@ -33,7 +35,7 @@ const Add = () => {
         }
 
         toast.promise(
-            postBrand(data)
+            postBrand(user.data.token,data)
                 .then(response => { history.push("/app/brand") })
             ,
             {

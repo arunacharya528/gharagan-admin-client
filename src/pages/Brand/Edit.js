@@ -9,6 +9,7 @@ import { ImageThumbnail } from "../File/ImageThumbnail";
 import { CrossIcon } from "../../icons";
 import { FileSelect } from "../File/Select";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import { UserContext } from "../../context/UserContext";
 
 const Edit = () => {
     const [name, setName] = useState('');
@@ -21,6 +22,8 @@ const Edit = () => {
     const location = useLocation();
 
     const id = location.pathname.split("/")[3]
+
+    const { user } = useContext(UserContext)
 
     useEffect(() => {
         getBrand(id)
@@ -39,7 +42,7 @@ const Edit = () => {
         }
 
         toast.promise(
-            putBrand(data, id)
+            putBrand(user.data.token, data, id)
                 .then(response => { history.push("/app/brand") })
             ,
             {

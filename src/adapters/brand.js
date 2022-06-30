@@ -5,7 +5,7 @@ const qs = require('qs');
 export const getBrands = () => {
     let config = {
         method: 'get',
-        url: `${apiURL}/brand`,
+        url: `${apiURL}/allBrand`,
         headers: {},
         maxRedirects: 0
     };
@@ -15,20 +15,21 @@ export const getBrands = () => {
 export const getBrand = (id) => {
     let config = {
         method: 'get',
-        url: `${apiURL}/brand/${id}`,
+        url: `${apiURL}/oneBrand/${id}`,
         headers: {},
         maxRedirects: 0
     };
     return axios(config)
 }
 
-export const postBrand = (data) => {
+export const postBrand = (token, data) => {
     data = qs.stringify(data);
     let config = {
         method: 'post',
         url: `${apiURL}/brand`,
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Bearer ${token}`
         },
         maxRedirects: 0,
         data: data
@@ -37,13 +38,14 @@ export const postBrand = (data) => {
     return axios(config)
 }
 
-export const putBrand = (data,id) => {
+export const putBrand = (token, data, id) => {
     data = qs.stringify(data);
     let config = {
         method: 'put',
         url: `${apiURL}/brand/${id}`,
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Bearer ${token}`
         },
         maxRedirects: 0,
         data: data
@@ -52,12 +54,14 @@ export const putBrand = (data,id) => {
     return axios(config)
 }
 
-export const deleteBrand = (id) => {
+export const deleteBrand = (token, id) => {
 
     let config = {
         method: 'delete',
         url: `${apiURL}/brand/${id}`,
-        headers: {},
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
         maxRedirects: 0
     };
 
