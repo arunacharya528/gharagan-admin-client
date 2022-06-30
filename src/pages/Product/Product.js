@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom'
 import { deleteProduct, getProducts } from '../../adapters/product'
 import { ModalContext } from '../../context/ModalContext'
 import toast from 'react-hot-toast'
+import { UserContext } from '../../context/UserContext'
 
 
 function Tables() {
@@ -66,11 +67,12 @@ function Tables() {
 
     const { setModalData, openModal, closeModal } = useContext(ModalContext)
 
+    const { user } = useContext(UserContext)
     const handleDeleteButtonPress = (id) => {
 
         const handleDeletion = () => {
             toast.promise(
-                deleteProduct(id)
+                deleteProduct(user.data.token, id)
                 , {
                     loading: "Deleting product",
                     success: () => {

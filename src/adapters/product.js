@@ -6,7 +6,7 @@ const qs = require('qs');
 export const getProducts = () => {
     let config = {
         method: 'get',
-        url: `${apiURL}/product`,
+        url: `${apiURL}/allProduct?sort=latest`,
         headers: {},
         maxRedirects: 0
     };
@@ -17,7 +17,7 @@ export const getProducts = () => {
 export const getProduct = (id) => {
     let config = {
         method: 'get',
-        url: `${apiURL}/product/${id}`,
+        url: `${apiURL}/oneProduct/${id}`,
         headers: {},
         maxRedirects: 0
     };
@@ -25,13 +25,14 @@ export const getProduct = (id) => {
     return axios(config);
 }
 
-export const postProduct = (data) => {
+export const postProduct = (token, data) => {
     data = qs.stringify(data);
     let config = {
         method: 'post',
         url: `${apiURL}/product`,
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Bearer ${token}`
         },
         maxRedirects: 0,
         data: data
@@ -40,14 +41,15 @@ export const postProduct = (data) => {
     return axios(config)
 }
 
-export const putProduct = (productData, id) => {
+export const putProduct = (token, productData, id) => {
 
     let data = qs.stringify(productData);
     let config = {
         method: 'put',
         url: `${apiURL}/product/${id}`,
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Bearer ${token}`
         },
         maxRedirects: 0,
         data: data
@@ -56,7 +58,7 @@ export const putProduct = (productData, id) => {
     return axios(config);
 }
 
-export const deleteProduct = (id) => {
+export const deleteProduct = (token, id) => {
     let config = {
         method: 'delete',
         url: `${apiURL}/product/${id}`,

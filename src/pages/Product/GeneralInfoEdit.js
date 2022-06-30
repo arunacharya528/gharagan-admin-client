@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getProduct, putProduct } from "../../adapters/product";
 import { useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import { GeneralInfoForm } from "../../components/Product/GeneralInfoForm";
+import { UserContext } from "../../context/UserContext";
 
 export const GeneralInfoEdit = () => {
 
@@ -13,6 +14,9 @@ export const GeneralInfoEdit = () => {
 
     const location = useLocation();
     const url = location.pathname.split('/')[3];
+
+
+    const { user } = useContext(UserContext)
 
     useEffect(() => {
         getProduct(url)
@@ -27,7 +31,7 @@ export const GeneralInfoEdit = () => {
 
     const handleSubmission = (data) => {
         toast.promise(
-            putProduct(data, url)
+            putProduct(user.data.token, data, url)
             ,
             {
                 loading: "Updating",

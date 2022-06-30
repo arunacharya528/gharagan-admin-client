@@ -5,14 +5,17 @@ import { postProduct } from "../../adapters/product";
 import { useHistory } from "react-router-dom";
 import toast from "react-hot-toast";
 import { GeneralInfoForm } from "../../components/Product/GeneralInfoForm";
+import { UserContext } from "../../context/UserContext";
+import { useContext } from "react";
 
 const Add = () => {
 
+    const { user } = useContext(UserContext)
     const history = useHistory();
 
     const handleSubmission = (data) => {
         toast.promise(
-            postProduct(data)
+            postProduct(user.data.token, data)
                 .then(response => {
                     history.push("/app/product/" + response.data.id + "/edit");
                     toast(<div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Input, HelperText, Label, Select, Textarea, Button } from '@windmill/react-ui'
@@ -8,9 +8,10 @@ import { getProduct, putProduct } from "../../adapters/product";
 import { useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import { RichTextEditor } from "../../components/Editor";
+import { UserContext } from "../../context/UserContext";
 export const DescriptionEdit = () => {
 
-
+    const { user } = useContext(UserContext)
     const [description, setDescription] = useState('');
 
     const location = useLocation();
@@ -28,7 +29,7 @@ export const DescriptionEdit = () => {
 
     const handleSubmission = () => {
         toast.promise(
-            putProduct({ description: description }, location.pathname.split('/')[3]),
+            putProduct(user.data.token, { description: description }, location.pathname.split('/')[3]),
             {
                 loading: "Updating",
                 success: "Updated description",

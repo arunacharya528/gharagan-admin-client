@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import { Card, CardBody, Badge, Modal, ModalHeader, ModalBody } from '@windmill/react-ui'
+import React, { useState, useEffect, useContext } from 'react'
+import { Card, CardBody, Badge, Modal, ModalHeader, ModalBody, Button } from '@windmill/react-ui'
 import PageTitle from '../../components/Typography/PageTitle'
-import { getProduct, getProducts } from '../../adapters/product'
+import { deleteProduct, getProduct, getProducts } from '../../adapters/product'
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min'
 import { HeartIcon, PeopleIcon, EditIcon, TrashIcon } from '../../icons'
 import InfoCard from '../../components/Cards/InfoCard'
@@ -11,18 +11,24 @@ import { Link } from 'react-router-dom'
 import { QAView } from "../QuestionAnswer/View"
 import { RatingView } from '../Rating/View'
 import { DescriptionEdit } from './DescriptionEdit'
+import toast from 'react-hot-toast'
+import { UserContext } from '../../context/UserContext'
+import { ModalContext } from '../../context/ModalContext'
 const moment = require('moment');
 
 function View() {
 
-    const [data, setData] = useState(undefined)
+    const [product, setProduct] = useState({ loading: true, data: {} })
     const location = useLocation();
 
     const [isRefreshed, setRefresh] = useState(false)
+
+    const id = location.pathname.split('/')[3];
     useEffect(() => {
-        getProduct(location.pathname.split('/')[3])
+        getProduct(id)
             .then(response => {
-                setData(response.data)
+                console.log(response)
+                setProduct({ loading: false, data: response.data })
             })
             .catch(error => console.log(error))
     }, [isRefreshed])
@@ -44,19 +50,7 @@ function View() {
     }
 
 
-    //=========================================
-    //      Modal data
-    //=========================================
-
-
-    const [modalData, setModalData] = useState({ title: undefined, body: undefined });
-    const [isModalOpen, setIsModalOpen] = useState(false)
-    function openModal() {
-        setIsModalOpen(true)
-    }
-    function closeModal() {
-        setIsModalOpen(false)
-    }
+    const { setModalData, openModal, closeModal } = useContext(ModalContext)
 
     const handleGeneralInfoEdit = () => {
         openModal();
@@ -65,28 +59,36 @@ function View() {
             body: <></>
         });
     }
+
+    const { user } = useContext(UserContext)
+
+    const handleDeletion = () => {
+        toast.promise(
+            deleteProduct(user.data.token, id)
+            , {
+                loading: "Deleting product",
+                success: () => {
+                    setRefresh(!isRefreshed);
+                    closeModal();
+                    return "Deleted product"
+                },
+                error: "Error deleting product"
+            }
+        )
+    }
     return (
         <>
-            {data ?
+            {!product.loading ?
                 <>
-                    <Modal isOpen={isModalOpen} onClose={closeModal}>
-                        <ModalHeader>{modalData.title}</ModalHeader>
-                        <ModalBody>
-                            {modalData.body}
-                        </ModalBody>
-
-                    </Modal>
                     <PageTitle>
 
                         <div className="flex justify-between">
                             <span>Product Detail</span>
                             <div className='flex space-x-5'>
-                                <Link layout="link" size="icon" aria-label="Edit" to={"/app/product/" + data.id + "/edit"}>
-                                    <EditIcon className="w-5 h-5" aria-hidden="true" />
+                                <Link to={"/app/product/" + id + "/edit"}>
+                                    <Button icon={EditIcon} layout="link" aria-label="Delete" />
                                 </Link>
-                                <Link layout="link" size="icon" aria-label="Edit" to={"/app/product/"}>
-                                    <TrashIcon className="w-5 h-5" aria-hidden="true" />
-                                </Link>
+                                <Button icon={TrashIcon} layout="link" aria-label="Delete" onClick={handleDeletion} />
                             </div>
                         </div>
                     </PageTitle>
@@ -102,32 +104,32 @@ function View() {
 
                                             <tr>
                                                 <th className='text-left pr-2'>Name</th>
-                                                <td>{data.name}</td>
+                                                <td>{product.data.name}</td>
                                             </tr>
                                             <tr>
                                                 <th className='text-left pr-2'>SKU</th>
-                                                <td>{data.SKU}</td>
+                                                <td>{product.data.SKU}</td>
                                             </tr>
                                             <tr>
                                                 <th className='text-left pr-2'>Category</th>
-                                                <td>{data.category.name}</td>
+                                                <td>{product.data.category.name}</td>
                                             </tr>
                                             <tr>
                                                 <th className='text-left pr-2'>Brand</th>
-                                                <td>{data.brand.name}</td>
+                                                <td>{product.data.brand.name}</td>
                                             </tr>
 
                                             <tr>
                                                 <th className='text-left pr-2'>Summary</th>
-                                                <td>{data.summary}</td>
+                                                <td>{product.data.summary}</td>
                                             </tr>
                                             <tr>
                                                 <th className='text-left pr-2'>Created at</th>
-                                                <td>{moment(data.created_at).calendar()}</td>
+                                                <td>{moment(product.data.created_at).calendar()}</td>
                                             </tr>
                                             <tr>
                                                 <th className='text-left pr-2'>Updated at</th>
-                                                <td>{moment(data.updated_at).calendar()}</td>
+                                                <td>{moment(product.data.updated_at).calendar()}</td>
                                             </tr>
 
                                         </tbody>
@@ -136,7 +138,7 @@ function View() {
                             </CardBody>
                         </Card>
                         <div>
-                            <InfoCard title="Views" value={data.views}>
+                            <InfoCard title="Views" value={product.data.views}>
                                 <RoundIcon
                                     icon={PeopleIcon}
                                     iconColorClass="text-orange-500 dark:text-orange-100"
@@ -149,11 +151,8 @@ function View() {
 
                     <Card className="mb-8 shadow-md ">
                         <CardBody>
-                            {/* <p className="mb-4 font-semibold text-gray-600 dark:text-gray-300">Description</p>
-                         
-
-                            <div dangerouslySetInnerHTML={{ __html: data.description }} className="text-gray-600 dark:text-gray-400 unrest" /> */}
-<DescriptionEdit />
+                           
+                            <DescriptionEdit />
                         </CardBody>
                     </Card>
                     <Card className="mb-8 shadow-md ">
@@ -169,7 +168,7 @@ function View() {
                                         <th className='py-2'>Amount</th>
                                         <th className='py-2'>Discount Status</th>
                                     </tr>
-                                    {data.inventories.map((inventory, index) =>
+                                    {product.data.inventories.map((inventory, index) =>
                                         <tr key={index}>
                                             <td>{inventory.type}</td>
                                             <td>{inventory.price}</td>
@@ -190,7 +189,7 @@ function View() {
 
                             <div className="">
                                 <div className="grid sm:grid-cols-3 md:grid-cols-5 gap-5">
-                                    {data.images.map((image, index) =>
+                                    {product.data.images.map((image, index) =>
                                         <img src={image.file ? process.env.REACT_APP_FILE_PATH + '/' + image.file.path : image.image_url} className="flex-initial w-64 h-auto mr-4 rounded-lg mb-6" key={index} />
                                     )}
                                 </div>
@@ -201,7 +200,7 @@ function View() {
                         <CardBody>
                             <p className="mb-4 font-semibold text-gray-600 dark:text-gray-300">Ratings</p>
                             <div className="text-gray-600 dark:text-gray-300">
-                                {data.ratings.map((rating, index) =>
+                                {product.data.ratings.map((rating, index) =>
                                     <RatingView rating={rating} key={index} />
                                 )}
                             </div>
@@ -214,7 +213,7 @@ function View() {
 
 
                             <div className="text-gray-600 dark:text-gray-300">
-                                {data.question_answers.map((question, index) =>
+                                {product.data.question_answers.map((question, index) =>
                                     <QAView question={question} refresh={() => { setRefresh(!isRefreshed) }} key={index} />
                                 )}
                             </div>
