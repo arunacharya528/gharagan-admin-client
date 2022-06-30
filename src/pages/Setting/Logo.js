@@ -1,5 +1,3 @@
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import React, { useState } from "react";
 import { Input, HelperText, Label, Select, Textarea, Button } from '@windmill/react-ui'
 import toast from 'react-hot-toast';
