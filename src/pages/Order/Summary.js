@@ -7,9 +7,12 @@ import { cancelOrder, deleteOrder, updateOrder } from "../../adapters/orderDetai
 import toast from "react-hot-toast";
 import { useContext } from "react";
 import { ModalContext } from "../../context/ModalContext";
+import { UserContext } from "../../context/UserContext";
 export const OrderSummary = ({ order, change }) => {
 
     const { setModalData, openModal, closeModal } = useContext(ModalContext);
+    const { user } = useContext(UserContext)
+
     const getStatus = (status) => {
         const determineColor = (levelValue) => {
             if (status < levelValue) {
@@ -23,7 +26,7 @@ export const OrderSummary = ({ order, change }) => {
 
             const confirm = () => {
                 toast.promise(
-                    updateOrder('', { status: status }, order.id)
+                    updateOrder(user.data.token, { status: status }, order.id)
                     , {
                         loading: "Updating status of order #" + order.id,
                         success: () => {
@@ -67,7 +70,7 @@ export const OrderSummary = ({ order, change }) => {
     const handleOrderCancellation = (id) => {
         const confirm = () => {
             toast.promise(
-                cancelOrder('', order.id)
+                cancelOrder(user.data.token, order.id)
                 , {
                     loading: "Cancelling order #" + order.id,
                     success: () => {
@@ -93,7 +96,7 @@ export const OrderSummary = ({ order, change }) => {
     const handleOrderDeletion = () => {
         const confirm = () => {
             toast.promise(
-                deleteOrder('', order.id)
+                deleteOrder(user.data.token, order.id)
                 , {
                     loading: "Deleting order #" + order.id,
                     success: () => {

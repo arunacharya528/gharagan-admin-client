@@ -32,7 +32,7 @@ const AdvertisementAdd = lazy(() => import('../pages/Advertisement/Add'))
 const AdvertisementEdit = lazy(() => import('../pages/Advertisement/Edit'))
 
 const Order = lazy(() => import('../pages/Order/Order'))
-const OrderView = lazy(() => import('../pages/Order/View'))
+// const OrderView = lazy(() => import('../pages/Order/View'))
 
 const Cart = lazy(() => import('../pages/Cart/Cart'))
 
@@ -167,10 +167,10 @@ const routes = [
     path: '/order',
     component: Order
   },
-  {
-    path: '/order/:orderId/view',
-    component: OrderView
-  },
+  // {
+  //   path: '/order/:orderId/view',
+  //   component: OrderView
+  // },
   {
     path: '/cart',
     component: Cart

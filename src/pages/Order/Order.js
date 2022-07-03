@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getOrders } from "../../adapters/orderDetail";
 
 import { Card, CardBody, Modal, ModalHeader, ModalBody, Button } from '@windmill/react-ui'
 import PageTitle from '../../components/Typography/PageTitle'
 import { OrderSummary } from "./Summary";
+import { UserContext } from "../../context/UserContext";
 
 const moment = require('moment');
 const Order = () => {
 
     const [orders, setOrders] = useState([]);
     const [isRefreshed, setRefresh] = useState(false);
+
+    const { user } = useContext(UserContext)
     useEffect(() => {
-        getOrders()
+        getOrders(user.data.token)
             .then(respose => setOrders(respose.data))
             .catch(error => console.log(error))
     }, [isRefreshed])
