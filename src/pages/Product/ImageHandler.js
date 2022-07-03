@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { FileSelect } from "../File/Select";
 import { Button } from '@windmill/react-ui'
 import { Input, HelperText, Label, Select, Textarea } from '@windmill/react-ui'
@@ -6,6 +6,7 @@ import { deleteProductImage, getProductImages, postProductImage } from "../../ad
 import { useLocation } from "react-router-dom";
 import { CrossIcon } from "../../icons";
 import toast from "react-hot-toast";
+import { UserContext } from "../../context/UserContext";
 
 
 export const ImageHandler = () => {
@@ -19,8 +20,10 @@ export const ImageHandler = () => {
     const [images, setImages] = useState([]);
 
     const [isRefreshed, setRefresh] = useState(false);
+    const { user } = useContext(UserContext)
+
     useEffect(() => {
-        getProductImages(productId)
+        getProductImages(user.data.token, productId)
             .then(response => { setImages(response.data) })
             .catch(error => console.log(error))
     }, [isRefreshed])
@@ -32,7 +35,7 @@ export const ImageHandler = () => {
     };
     const handleUrlSubmission = () => {
         toast.promise(
-            postProductImage({
+            postProductImage(user.data.token, {
                 product_id: productId,
                 image_url: url
             })
@@ -46,7 +49,7 @@ export const ImageHandler = () => {
         data.map((id) => {
 
             toast.promise(
-                postProductImage({
+                postProductImage(user.data.token, {
                     product_id: productId,
                     file_id: id
                 })
@@ -59,7 +62,7 @@ export const ImageHandler = () => {
 
     const handleImageDeletion = (id) => {
         toast.promise(
-            deleteProductImage(id)
+            deleteProductImage(user.data.token, id)
                 .then(response => { setRefresh(!isRefreshed) })
             , {
                 loading: "Deleting image",

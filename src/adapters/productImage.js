@@ -4,23 +4,26 @@ const axios = require('axios');
 const qs = require('qs');
 
 
-export const getProductImages = (productId) => {
+export const getProductImages = (token,productId) => {
     let config = {
         method: 'get',
         url: `${apiURL}/productImage?product_id=${productId}`,
-        headers: {},
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
         maxRedirects: 0
     };
 
     return axios(config)
 }
-export const postProductImage = (data) => {
+export const postProductImage = (token,data) => {
     data = qs.stringify(data);
     let config = {
         method: 'post',
         url: `${apiURL}/productImage`,
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            "Authorization": `Bearer ${token}`
         },
         maxRedirects: 0,
         data: data
@@ -30,11 +33,13 @@ export const postProductImage = (data) => {
 
 }
 
-export const deleteProductImage = (id) => {
+export const deleteProductImage = (token,id) => {
     let config = {
         method: 'delete',
         url: `${apiURL}/productImage/${id}`,
-        headers: {},
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
         maxRedirects: 0
     };
 
