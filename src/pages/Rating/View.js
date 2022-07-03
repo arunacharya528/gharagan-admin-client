@@ -7,14 +7,15 @@ import { HashLink } from 'react-router-hash-link'
 import { deleteRating } from '../../adapters/rating';
 import toast from 'react-hot-toast';
 import { ModalContext } from '../../context/ModalContext';
+import { UserContext } from '../../context/UserContext';
 
 export const RatingView = ({ rating, refresh }) => {
-
+    const { user } = useContext(UserContext)
     const { setModalData, openModal, closeModal } = useContext(ModalContext)
     const handleDeleteButtonPress = (id) => {
         const handleDeletion = () => {
             toast.promise(
-                deleteRating(id)
+                deleteRating(user.data.token, id)
                 , {
                     loading: "Deleting rating",
                     success: () => {

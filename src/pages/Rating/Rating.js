@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { getRatings } from '../../adapters/rating';
 import { Card, CardBody, Button } from '@windmill/react-ui'
 import PageTitle from '../../components/Typography/PageTitle'
 import { StarRate } from '../../components/Rating/StarRate';
 import { TrashIcon } from '../../icons';
 import { RatingView } from './View';
+import { UserContext } from '../../context/UserContext';
 
 const moment = require('moment');
 
@@ -12,8 +13,10 @@ const Rating = () => {
     const [ratings, setRatings] = useState([]);
     const [isRefreshed, setRefresh] = useState(false);
 
+    const { user } = useContext(UserContext)
+
     useEffect(() => {
-        getRatings()
+        getRatings(user.data.token)
             .then(response => setRatings(response.data))
             .catch(error => console.log(error))
     }, [isRefreshed])
