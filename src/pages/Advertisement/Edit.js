@@ -17,6 +17,7 @@ import { AdvertisementContext } from "../../context/AdvertisementContext";
 import { ImageThumbnail } from "../File/ImageThumbnail";
 import { MinusIcon } from "../../icons";
 import toast from "react-hot-toast";
+import { UserContext } from "../../context/UserContext";
 
 const moment = require('moment')
 
@@ -73,8 +74,9 @@ const Edit = () => {
     };
 
 
+    const { user } = useContext(UserContext)
     const handleSubmission = () => {
-        toast.promise(putAdvertisement({
+        toast.promise(putAdvertisement(user.data.token, {
             name: name,
             summary: summary,
             page: page,

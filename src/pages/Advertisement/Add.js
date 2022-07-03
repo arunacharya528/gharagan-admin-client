@@ -15,6 +15,7 @@ import { FileContext } from "../../context/FileContext";
 import { ImageThumbnail } from "../File/ImageThumbnail";
 import { MinusIcon } from "../../icons";
 import toast from "react-hot-toast";
+import { UserContext } from "../../context/UserContext";
 
 const moment = require('moment')
 
@@ -50,10 +51,10 @@ const Add = () => {
         setDateRange(range)
     };
 
-
+    const { user } = useContext(UserContext);
     const handleSubmission = () => {
         toast.promise(
-            postAdvertisement({
+            postAdvertisement(user.data.token, {
                 name: name,
                 summary: summary,
                 page: page,

@@ -2,11 +2,13 @@ const axios = require('axios');
 const apiURL = process.env.REACT_APP_API_URL;
 const qs = require('qs');
 
-export const getAdvertisements = () => {
+export const getAdvertisements = (token) => {
     let config = {
         method: 'get',
         url: `${apiURL}/advertisement`,
-        headers: {},
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
         maxRedirects: 0
     };
 
@@ -14,13 +16,14 @@ export const getAdvertisements = () => {
 }
 
 
-export const postAdvertisement = (data) => {
+export const postAdvertisement = (token,data) => {
     data = qs.stringify(data);
     let config = {
         method: 'post',
         url: `${apiURL}/advertisement`,
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            "Authorization": `Bearer ${token}`
         },
         maxRedirects: 0,
         data: data
@@ -29,13 +32,14 @@ export const postAdvertisement = (data) => {
     return axios(config)
 }
 
-export const putAdvertisement = (data, id) => {
+export const putAdvertisement = (token,data, id) => {
     data = qs.stringify(data);
     let config = {
         method: 'put',
         url: `${apiURL}/advertisement/${id}`,
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            "Authorization": `Bearer ${token}`
         },
         maxRedirects: 0,
         data: data
@@ -45,11 +49,13 @@ export const putAdvertisement = (data, id) => {
 }
 
 
-export const deleteAdvertisement = (id) => {
+export const deleteAdvertisement = (token,id) => {
     let config = {
         method: 'delete',
         url: `${apiURL}/advertisement/${id}`,
-        headers: {},
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
         maxRedirects: 0
     };
 

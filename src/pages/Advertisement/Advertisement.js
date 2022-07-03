@@ -26,6 +26,7 @@ import { View } from './View';
 import { Link } from 'react-router-dom';
 import { ModalContext } from '../../context/ModalContext';
 import toast from 'react-hot-toast';
+import { UserContext } from '../../context/UserContext';
 
 const moment = require('moment');
 const Advertisement = () => {
@@ -99,10 +100,11 @@ const Advertisement = () => {
         openModal();
     }
 
+    const { user } = useContext(UserContext)
     const handleDeleteButtonPress = (id) => {
         const handleDeletion = () => {
             toast.promise(
-                deleteAdvertisement(id),
+                deleteAdvertisement(user.data.token, id),
                 {
                     loading: "Deleting advertisement",
                     success: () => {
