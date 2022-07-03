@@ -8,16 +8,17 @@ import { Link } from "react-router-dom";
 import { HashLink } from 'react-router-hash-link'
 import toast from "react-hot-toast";
 import { ModalContext } from "../../context/ModalContext";
+import { UserContext } from "../../context/UserContext";
 const moment = require('moment');
 
 export const QAView = ({ question, refresh }) => {
 
     const { setModalData, openModal, closeModal } = useContext(ModalContext);
-
+    const { user } = useContext(UserContext)
     const handleDeleteButtonPress = (id) => {
         const handleDeletion = () => {
             toast.promise(
-                deleteQA(id)
+                deleteQA(user.data.token, id)
                 , {
                     loading: "Deleting selected instance",
                     success: () => {
@@ -43,7 +44,7 @@ export const QAView = ({ question, refresh }) => {
     const handleAnswerRemoval = (id) => {
         const confirm = () => {
             toast.promise(
-                updateQA({ answer: null }, id)
+                updateQA(user.data.token, { answer: null }, id)
                 , {
                     loading: "Removing answer",
                     success: () => {

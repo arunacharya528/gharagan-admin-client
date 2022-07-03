@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { Label, Textarea, Button } from '@windmill/react-ui'
-import { postQA, updateQA } from "../../adapters/questionAnswer";
+import { updateQA } from "../../adapters/questionAnswer";
 import toast from "react-hot-toast";
+import { UserContext } from "../../context/UserContext";
 export const Reply = ({ id, afterSUbmission }) => {
 
     const [isFormViewed, toggleForm] = useState(false);
 
     const [query, setQuery] = useState('');
 
+    const { user } = useContext(UserContext)
     const handleSubmission = () => {
         toast.promise(
-            updateQA({ answer: query},id)
+            updateQA(user.data.token, { answer: query }, id)
                 .then(response => { toggleForm(!isFormViewed); afterSUbmission() })
             ,
             {

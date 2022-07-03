@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { deleteQA, getQAs } from "../../adapters/questionAnswer";
 import { Card, CardBody, Button } from '@windmill/react-ui'
 
@@ -6,6 +6,7 @@ import PageTitle from '../../components/Typography/PageTitle'
 import { Reply } from "./Reply";
 import { TrashIcon } from "../../icons";
 import { QAView } from "./View";
+import { UserContext } from "../../context/UserContext";
 
 const moment = require('moment');
 const QuesitonAnswer = () => {
@@ -14,8 +15,10 @@ const QuesitonAnswer = () => {
     const [qAs, setQAs] = useState([]);
     const [isRefreshed, setRefresh] = useState(false);
 
+    const { user } = useContext(UserContext)
+
     useEffect(() => {
-        getQAs()
+        getQAs(user.data.token)
             .then(response => setQAs(response.data))
             .catch(error => console.log(error))
     }, [isRefreshed]);
