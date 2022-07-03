@@ -46,7 +46,7 @@ export const RatingView = ({ rating, refresh }) => {
                     <div className="w-full">
                         <div className='flex flex-col space-y-2'>
                             <div className='space-x-2'>
-                                <span className='font-bold'>{rating.user.first_name + " " + rating.user.last_name}</span>
+                                <span className='font-bold'>{rating.user.name}</span>
 
                                 {
                                     rating.product

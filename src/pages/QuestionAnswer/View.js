@@ -71,7 +71,7 @@ export const QAView = ({ question, refresh }) => {
                 <div className="flex flex-row" id={`qa${question.id}`}>
                     <div className="flex flex-col w-full">
                         <div className="flex flex-row">
-                            <div className="font-bold">{question.user.first_name + " " + question.user.last_name}</div>
+                            <div className="font-bold">{question.user.name}</div>
                             {question.product ?
                                 <HashLink to={"/app/product/" + question.product.id + "#qa" + question.id} className="px-2 underline">{question.product.name}</HashLink>
                                 : ''
