@@ -4,18 +4,20 @@ const axios = require('axios');
 const FormData = require('form-data');
 const fs = require('fs');
 
-export const getFiles = () => {
+export const getFiles = (token) => {
     let config = {
         method: 'get',
         url: `${apiURL}/file`,
-        headers: {},
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
         maxRedirects: 0
     };
 
     return axios(config)
 }
 
-export const postFile = (fileData) => {
+export const postFile = (token,fileData) => {
     let data = new FormData();
     data.append('file', fileData.file);
     data.append('name', fileData.name);
@@ -23,7 +25,10 @@ export const postFile = (fileData) => {
     let config = {
         method: 'post',
         url: `${apiURL}/file`,
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "Authorization": `Bearer ${token}`
+        },
         maxRedirects: 0,
         data: data
     };
@@ -31,11 +36,13 @@ export const postFile = (fileData) => {
     return axios(config)
 }
 
-export const deleteFile = (id) => {
+export const deleteFile = (token,id) => {
     let config = {
         method: 'delete',
         url: `${apiURL}/file/${id}`,
-        headers: {},
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
         maxRedirects: 0
     };
 

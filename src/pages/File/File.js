@@ -10,15 +10,11 @@ import { isImgLink } from "../../utils/helper/checkImageLink";
 import toast from "react-hot-toast";
 import PageTitle from "../../components/Typography/PageTitle";
 import { ModalContext } from "../../context/ModalContext";
+import { UserContext } from "../../context/UserContext";
 
 const File = () => {
 
     const { files, updateFiles } = useContext(FileContext)
-    // const [fileList, setFileList] = useState([])
-
-    // useEffect(() => {
-    //     setFileList(files)
-    // }, [files])
 
     const [toggleAdd, setToggleAdd] = useState(false);
     const { setModalData, openModal, closeModal } = useContext(ModalContext)
@@ -65,10 +61,13 @@ const File = () => {
 
 
 
+
+    const { user } = useContext(UserContext)
+
     const handleDeletion = (file) => {
         const confirmDeletion = (id) => {
             toast.promise(
-                deleteFile(id)
+                deleteFile(user.data.token, id)
                 , {
                     loading: "Deleting file",
                     success: () => {

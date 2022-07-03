@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Input, HelperText, Label, Select, Textarea, Button } from '@windmill/react-ui'
 import { CrossIcon } from "../../icons";
 import { postFile } from "../../adapters/file";
 import toast from "react-hot-toast";
+import { UserContext } from "../../context/UserContext";
 
 export const Add = ({ afterSubmission }) => {
 
@@ -32,10 +33,14 @@ export const Add = ({ afterSubmission }) => {
         setUploadingData(uploadingData.filter((item, i) => i !== index))
     }
 
+
+
+    const { user } = useContext(UserContext)
+
     const handleUpload = () => {
         uploadingData.map((data, index) => {
             toast.promise(
-                postFile({
+                postFile(user.data.token, {
                     file: data.file,
                     name: data.name
                 })
