@@ -12,6 +12,7 @@ import toast from 'react-hot-toast';
 import { useContext } from 'react';
 import { DiscountContext } from '../../context/DiscountContext';
 import { ModalContext } from '../../context/ModalContext';
+import { UserContext } from '../../context/UserContext';
 
 
 export const InventoryEdit = () => {
@@ -25,11 +26,12 @@ export const InventoryEdit = () => {
 
     const location = useLocation();
 
-    const { discounts,getActiveDiscounts } = useContext(DiscountContext)
+    const { discounts, getActiveDiscounts } = useContext(DiscountContext)
 
     const [isRefreshed, setRefresh] = useState(false);
+    const { user } = useContext(UserContext)
     useEffect(() => {
-        getInventoryByProduct(location.pathname.split('/')[3])
+        getInventoryByProduct(user.data.token, location.pathname.split('/')[3])
             .then((response) => {
                 setinventories(response.data)
             })
@@ -56,7 +58,7 @@ export const InventoryEdit = () => {
         setDiscountId(0);
     }
     const handleSubmission = () => {
-        postInventory({
+        postInventory(user.data.token, {
             type: type,
             product_id: location.pathname.split('/')[3],
             discount_id: discountId,
@@ -91,7 +93,7 @@ export const InventoryEdit = () => {
 
     const handleDeletion = (id) => {
         const confirmDeletion = () => {
-            toast.promise(deleteInventory(id)
+            toast.promise(deleteInventory(user.data.token, id)
                 .then(response => { setRefresh(!isRefreshed); closeModal() }),
                 {
                     loading: "Deleting",

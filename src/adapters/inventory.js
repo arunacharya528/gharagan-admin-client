@@ -2,11 +2,13 @@ const apiURL = process.env.REACT_APP_API_URL;
 const qs = require('qs');
 const axios = require('axios');
 
-export const getInventoryByProduct = (product_id) => {
+export const getInventoryByProduct = (token,product_id) => {
     let config = {
         method: 'get',
         url: `${apiURL}/productInventory?product_id=${product_id}`,
-        headers: {},
+        headers: {
+            "Authorization":`Bearer ${token}`
+        },
         maxRedirects: 0
     };
 
@@ -14,13 +16,14 @@ export const getInventoryByProduct = (product_id) => {
 }
 
 
-export const postInventory = (data) => {
+export const postInventory = (token,data) => {
     data = qs.stringify(data);
     let config = {
         method: 'post',
         url: `${apiURL}/productInventory`,
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            "Authorization": `Bearer ${token}`
         },
         maxRedirects: 0,
         data: data
@@ -29,13 +32,14 @@ export const postInventory = (data) => {
     return axios(config)
 }
 
-export const putInventory = (id, data) => {
+export const putInventory = (token,id, data) => {
     data = qs.stringify(data);
     let config = {
         method: 'put',
         url: `${apiURL}/productInventory/${id}`,
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            "Authorization": `Bearer ${token}`
         },
         maxRedirects: 0,
         data: data
@@ -44,11 +48,13 @@ export const putInventory = (id, data) => {
     return axios(config)
 }
 
-export const deleteInventory = (id) => {
+export const deleteInventory = (token,id) => {
     let config = {
         method: 'delete',
         url: `${apiURL}/productInventory/${id}`,
-        headers: {},
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
         maxRedirects: 0
     };
 

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Input, HelperText, Label, Select, Textarea, Badge, Button } from '@windmill/react-ui'
 import { getDiscountedPrice } from "../../utils/helper/discount";
 import { putInventory } from "../../adapters/inventory";
 import toast from "react-hot-toast";
+import { UserContext } from "../../context/UserContext";
 
 
 export const InventoryUpdate = ({ inventory, discounts, submitted }) => {
@@ -16,12 +17,14 @@ export const InventoryUpdate = ({ inventory, discounts, submitted }) => {
         setType(inventory.type)
         setPrice(inventory.price)
         setQuantity(inventory.quantity)
-        setDiscount(inventory.discount.id)
+        setDiscount(inventory.discount === null ? null : inventory.discount.id)
     }, [])
+
+    const { user } = useContext(UserContext)
 
     const handleSubmission = () => {
         toast.promise(
-            putInventory(inventory.id, {
+            putInventory(user.data.token, inventory.id, {
                 type: type,
                 price: price,
                 quantity: quantity,
