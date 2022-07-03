@@ -9,6 +9,7 @@ import { Add } from './Add';
 import { ModalContext } from '../../context/ModalContext';
 import toast from 'react-hot-toast';
 import { DiscountContext } from '../../context/DiscountContext';
+import { UserContext } from '../../context/UserContext';
 
 const Discount = () => {
 
@@ -32,10 +33,12 @@ const Discount = () => {
         openModal();
     }
 
+    const { user } = useContext(UserContext)
+
     const handleDeleteButtonPress = (id) => {
         const handleDeletion = () => {
             toast.promise(
-                deleteDiscount(id)
+                deleteDiscount(user.data.token, id)
                 ,
                 {
                     loading: "Deleting discount",

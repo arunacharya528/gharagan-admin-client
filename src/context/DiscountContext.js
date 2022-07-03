@@ -1,5 +1,6 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { getDiscounts } from "../adapters/discount";
+import { UserContext } from "./UserContext";
 
 /**
  * Context of discounts
@@ -13,9 +14,11 @@ export const DiscountContext = createContext({
 export const DiscountProvider = ({ children }) => {
     const [discounts, setDiscounts] = useState([]);
     const [isRefreshed, setRefresh] = useState(false);
+    const { user } = useContext(UserContext)
+
 
     useEffect(() => {
-        getDiscounts()
+        getDiscounts(user.data.token)
             .then(response => setDiscounts(response.data))
             .catch(error => console.log(error))
     }, [isRefreshed])

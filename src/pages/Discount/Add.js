@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { Label, Input, Textarea, Select, Button } from '@windmill/react-ui'
 import { postDiscount, putDiscount } from "../../adapters/discount";
 import toast from "react-hot-toast";
+import { UserContext } from "../../context/UserContext";
 export const Add = ({ afterSubmission }) => {
 
     const [name, setName] = useState('');
@@ -10,9 +11,11 @@ export const Add = ({ afterSubmission }) => {
     const [percent, setPercent] = useState(0)
     const [status, setStatus] = useState(0);
 
+    const { user } = useContext(UserContext)
+
     const handleSubmission = (e) => {
         toast.promise(
-            postDiscount({
+            postDiscount(user.data.token, {
                 name: name,
                 description: description,
                 discount_percent: percent,
