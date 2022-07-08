@@ -21,7 +21,7 @@ function App() {
           {/* Place new routes over this */}
           <UserProvider>
             <Route path="/app" component={Layout} />
-            <Redirect exact from="/" to="/app" />
+            {/* <Redirect exact from="/" to="/app" /> */}
           </UserProvider>
           {/* If you have an index page, you can remothis Redirect */}
         </Switch>
