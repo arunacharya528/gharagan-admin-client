@@ -3,11 +3,13 @@ const apiURL = process.env.REACT_APP_API_URL;
 const qs = require('qs');
 
 
-export const getSessions = () => {
+export const getSessions = (token) => {
     let config = {
         method: 'get',
         url: `${apiURL}/shoppingSession`,
-        headers: {},
+        headers: {
+            'Authorization': `Bearer  ${token}`
+        },
         maxRedirects: 0
     };
 
@@ -15,11 +17,13 @@ export const getSessions = () => {
 }
 
 
-export const deleteCartItem = (id) => { 
+export const deleteCartItem = (token,id) => {
     let config = {
         method: 'delete',
         url: `${apiURL}/cartItem/${id}`,
-        headers: {},
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
         maxRedirects: 0
     };
 

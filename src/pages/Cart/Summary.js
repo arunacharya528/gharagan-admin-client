@@ -6,14 +6,16 @@ import moment from 'moment';
 import { ModalContext } from "../../context/ModalContext";
 import { deleteCartItem } from "../../adapters/shoppingSessions";
 import toast from "react-hot-toast";
+import { UserContext } from "../../context/UserContext";
 
 export const SessionSummary = ({ session, refresh }) => {
 
     const { setModalData, openModal, closeModal } = useContext(ModalContext)
+    const { user } = useContext(UserContext);
     const handleDeletebuttonPress = (id) => {
         const handleDeletion = () => {
             toast.promise(
-                deleteCartItem(id)
+                deleteCartItem(user.data.token, id)
                 ,
                 {
                     loading: "Removing Cart item",
@@ -46,7 +48,7 @@ export const SessionSummary = ({ session, refresh }) => {
             <CardBody>
                 <div className="grid grid-cols-4 gap-2 items-center">
                     <div>
-                        {session.user.first_name + " " + session.user.last_name}
+                        {session.user.name}
                     </div>
 
                     <div className="col-span-2 border rounded-lg p-2">
