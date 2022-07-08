@@ -9,7 +9,8 @@ import { Label, Input, Button } from '@windmill/react-ui'
 function Login(props = {
   email: { value: String, setValue: Function },
   password: { value: String, setValue: Function },
-  onSubmit: Function
+  onSubmit: Function,
+  error:String
 }) {
   return (
     <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
@@ -45,6 +46,8 @@ function Login(props = {
               <Button className="mt-4" block onClick={props.onSubmit}>
                 Log in
               </Button>
+
+              <div className='text-red-600 pt-3'>{props.error}</div>
 
               <hr className="my-8" />
 

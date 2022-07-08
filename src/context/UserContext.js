@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { createContext } from "react";
+import { useHistory } from "react-router-dom";
 import { getIfLoggedIn, login } from "../adapters/auth";
 import Login from "../pages/Login";
 
@@ -12,6 +13,9 @@ export const UserProvider = ({ children }) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState("");
+    const [error, setError] = useState('');
+
+    const history = useHistory();
 
     useEffect(() => {
         if (document.cookie !== "") {
@@ -32,10 +36,12 @@ export const UserProvider = ({ children }) => {
                         role: response.data.role
                     }
                 })
-
                 document.cookie = response.data.token;
+                history.push("/app/dashboard")
             })
-            .catch(error => console.log(error))
+            .catch(error => {
+                setError(error.response.data.message)
+            })
     }
 
     return <UserContext.Provider value={{ user, setUser }}>
@@ -44,7 +50,8 @@ export const UserProvider = ({ children }) => {
             <Login {...{
                 email: { value: email, setValue: setEmail },
                 password: { value: password, setValue: setPassword },
-                onSubmit: handleLogin
+                onSubmit: handleLogin,
+                error: error
             }} />}
     </UserContext.Provider>
 };
