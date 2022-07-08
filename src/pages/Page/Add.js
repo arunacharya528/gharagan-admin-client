@@ -5,16 +5,19 @@ import { getPage, postPage, putPage } from "../../adapters/page";
 import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { PageForm } from "./Form";
 import toast from "react-hot-toast";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
 
 const Add = () => {
     const history = useHistory();
 
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
+    const { user } = useContext(UserContext);
 
     const handleAddition = () => {
         toast.promise(
-            postPage({ title, content }),
+            postPage(user.data.token,{ title, content }),
             {
                 loading: "Creating page",
                 success: (response) => {

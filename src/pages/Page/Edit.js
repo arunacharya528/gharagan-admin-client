@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PageTitle from "../../components/Typography/PageTitle";
 import { Card, CardBody, Button } from "@windmill/react-ui"
 import { getPage, putPage } from "../../adapters/page";
 import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { PageForm } from "./Form";
 import toast from "react-hot-toast";
+import { UserContext } from "../../context/UserContext";
 
 const Edit = () => {
 
@@ -14,9 +15,10 @@ const Edit = () => {
     const pageId = location.pathname.split("/")[3];
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
+    const { user } = useContext(UserContext);
 
     useEffect(() => {
-        getPage(pageId)
+        getPage(user.data.token, pageId)
             .then(response => {
                 setTitle(response.data.title)
                 setContent(response.data.content)
@@ -27,7 +29,7 @@ const Edit = () => {
 
     const handleUpdate = () => {
         toast.promise(
-            putPage({ title, content }, pageId),
+            putPage(user.data.token,{ title, content }, pageId),
             {
                 loading: "Updating page",
                 success: () => {

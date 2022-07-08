@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { CheckIcon } from "../../icons";
 import toast from "react-hot-toast";
 import { putPage } from "../../adapters/page";
+import { UserContext } from "../../context/UserContext";
 
 
 const PublishedButton = ({ id, publishedState, onChange }) => {
     const state = publishedState === 1 ? "Un-Publish" : "Publish"
-
+    const { user } = useContext(UserContext);
     const handleUpdate = () => {
         toast.promise(
-            putPage({ published: publishedState === 1 ? 0 : 1 }, id),
+            putPage(user.data.token, { published: publishedState === 1 ? 0 : 1 }, id),
             {
                 loading: state + "ing page",
                 success: () => {

@@ -6,6 +6,8 @@ import { Card, CardBody, Button } from "@windmill/react-ui"
 import PageTitle from "../../components/Typography/PageTitle";
 import { EditIcon, PlusIcon } from "../../icons";
 import PublishedButton from "./PublishedButton";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
 
 
 const moment = require('moment')
@@ -17,9 +19,9 @@ const PageView = () => {
     const pageId = location.pathname.split("/")[3];
     const [page, setPage] = useState({ loading: true, data: {} })
     const [isRefreshed, setRefresh] = useState(false)
-
+    const { user } = useContext(UserContext);
     useEffect(() => {
-        getPage(pageId)
+        getPage(user.data.token, pageId)
             .then(response => setPage({ loading: false, data: response.data }))
             .catch(error => console.log(error))
     }, [isRefreshed])
