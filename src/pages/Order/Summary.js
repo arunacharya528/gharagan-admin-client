@@ -3,11 +3,12 @@ import { Card, CardBody, Button } from '@windmill/react-ui'
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { CrossIcon, EyeIcon, TrashIcon } from "../../icons";
-import { cancelOrder, deleteOrder, updateOrder } from "../../adapters/orderDetail";
+import { cancelOrder, deleteOrder, getInvoice, updateOrder } from "../../adapters/orderDetail";
 import toast from "react-hot-toast";
 import { useContext } from "react";
 import { ModalContext } from "../../context/ModalContext";
 import { UserContext } from "../../context/UserContext";
+import { useState } from "react";
 export const OrderSummary = ({ order, change }) => {
 
     const { setModalData, openModal, closeModal } = useContext(ModalContext);
@@ -119,6 +120,16 @@ export const OrderSummary = ({ order, change }) => {
         openModal();
     }
 
+    const [] = useState(false);
+
+    const viewInvoice = (id) => {
+        getInvoice(user.data.token, id)
+            .then((response) => response.blob()).then((blob) => {
+                var _url = window.URL.createObjectURL(blob);
+                window.open(_url, "_blank").focus();
+            })
+            .catch((err) => { console.log(err); });
+    }
 
     return (
         <Card className="mb-4">
@@ -139,13 +150,9 @@ export const OrderSummary = ({ order, change }) => {
                         </div>
 
                         <div className="flex">
-                            <a href={process.env.REACT_APP_WEB_URL + "/view/invoice/" + order.id} target="_blank">
-                                <Button iconLeft={EyeIcon}>
-                                    <span className="whitespace-no-wrap">View Invoice</span>
-                                </Button>
-                            </a>
-
-
+                            <Button iconLeft={EyeIcon} onClick={e => viewInvoice(order.id)}>
+                                <span className="whitespace-no-wrap">View Invoice</span>
+                            </Button>
                         </div>
 
 

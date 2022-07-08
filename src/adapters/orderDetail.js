@@ -1,4 +1,5 @@
 const apiURL = process.env.REACT_APP_API_URL;
+const webURL = process.env.REACT_APP_WEB_URL;
 const qs = require('qs');
 const axios = require('axios');
 
@@ -16,18 +17,6 @@ export const getOrders = (token) => {
 
     return axios(config)
 }
-
-
-// export const getOrder = (id) => {
-//     let config = {
-//         method: 'get',
-//         url: `${apiURL}/orderDetail/${id}`,
-//         headers: {},
-//         maxRedirects: 0
-//     };
-
-//     return axios(config)
-// }
 
 export const updateOrder = (token, data, id) => {
     data = qs.stringify(data);
@@ -70,4 +59,14 @@ export const deleteOrder = (token, id) => {
     };
 
     return axios(config)
+}
+
+
+export const getInvoice = (token, id) => {
+    return fetch(`${webURL}/view/invoice/${id}`, {
+        method: "GET",
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
 }
