@@ -3,34 +3,40 @@ const apiURL = process.env.REACT_APP_API_URL;
 const qs = require('qs');
 
 
-export const getUsers = () => {
+export const getUsers = (token) => {
     let config = {
         method: 'get',
         url: `${apiURL}/user`,
-        headers: {},
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
         maxRedirects: 0
     };
 
     return axios(config)
 }
 
-export const getUser = (id) => {
+export const getUser = (token, id) => {
     let config = {
         method: 'get',
         url: `${apiURL}/user/${id}`,
-        headers: {},
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
         maxRedirects: 0
     };
 
     return axios(config)
 }
 
-export const postUser = (data) => {
+export const postUser = (token, data) => {
     data = qs.stringify(data);
     let config = {
         method: 'post',
         url: `${apiURL}/user`,
-        headers: {},
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
         maxRedirects: 0,
         data: data
     };
@@ -38,11 +44,13 @@ export const postUser = (data) => {
     return axios(config)
 }
 
-export const deleteUser = (id) => {
+export const deleteUser = (token, id) => {
     let config = {
         method: 'delete',
         url: `${apiURL}/user/${id}`,
-        headers: {},
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
         maxRedirects: 0
     };
 

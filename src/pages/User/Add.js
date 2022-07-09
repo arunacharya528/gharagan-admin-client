@@ -4,24 +4,24 @@ import PageTitle from '../../components/Typography/PageTitle'
 import { postUser } from '../../adapters/user'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import toast from 'react-hot-toast'
+import { useContext } from 'react'
+import { UserContext } from '../../context/UserContext'
 
 const Add = () => {
 
     const defaultPassword = 'gharagan_123'
-
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [contact, setContact] = useState('');
 
     const history = useHistory();
 
+    const { user } = useContext(UserContext);
 
     const handleSubmission = () => {
         toast.promise(
-            postUser({
-                first_name: firstName,
-                last_name: lastName,
+            postUser(user.data.token, {
+                name: name,
                 email: email,
                 contact: contact,
                 password: defaultPassword,
@@ -49,12 +49,7 @@ const Add = () => {
                 <CardBody>
                     <Label>
                         <span>First Name</span>
-                        <Input className="mt-1" placeholder="Enter first name" value={firstName} onChange={e => setFirstName(e.target.value)} />
-                    </Label>
-
-                    <Label className="mt-4">
-                        <span>Last Name</span>
-                        <Input className="mt-1" placeholder="Enter last name" value={lastName} onChange={e => setLastName(e.target.value)} />
+                        <Input className="mt-1" placeholder="Enter first name" value={name} onChange={e => setName(e.target.value)} />
                     </Label>
 
                     <Label className="mt-4">

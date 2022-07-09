@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Table, TableCell, TableBody, TableContainer, TableHeader, TableRow, Button, Badge } from '@windmill/react-ui'
 
 import PageTitle from '../../components/Typography/PageTitle'
@@ -6,13 +6,14 @@ import { deleteUser, getUsers } from "../../adapters/user";
 import { CrossIcon, EditIcon, EyeIcon, PlusIcon, TrashIcon } from "../../icons";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import { UserContext } from "../../context/UserContext";
 
 const User = () => {
     const [users, setUsers] = useState([]);
     const [isRefreshed, setRefresh] = useState(false);
-
+    const { user } = useContext(UserContext);
     useEffect(() => {
-        getUsers()
+        getUsers(user.data.token)
             .then(response => setUsers(response.data))
             .catch(error => console.log(error))
     }, [isRefreshed])
@@ -30,7 +31,7 @@ const User = () => {
 
     const handleDeletion = (id) => {
         toast.promise(
-            deleteUser(id)
+            deleteUser(user.data.token, id)
                 .then(response => setRefresh(!isRefreshed))
             ,
             {
@@ -56,8 +57,7 @@ const User = () => {
                 <Table className="table-fixed w-full">
                     <TableHeader>
                         <tr>
-                            <TableCell>First Name</TableCell>
-                            <TableCell>Last Name</TableCell>
+                            <TableCell>Name</TableCell>
                             <TableCell>Email</TableCell>
                             <TableCell>Contact</TableCell>
                             <TableCell>User Type</TableCell>
@@ -68,11 +68,10 @@ const User = () => {
                         {
                             users.map((user, index) =>
                                 <TableRow>
-                                    <TableCell>{user.first_name}</TableCell>
-                                    <TableCell>{user.last_name}</TableCell>
+                                    <TableCell>{user.name}</TableCell>
                                     <TableCell className="truncate" title={user.email}>{user.email}</TableCell>
                                     <TableCell>{user.contact}</TableCell>
-                                    <TableCell>{getUserType(user.type)}</TableCell>
+                                    <TableCell>{getUserType(user.role)}</TableCell>
                                     <TableCell className="">
                                         <div className="flex items-center space-x-4">
                                             <Link to={"/app/user/" + user.id + "/view"} layout="link" size="icon" aria-label="View">

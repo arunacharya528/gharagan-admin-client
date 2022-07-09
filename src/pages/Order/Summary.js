@@ -71,9 +71,9 @@ export const OrderSummary = ({ order, change }) => {
     const handleOrderCancellation = (id) => {
         const confirm = () => {
             toast.promise(
-                cancelOrder(user.data.token, order.id)
+                cancelOrder(user.data.token, id)
                 , {
-                    loading: "Cancelling order #" + order.id,
+                    loading: "Cancelling order #" + id,
                     success: () => {
                         closeModal();
                         change();
@@ -85,7 +85,7 @@ export const OrderSummary = ({ order, change }) => {
         }
 
         setModalData({
-            title: "Confirm cancellation of order #" + order.id,
+            title: "Confirm cancellation of order #" + id,
             body: <div>
                 <p>Decision cannot be reverted and the client would notice changes</p>
                 <Button onClick={confirm}>Confirm</Button>
@@ -94,12 +94,12 @@ export const OrderSummary = ({ order, change }) => {
         openModal();
     }
 
-    const handleOrderDeletion = () => {
+    const handleOrderDeletion = (id) => {
         const confirm = () => {
             toast.promise(
-                deleteOrder(user.data.token, order.id)
+                deleteOrder(user.data.token, id)
                 , {
-                    loading: "Deleting order #" + order.id,
+                    loading: "Deleting order #" + id,
                     success: () => {
                         closeModal();
                         change();
@@ -111,7 +111,7 @@ export const OrderSummary = ({ order, change }) => {
         }
 
         setModalData({
-            title: "Confirm deletion of order #" + order.id,
+            title: "Confirm deletion of order #" + id,
             body: <div>
                 <p>Decision cannot be reverted and the client would notice changes</p>
                 <Button onClick={confirm}>Confirm</Button>
@@ -119,8 +119,6 @@ export const OrderSummary = ({ order, change }) => {
         })
         openModal();
     }
-
-    const [] = useState(false);
 
     const viewInvoice = (id) => {
         getInvoice(user.data.token, id)
