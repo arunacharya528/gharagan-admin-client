@@ -1,18 +1,18 @@
-// import { CKEditor } from '@ckeditor/ckeditor5-react';
-// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import toast from 'react-hot-toast';
 import { putSiteData } from '../../adapters/siteData';
 import { Button } from '@windmill/react-ui'
 import { RichTextEditor } from '../../components/Editor';
+import { UserContext } from "../../context/UserContext";
 
 export const SiteAddress = ({ address }) => {
 
     const [siteAddress, setSiteAddress] = useState(address.value);
+    const { user } = useContext(UserContext)
 
     const handleUpdate = () => {
         toast.promise(
-            putSiteData({ value: siteAddress }, address.id)
+            putSiteData(user.data.token, { value: siteAddress }, address.id)
             , {
                 loading: "Updating address",
                 success: () => {

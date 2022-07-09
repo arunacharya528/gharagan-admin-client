@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button } from '@windmill/react-ui';
 import toast from 'react-hot-toast';
 import { putSiteData } from '../../adapters/siteData';
 import { RichTextEditor } from '../../components/Editor';
+import { UserContext } from "../../context/UserContext";
 
 export const Notification = ({ notification }) => {
 
     const [value, setValue] = useState(notification.value);
+    const { user } = useContext(UserContext)
 
     const handleUpdate = () => {
         toast.promise(
-            putSiteData({ value: value }, notification.id)
+            putSiteData(user.data.token, { value: value }, notification.id)
             , {
                 loading: "Updating notification",
                 success: () => {

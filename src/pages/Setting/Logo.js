@@ -2,15 +2,17 @@ import React, { useState } from "react";
 import { Input, HelperText, Label, Select, Textarea, Button } from '@windmill/react-ui'
 import toast from 'react-hot-toast';
 import { putSiteData } from '../../adapters/siteData';
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
 
 export const Logo = ({ logogSm, logoLg }) => {
 
     const [logoSmall, setLogoSmall] = useState(logogSm.value);
     const [logoLarge, setLogoLarge] = useState(logoLg.value);
-
+    const { user } = useContext(UserContext)
     const handleUpdate = (value, id) => {
         toast.promise(
-            putSiteData({ value: value }, id)
+            putSiteData(user.data.token, { value: value }, id)
             , {
                 loading: "Updating logo",
                 success: () => {

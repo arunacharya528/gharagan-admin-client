@@ -11,6 +11,7 @@ import { useState } from "react";
 
 const Setting = () => {
     const [siteData, setSiteData] = useState({ loading: true, data: [] });
+
     useEffect(() => {
         getAll()
             .then(response => setSiteData({ loading: false, data: response.data }))

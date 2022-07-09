@@ -6,6 +6,7 @@ import { ModalContext } from "../../context/ModalContext";
 import { useEffect } from "react";
 import { putSiteData } from "../../adapters/siteData";
 import toast from "react-hot-toast";
+import { UserContext } from "../../context/UserContext";
 
 
 const qs = require('qs')
@@ -114,9 +115,10 @@ export const SocialLinks = ({ socialLink }) => {
         setLinks(links.filter((link, i) => i !== index))
     }
 
+    const { user } = useContext(UserContext)
     const handleUpdate = () => {
         toast.promise(
-            putSiteData({ value: JSON.stringify(links) }, socialLink.id)
+            putSiteData(user.data.token, { value: JSON.stringify(links) }, socialLink.id)
             , {
                 loading: "Updating social links",
                 success: () => {
