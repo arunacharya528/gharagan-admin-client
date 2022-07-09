@@ -1,18 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import { PageLinkForm } from "./Form";
 import { Button } from '@windmill/react-ui';
 import toast from "react-hot-toast";
 import { postPageLink } from "../../adapters/pageLink";
+import { UserContext } from "../../context/UserContext";
 
 export const AddPageLink = ({ onChange }) => {
     const [name, setName] = useState('');
     const [location, setLocation] = useState({});
     const [slug, setSlug] = useState({});
+    const { user } = useContext(UserContext)
+
 
     const handleAddition = () => {
         toast.promise(
-            postPageLink({
+            postPageLink(user.data.token, {
                 name,
                 location,
                 'url-slug': slug

@@ -2,11 +2,13 @@ const axios = require('axios');
 const apiURL = process.env.REACT_APP_API_URL;
 const qs = require('qs');
 
-export const getPageLinks = () => {
+export const getPageLinks = (token) => {
     let config = {
         method: 'get',
-        url: `${apiURL}/pageLink`,
-        headers: {},
+        url: `${apiURL}/allPageLinks`,
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
         maxRedirects: 0
     };
 
@@ -14,13 +16,14 @@ export const getPageLinks = () => {
 }
 
 
-export const postPageLink = (data) => {
+export const postPageLink = (token, data) => {
     data = qs.stringify(data);
     let config = {
         method: 'post',
         url: `${apiURL}/pageLink`,
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Bearer ${token}`
         },
         maxRedirects: 0,
         data: data
@@ -30,13 +33,14 @@ export const postPageLink = (data) => {
 }
 
 
-export const putPageLink = (data, id) => {
+export const putPageLink = (token, data, id) => {
     data = qs.stringify(data);
     let config = {
         method: 'put',
         url: `${apiURL}/pageLink/${id}`,
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Bearer ${token}`
         },
         maxRedirects: 0,
         data: data
@@ -45,11 +49,13 @@ export const putPageLink = (data, id) => {
     return axios(config)
 }
 
-export const deletePageLink = (id) => { 
+export const deletePageLink = (token, id) => {
     let config = {
         method: 'delete',
         url: `${apiURL}/pageLink/${id}`,
-        headers: {},
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
         maxRedirects: 0
     };
 

@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import { PageLinkForm } from "./Form";
 import { Button } from '@windmill/react-ui';
 import toast from "react-hot-toast";
 import { postPageLink, putPageLink } from "../../adapters/pageLink";
 import { useEffect } from "react";
+import { UserContext } from "../../context/UserContext";
 
 export const EditPageLink = ({ data, onChange }) => {
     const [name, setName] = useState('');
     const [location, setLocation] = useState('');
     const [slug, setSlug] = useState('');
 
+    const { user } = useContext(UserContext)
 
     useEffect(() => {
         setName(data.name)
@@ -21,7 +23,7 @@ export const EditPageLink = ({ data, onChange }) => {
 
     const handleUpdate = () => {
         toast.promise(
-            putPageLink({
+            putPageLink(user.data.token, {
                 name,
                 location,
                 'url-slug': slug

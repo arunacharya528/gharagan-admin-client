@@ -13,6 +13,7 @@ import { ModalContext } from "../../context/ModalContext";
 import { AddPageLink } from "./Add";
 import { EditPageLink } from "./Edit";
 import toast from "react-hot-toast";
+import { UserContext } from "../../context/UserContext";
 const moment = require('moment')
 
 const PageLink = () => {
@@ -23,8 +24,10 @@ const PageLink = () => {
     const [isRefreshed, setRefresh] = useState(false);
     const [selectedLink, setSelectedLink] = useState({});
 
+    const { user } = useContext(UserContext)
+
     useEffect(() => {
-        getPageLinks()
+        getPageLinks(user.data.token)
             .then(response => setPageLinks(response.data))
             .catch(error => console.log(error))
     }, [isRefreshed])
@@ -39,7 +42,7 @@ const PageLink = () => {
 
         const confirmDeletion = () => {
             toast.promise(
-                deletePageLink(id),
+                deletePageLink(user.data.token, id),
                 {
                     loading: "Deleting Link",
                     success: () => {
