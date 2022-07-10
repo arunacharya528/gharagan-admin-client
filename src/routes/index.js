@@ -55,9 +55,7 @@ const PageLink = lazy(() => import('../pages/PageLink/PageLink'))
 
 const Setting = lazy(() => import('../pages/Setting/Setting'))
 
-
-
-
+const DeliveryView = lazy(() => import('../pages/Delivery/Delivery'))
 
 
 /**
@@ -167,10 +165,12 @@ const routes = [
     path: '/order',
     component: Order
   },
-  // {
-  //   path: '/order/:orderId/view',
-  //   component: OrderView
-  // },
+
+  {
+    path: '/delivery',
+    component: DeliveryView
+  },
+
   {
     path: '/cart',
     component: Cart

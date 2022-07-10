@@ -65,6 +65,12 @@ const routes = [
     name: 'Orders',
   },
   {
+    path: '/app/delivery',
+    icon: 'OrderIcon',
+    name: 'Deliviery options',
+    role: 1
+  },
+  {
     path: '/app/cart',
     icon: 'BagShoppingIcon',
     name: 'Sessions',
@@ -79,7 +85,7 @@ const routes = [
   {
     icon: "FormsIcon",
     name: "Page",
-    role:1,
+    role: 1,
     routes: [
       {
         path: '/app/page',
