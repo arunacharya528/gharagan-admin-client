@@ -11,7 +11,8 @@ import Login from "../pages/Login";
 export const UserContext = createContext({
     user: { loading: Boolean, data: { token: String, role: Number } },
     setUser: Function,
-    logout: Function
+    logout: Function,
+    updateUser: Function
 });
 
 export const UserProvider = ({ children }) => {
@@ -22,6 +23,7 @@ export const UserProvider = ({ children }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState("");
     const [error, setError] = useState('');
+    const [isRefreshed, setRefresh] = useState(false);
 
     const history = useHistory();
 
@@ -37,7 +39,7 @@ export const UserProvider = ({ children }) => {
                 })
                 .catch(response => setUser({ loading: true, data: initialState }))
         }
-    }, [])
+    }, [isRefreshed])
 
     const handleLogin = () => {
         toast.promise(
@@ -84,7 +86,8 @@ export const UserProvider = ({ children }) => {
         handleLogout();
     }
 
-    return <UserContext.Provider value={{ user, setUser, logout: handleLogout }}>
+    const updateUser = () => setRefresh(!isRefreshed)
+    return <UserContext.Provider value={{ user, setUser, logout: handleLogout, updateUser }}>
         {!user.loading ?
             children :
             <Login {...{

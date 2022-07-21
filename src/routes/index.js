@@ -57,6 +57,7 @@ const Setting = lazy(() => import('../pages/Setting/Setting'))
 
 const DeliveryView = lazy(() => import('../pages/Delivery/Delivery'))
 
+const ProfileView = lazy(() => import('../pages/Profile/Profile'))
 
 /**
  * ⚠ These are internal routes!
@@ -222,6 +223,10 @@ const routes = [
   {
     path: '/setting',
     component: Setting
+  },
+  {
+    path: "/profile",
+    component: ProfileView
   }
 ]
 
