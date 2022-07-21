@@ -29,18 +29,7 @@ function Header() {
     setIsProfileMenuOpen(!isProfileMenuOpen)
   }
 
-  const { user, setUser } = useContext(UserContext);
-
-  const handleLogout = () => {
-
-    logout(user.data.token)
-      .then(response => {
-        setUser({ loading: true, data: {} });
-        document.cookie = "";
-      })
-      .catch(error => console.log(error))
-
-  }
+  const { logout } = useContext(UserContext);
 
   return (
     <header className="z-40 py-4 bg-white shadow-bottom dark:bg-gray-800">
@@ -143,7 +132,7 @@ function Header() {
                 <OutlineCogIcon className="w-4 h-4 mr-3" aria-hidden="true" />
                 <span>Settings</span>
               </DropdownItem>
-              <DropdownItem onClick={() => handleLogout()}>
+              <DropdownItem onClick={() => logout()}>
                 <OutlineLogoutIcon className="w-4 h-4 mr-3" aria-hidden="true" />
                 <span>Log out</span>
               </DropdownItem>
