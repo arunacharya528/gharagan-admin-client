@@ -25,7 +25,7 @@ const Add = () => {
                 email: email,
                 contact: contact,
                 password: defaultPassword,
-                type: 2
+                role: 2
             })
                 .then(response => history.push("/app/user"))
 
@@ -54,7 +54,7 @@ const Add = () => {
 
                     <Label className="mt-4">
                         <span>Email</span>
-                        <Input className="mt-1" placeholder="Enter email" value={email} onChange={e => setEmail(e.target.value)} />
+                        <Input type="email" className="mt-1" placeholder="Enter email" value={email} onChange={e => setEmail(e.target.value)} />
                     </Label>
 
                     <Label className="mt-4">
