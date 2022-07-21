@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 import AccessibleNavigationAnnouncer from './components/AccessibleNavigationAnnouncer'
 import { UserProvider } from './context/UserContext'
 import Home from './pages/Home'
+import { Toaster } from 'react-hot-toast'
 
 const Layout = lazy(() => import('./containers/Layout'))
 const Login = lazy(() => import('./pages/Login'))
@@ -23,6 +24,7 @@ function App() {
           </UserProvider>
         </Switch>
       </Router>
+      <Toaster position='top-center' toastOptions={{ className: "dark:bg-gray-700 dark:text-white" }} />
     </>
   )
 }

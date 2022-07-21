@@ -7,10 +7,6 @@ import Header from '../components/Header'
 import Main from '../containers/Main'
 import ThemedSuspense from '../components/ThemedSuspense'
 import { SidebarContext } from '../context/SidebarContext'
-import { AdvertisementProvider } from '../context/AdvertisementContext'
-import { FileProvider } from '../context/FileContext'
-import { Toaster } from 'react-hot-toast'
-import { ModalProvider } from '../context/ModalContext'
 import { ContextList } from '../context/ContextList'
 
 const Page404 = lazy(() => import('../pages/404'))
@@ -32,7 +28,6 @@ function Layout() {
       <div className="flex flex-col flex-1 w-full">
         <Header />
         <Main>
-          <Toaster position='bottom-right' toastOptions={{ className: "dark:bg-gray-700 dark:text-white" }} />
           <Suspense fallback={<ThemedSuspense />}>
             <ContextList>
               <Switch>
