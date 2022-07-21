@@ -160,16 +160,7 @@ const Advertisement = () => {
                                     <option>banner</option>
                                     <option>promotion</option>
                                     <option>category</option>
-                                </Select>
-                            </Label>
-                            <Label className="mt-4">
-                                <span>Select Page of advertisement</span>
-                                <Select className="mt-1" onChange={e => setPage(e.target.value)} value={page}>
-                                    <option>None</option>
-                                    <option>home</option>
-                                    <option>detail</option>
-                                    <option>filter</option>
-                                    <option>profile</option>
+                                    <option>side bar</option>
                                 </Select>
                             </Label>
 
@@ -217,7 +208,6 @@ const Advertisement = () => {
 
                                         <div className='flex flex-col space-y-2'>
                                             <span><b>Name: </b>{ad.name}</span>
-                                            <span><b>Page: </b>{ad.page}</span>
                                             <span><b>Type: </b>{ad.type}</span>
                                         </div>
 

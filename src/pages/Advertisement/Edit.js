@@ -31,7 +31,6 @@ const Edit = () => {
 
     const [name, setName] = useState(undefined);
     const [summary, setSummary] = useState(undefined);
-    const [page, setPage] = useState(undefined);
     const [type, setType] = useState(undefined);
     const [url, setURL] = useState(undefined);
     const [active, setActive] = useState(undefined);
@@ -46,7 +45,6 @@ const Edit = () => {
             if (ad.id === id) {
                 setName(ad.name)
                 setSummary(ad.summary)
-                setPage(ad.page)
                 setType(ad.type)
                 setURL(ad.url_slug)
                 setActive(ad.active)
@@ -79,7 +77,6 @@ const Edit = () => {
         toast.promise(putAdvertisement(user.data.token, {
             name: name,
             summary: summary,
-            page: page,
             type: type,
             file_id: fileId,
             url_slug: url,
@@ -100,8 +97,6 @@ const Edit = () => {
 
             .catch(error => console.log(error))
     }
-
-    console.table({ name, summary, page, type, url, active, dateRange, fileId, selectedImage })
     return (
         <>
             <PageTitle>
@@ -141,18 +136,7 @@ const Edit = () => {
                                     )}
                                 </div>
                             </div>
-                            <div className="">
-                                <Label>Page</Label>
-                                <div className="mt-2 flex flex-col">
-                                    {pages.map((instance, i) =>
-                                        <Label radio key={i} className="ml-4">
-                                            <Input type="radio" value={instance} name="page" className="" onChange={e => setPage(e.target.value)}
-                                                checked={instance === page ? true : false} />
-                                            <span className="ml-2">{instance.charAt(0).toUpperCase() + instance.slice(1)}</span>
-                                        </Label>
-                                    )}
-                                </div>
-                            </div>
+                            
                         </div>
 
                         <Label className="mt-4">
