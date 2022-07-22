@@ -24,20 +24,6 @@ function Tables() {
 
     const [dataTable, setDataTable] = useState([])
 
-
-    // const [modalData, setModalData] = useState({ title: undefined, body: undefined });
-
-
-    // const [isModalOpen, setIsModalOpen] = useState(false)
-
-    // function openModal() {
-    //     setIsModalOpen(true)
-    // }
-
-    // function closeModal() {
-    //     setIsModalOpen(false)
-    // }
-
     const [isRefreshed, setRefresh] = useState(false)
 
     useEffect(() => {
@@ -48,22 +34,6 @@ function Tables() {
             })
             .catch(error => console.log(error));
     }, [isRefreshed])
-
-    const getAverageRating = (ratings) => {
-        const numbers = ratings.map((rating) => rating.rate);
-
-        var sum = 0;
-        for (let i = 0; i < numbers.length; i++) {
-            sum += numbers[i];
-        }
-
-        return Math.round(((sum / numbers.length) + Number.EPSILON) * 100) / 100
-    }
-
-    // const handleEditButtonPress = () => {
-    //     openModal();
-    //     setModalData({ title: "Edit data", body: <div>Hello there</div> });
-    // }
 
     const { setModalData, openModal, closeModal } = useContext(ModalContext)
 
@@ -104,12 +74,6 @@ function Tables() {
                     </Link>
                 </div>
             </PageTitle>
-            {/* <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <ModalHeader>{modalData.title}</ModalHeader>
-                <ModalBody>
-                    {modalData.body}
-                </ModalBody>
-            </Modal> */}
             <TableContainer className="mb-8">
                 <Table>
                     <TableHeader>
@@ -118,7 +82,6 @@ function Tables() {
                             <TableCell>Category</TableCell>
                             <TableCell>Brand</TableCell>
                             <TableCell>Average rating</TableCell>
-                            <TableCell>Views</TableCell>
                             <TableCell>Action</TableCell>
 
                         </tr>
@@ -136,10 +99,7 @@ function Tables() {
                                     {product.brand ? product.brand.name : ''}
                                 </TableCell>
                                 <TableCell>
-                                    {product.ratings ? getAverageRating(product.ratings) : '0'}
-                                </TableCell>
-                                <TableCell>
-                                    {product.views}
+                                    {product.ratings_avg_rate}
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex items-center space-x-4">

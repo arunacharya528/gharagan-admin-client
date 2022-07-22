@@ -3,7 +3,7 @@ import { Card, CardBody, Badge, Modal, ModalHeader, ModalBody, Button } from '@w
 import PageTitle from '../../components/Typography/PageTitle'
 import { deleteProduct, getProduct, getProducts } from '../../adapters/product'
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min'
-import { HeartIcon, PeopleIcon, EditIcon, TrashIcon } from '../../icons'
+import { HeartIcon, PeopleIcon, EditIcon, TrashIcon, StarIcon, ChatIcon, PagesIcon } from '../../icons'
 import InfoCard from '../../components/Cards/InfoCard'
 import RoundIcon from '../../components/RoundIcon'
 import { Link } from 'react-router-dom'
@@ -14,6 +14,7 @@ import { DescriptionEdit } from './DescriptionEdit'
 import toast from 'react-hot-toast'
 import { UserContext } from '../../context/UserContext'
 import { ModalContext } from '../../context/ModalContext'
+import { getTotalPrice } from '../../utils/helper/calculatePrice'
 const moment = require('moment');
 
 function View() {
@@ -44,37 +45,34 @@ function View() {
         }
     }
 
-    const getDiscountedPrice = (price, discountP) => {
-        const result = price - (0.01 * discountP * price);
-        return Math.round(((result) + Number.EPSILON) * 100) / 100
-    }
-
-
     const { setModalData, openModal, closeModal } = useContext(ModalContext)
-
-    const handleGeneralInfoEdit = () => {
-        openModal();
-        setModalData({
-            title: "Edit general info",
-            body: <></>
-        });
-    }
 
     const { user } = useContext(UserContext)
 
     const handleDeletion = () => {
-        toast.promise(
-            deleteProduct(user.data.token, id)
-            , {
-                loading: "Deleting product",
-                success: () => {
-                    setRefresh(!isRefreshed);
-                    closeModal();
-                    return "Deleted product"
-                },
-                error: "Error deleting product"
-            }
-        )
+        const confirm = () => {
+            toast.promise(
+                deleteProduct(user.data.token, id)
+                , {
+                    loading: "Deleting product",
+                    success: () => {
+                        setRefresh(!isRefreshed);
+                        closeModal();
+                        return "Deleted product"
+                    },
+                    error: "Error deleting product"
+                }
+            )
+        }
+        openModal();
+        setModalData({
+            title: "Delete product",
+            body: <div>
+                All the related things like QAs, ratings would also be deleted permanently
+                <Button onClick={confirm}>Confirm</Button>
+            </div>
+        })
+
     }
     return (
         <>
@@ -107,10 +105,6 @@ function View() {
                                                 <td>{product.data.name}</td>
                                             </tr>
                                             <tr>
-                                                <th className='text-left pr-2'>SKU</th>
-                                                <td>{product.data.SKU}</td>
-                                            </tr>
-                                            <tr>
                                                 <th className='text-left pr-2'>Category</th>
                                                 <td>{product.data.category.name}</td>
                                             </tr>
@@ -122,6 +116,10 @@ function View() {
                                             <tr>
                                                 <th className='text-left pr-2'>Summary</th>
                                                 <td>{product.data.summary}</td>
+                                            </tr>
+                                            <tr>
+                                                <th className='text-left pr-2'>Avg Rating</th>
+                                                <td>{product.data.ratings_avg_rate}</td>
                                             </tr>
                                             <tr>
                                                 <th className='text-left pr-2'>Created at</th>
@@ -137,12 +135,28 @@ function View() {
                                 </div>
                             </CardBody>
                         </Card>
-                        <div>
-                            <InfoCard title="Views" value={product.data.views}>
+                        <div className="flex flex-col space-y-3">
+                            <InfoCard title="Wishlist Count" value={product.data.wish_list_count}>
                                 <RoundIcon
-                                    icon={PeopleIcon}
+                                    icon={PagesIcon}
+                                    iconColorClass="text-orange-500 dark:text-orange-100"
+                                    bgColorClass="bg-red-100 dark:bg-red-500"
+                                    className="mr-4"
+                                />
+                            </InfoCard>
+                            <InfoCard title="Ratings count" value={product.data.ratings_count}>
+                                <RoundIcon
+                                    icon={StarIcon}
                                     iconColorClass="text-orange-500 dark:text-orange-100"
                                     bgColorClass="bg-orange-100 dark:bg-orange-500"
+                                    className="mr-4"
+                                />
+                            </InfoCard>
+                            <InfoCard title="Question Answers count" value={product.data.question_answers_count}>
+                                <RoundIcon
+                                    icon={ChatIcon}
+                                    iconColorClass="text-orange-500 dark:text-orange-100"
+                                    bgColorClass="bg-green-100 dark:bg-green-500"
                                     className="mr-4"
                                 />
                             </InfoCard>
@@ -151,7 +165,7 @@ function View() {
 
                     <Card className="mb-8 shadow-md ">
                         <CardBody>
-                           
+
                             <DescriptionEdit />
                         </CardBody>
                     </Card>
@@ -173,9 +187,9 @@ function View() {
                                             <td>{inventory.type}</td>
                                             <td>{inventory.price}</td>
                                             <td>{inventory.quantity}</td>
-                                            <td>{inventory.discount.discount_percent}%</td>
-                                            <td>{getDiscountedPrice(inventory.price, inventory.discount.discount_percent)}</td>
-                                            <td>{getStatusBadge(inventory.discount.active)}</td>
+                                            <td>{inventory.discount === null ? '-' : inventory.discount.discount_percent + "%"}</td>
+                                            <td>{getTotalPrice(inventory)}</td>
+                                            <td>{inventory.discount === null ? '' : getStatusBadge(inventory.discount.active)}</td>
                                         </tr>
                                     )}
                                 </tbody>

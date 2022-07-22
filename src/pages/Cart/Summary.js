@@ -63,7 +63,8 @@ export const SessionSummary = ({ session, refresh }) => {
                                     {session.cart_items.map((item, index) =>
                                         <div class="flex flex-row" key={index}>
                                             <div className="grid grid-cols-3 items-center w-full">
-                                                <Link className="underline" to={"/app/product/" + item.product.id}>{item.product.name}
+                                                <Link to={"/app/product/" + item.product.id}>
+                                                    <span className="underline"> {item.product.name}</span>&emsp;{item.inventory.type}
                                                 </Link>
                                                 <span>
                                                     {item.quantity}

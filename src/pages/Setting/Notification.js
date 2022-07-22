@@ -28,7 +28,7 @@ export const Notification = ({ notification }) => {
             <div className="w-64 font-semibold">Notification</div>
             <div className="flex-grow flex flex-col">
                 <RichTextEditor text={{ value, setValue }} />
-                <div>
+                <div className="space-x-5">
                     <Button onClick={handleUpdate} className="mt-4">Update</Button>
                     <Button onClick={() => { setValue(''); handleUpdate() }} className="mt-4">Clear notification</Button>
                 </div>

@@ -44,7 +44,7 @@ function Category() {
     const handleDeleteButtonPress = (id) => {
         const handleDeletion = () => {
             toast.promise(
-                deleteCategory(user.data.token,id)
+                deleteCategory(user.data.token, id)
                 ,
                 {
                     loading: "Deleting category",
@@ -109,9 +109,14 @@ function Category() {
                                             <Link layout='link' size="icon" to={"/app/category/" + category.id + "/edit"}>
                                                 <EditIcon className="w-5 h-5" aria-hidden="true" />
                                             </Link>
-                                            <Button layout="link" size="icon" aria-label="Delete" onClick={e => handleDeleteButtonPress(category.id)}>
-                                                <TrashIcon className="w-5 h-5" aria-hidden="true" />
-                                            </Button>
+                                            {
+                                                category.child_categories.length === 0 ?
+                                                    <Button layout="link" size="icon" aria-label="Delete" onClick={e => handleDeleteButtonPress(category.id)}>
+                                                        <TrashIcon className="w-5 h-5" aria-hidden="true" />
+                                                    </Button>
+                                                    : ''
+                                            }
+
                                         </div>
                                     </TableCell>
                                 </TableRow>
