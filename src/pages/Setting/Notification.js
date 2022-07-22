@@ -30,6 +30,7 @@ export const Notification = ({ notification }) => {
                 <RichTextEditor text={{ value, setValue }} />
                 <div>
                     <Button onClick={handleUpdate} className="mt-4">Update</Button>
+                    <Button onClick={() => { setValue(''); handleUpdate() }} className="mt-4">Clear notification</Button>
                 </div>
             </div>
         </div>
