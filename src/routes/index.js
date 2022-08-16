@@ -46,12 +46,12 @@ const User = lazy(() => import('../pages/User/User'))
 const UserAdd = lazy(() => import('../pages/User/Add'))
 const UserView = lazy(() => import('../pages/User/View'))
 
-const Page = lazy(() => import('../pages/Page/Page'))
-const PageView = lazy(() => import('../pages/Page/View'))
-const PageEdit = lazy(() => import('../pages/Page/Edit'))
-const PageAdd = lazy(() => import('../pages/Page/Add'))
+// const Page = lazy(() => import('../pages/Page/Page'))
+// const PageView = lazy(() => import('../pages/Page/View'))
+// const PageEdit = lazy(() => import('../pages/Page/Edit'))
+// const PageAdd = lazy(() => import('../pages/Page/Add'))
 
-const PageLink = lazy(() => import('../pages/PageLink/PageLink'))
+// const PageLink = lazy(() => import('../pages/PageLink/PageLink'))
 
 const Setting = lazy(() => import('../pages/Setting/Setting'))
 
@@ -200,26 +200,26 @@ const routes = [
     path: '/user/:userId/view',
     component: UserView
   },
-  {
-    path: '/page',
-    component: Page
-  },
-  {
-    path: '/page/add',
-    component: PageAdd
-  },
-  {
-    path: '/page/:pageId',
-    component: PageView
-  },
-  {
-    path: '/page/:pageId/edit',
-    component: PageEdit
-  },
-  {
-    path: '/pageLink',
-    component: PageLink
-  },
+  // {
+  //   path: '/page',
+  //   component: Page
+  // },
+  // {
+  //   path: '/page/add',
+  //   component: PageAdd
+  // },
+  // {
+  //   path: '/page/:pageId',
+  //   component: PageView
+  // },
+  // {
+  //   path: '/page/:pageId/edit',
+  //   component: PageEdit
+  // },
+  // {
+  //   path: '/pageLink',
+  //   component: PageLink
+  // },
   {
     path: '/setting',
     component: Setting

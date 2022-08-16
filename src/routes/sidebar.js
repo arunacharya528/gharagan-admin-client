@@ -82,23 +82,23 @@ const routes = [
     name: 'Users',
     role: 1,
   },
-  {
-    icon: "FormsIcon",
-    name: "Page",
-    role: 1,
-    routes: [
-      {
-        path: '/app/page',
-        name: 'Pages'
-      }, {
-        path: '/app/pageLink',
-        name: 'Page Link'
-      }
-    ]
-  },
+  // {
+  //   icon: "FormsIcon",
+  //   name: "Page",
+  //   role: 1,
+  //   routes: [
+  //     {
+  //       path: '/app/page',
+  //       name: 'Pages'
+  //     }, {
+  //       path: '/app/pageLink',
+  //       name: 'Page Link'
+  //     }
+  //   ]
+  // },
   {
     path: '/app/setting',
-    icon: 'PeopleIcon',
+    icon: 'OutlineCogIcon',
     name: 'Setting',
     role: 1
   },
