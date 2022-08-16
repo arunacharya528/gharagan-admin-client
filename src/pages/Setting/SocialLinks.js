@@ -8,10 +8,6 @@ import { putSiteData } from "../../adapters/siteData";
 import toast from "react-hot-toast";
 import { UserContext } from "../../context/UserContext";
 
-
-const qs = require('qs')
-
-
 export const SocialLinks = ({ socialLink }) => {
 
     const [links, setLinks] = useState(JSON.parse(socialLink.value));
@@ -19,66 +15,47 @@ export const SocialLinks = ({ socialLink }) => {
     const { setModalData, openModal, closeModal } = useContext(ModalContext);
 
     const LinkForm = (props = {
-        name: { value: String, setValue: Function },
         path: { value: String, setValue: Function },
-        svg: { value: String, setValue: Function }
     }) => {
         return (
             <div className="space-y-1 py-3 flex items-center">
                 <div className="flex-grow">
                     <Label>
-                        <Input placeholder="Enter link name" value={props.name.value} onChange={e => props.name.setValue(e.target.value)} />
-                    </Label>
-                    <Label>
                         <Input placeholder="Enter site path" value={props.path.value} onChange={e => props.path.setValue(e.target.value)} />
                     </Label>
-                    <Label>
-                        <Input placeholder="Paste SVG code here" value={props.svg.value} onChange={e => props.svg.setValue(e.target.value)} />
-                    </Label>
                 </div>
-                <div dangerouslySetInnerHTML={{ __html: props.svg.value }} className="flex justify-center w-32" />
             </div>
         );
     }
 
     const LinkEdit = ({ link, submit }) => {
-        const [name, setName] = useState('');
         const [path, setPath] = useState('');
-        const [svg, setSvg] = useState('');
 
         useEffect(() => {
-            setName(link.name);
             setPath(link.path);
-            setSvg(link.svg);
         }, [link])
 
         return (
             <>
                 <LinkForm
-                    name={{ value: name, setValue: setName }}
                     path={{ value: path, setValue: setPath }}
-                    svg={{ value: svg, setValue: setSvg }}
                 />
                 <div>
-                    <Button onClick={e => submit({ name, path, svg })}>OK</Button>
+                    <Button onClick={e => submit({ path })}>OK</Button>
                 </div>
             </>
         );
     }
 
     const LinkAdd = ({ submit }) => {
-        const [name, setName] = useState('');
         const [path, setPath] = useState('');
-        const [svg, setSvg] = useState('');
         return (
             <>
                 <LinkForm
-                    name={{ value: name, setValue: setName }}
                     path={{ value: path, setValue: setPath }}
-                    svg={{ value: svg, setValue: setSvg }}
                 />
                 <div>
-                    <Button onClick={e => submit({ name, path, svg })}>OK</Button>
+                    <Button onClick={e => submit({ path })}>OK</Button>
                 </div>
             </>
         );
@@ -137,10 +114,8 @@ export const SocialLinks = ({ socialLink }) => {
                     links.map((link, index) =>
                         <div className="space-y-1 py-3 flex items-center">
                             <div className="flex-grow">
-                                <div> {link.name}</div>
                                 <div> {link.path}</div>
                             </div>
-                            <div dangerouslySetInnerHTML={{ __html: link.svg }} className="flex justify-center w-32" />
                             <div>
                                 <Button icon={EditIcon} layout="link" aria-label="Edit" onClick={e => handleEdit(link, index)}></Button>
                                 <Button icon={TrashIcon} layout="link" aria-label="Remove" onClick={e => handleDeletion(index)}></Button>

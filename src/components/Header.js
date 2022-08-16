@@ -13,7 +13,7 @@ import {
 import { Avatar, Badge, Input, Dropdown, DropdownItem, WindmillContext } from '@windmill/react-ui'
 import { UserContext } from '../context/UserContext'
 import { logout } from '../adapters/auth'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 function Header() {
   const { mode, toggleMode } = useContext(WindmillContext)
@@ -31,7 +31,7 @@ function Header() {
     setIsProfileMenuOpen(!isProfileMenuOpen)
   }
 
-  const { user,logout } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
 
   return (
     <header className="z-40 py-4 bg-white shadow-bottom dark:bg-gray-800">
@@ -84,14 +84,20 @@ function Header() {
               isOpen={isProfileMenuOpen}
               onClose={() => setIsProfileMenuOpen(false)}
             >
-              <DropdownItem tag="a" href="/app/profile">
+              <DropdownItem tag={Link} to="/app/profile">
                 <OutlinePersonIcon className="w-4 h-4 mr-3" aria-hidden="true" />
                 <span>Profile</span>
               </DropdownItem>
-              <DropdownItem tag="a" href="/app/setting">
-                <OutlineCogIcon className="w-4 h-4 mr-3" aria-hidden="true" />
-                <span>Settings</span>
-              </DropdownItem>
+
+              {
+                user.data.role === 1 ?
+                  <DropdownItem tag={Link} to="/app/setting">
+                    <OutlineCogIcon className="w-4 h-4 mr-3" aria-hidden="true" />
+                    <span>Settings</span>
+                  </DropdownItem>
+                  : ''
+              }
+
               <DropdownItem onClick={() => logout()}>
                 <OutlineLogoutIcon className="w-4 h-4 mr-3" aria-hidden="true" />
                 <span>Log out</span>

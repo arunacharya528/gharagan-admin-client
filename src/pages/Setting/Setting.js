@@ -7,6 +7,7 @@ import { SocialLinks } from "./SocialLinks";
 import { useEffect } from "react";
 import { getAll } from "../../adapters/siteData";
 import { useState } from "react";
+import { SiteInfo } from "./Info";
 
 
 const Setting = () => {
@@ -34,6 +35,7 @@ const Setting = () => {
                 !siteData.loading ?
                     <div className="p-5 space-y-5 text-gray-700 dark:text-gray-400">
                         <Notification notification={getByName('notification')} />
+                        <SiteInfo emailData={getByName('email')} contactData={getByName('contact')} />
                         <SiteAddress address={getByName('site_address')} />
                         <Logo logogSm={getByName('logo_url')} logoLg={getByName('lg_logo_url')} />
                         <SocialLinks socialLink={getByName('social_links')} />
