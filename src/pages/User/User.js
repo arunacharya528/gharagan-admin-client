@@ -7,16 +7,11 @@ import { CrossIcon, EditIcon, EyeIcon, PlusIcon, TrashIcon } from "../../icons";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { UserContext } from "../../context/UserContext";
+import { UserListContext } from "../../context/UserListContext";
 
 const User = () => {
-    const [users, setUsers] = useState([]);
-    const [isRefreshed, setRefresh] = useState(false);
     const { user } = useContext(UserContext);
-    useEffect(() => {
-        getUsers(user.data.token)
-            .then(response => setUsers(response.data))
-            .catch(error => console.log(error))
-    }, [isRefreshed])
+    const { users, refresh } = useContext(UserListContext)
 
     const getUserType = (userType) => {
         switch (userType) {
@@ -32,7 +27,7 @@ const User = () => {
     const handleDeletion = (id) => {
         toast.promise(
             deleteUser(user.data.token, id)
-                .then(response => setRefresh(!isRefreshed))
+                .then(response => refresh())
             ,
             {
                 loading: "Deleting user account",
@@ -67,7 +62,7 @@ const User = () => {
                     <TableBody>
                         {
                             users.map((user, index) =>
-                                <TableRow>
+                                <TableRow key={index}>
                                     <TableCell>{user.name}</TableCell>
                                     <TableCell className="truncate" title={user.email}>{user.email}</TableCell>
                                     <TableCell>{user.contact}</TableCell>
