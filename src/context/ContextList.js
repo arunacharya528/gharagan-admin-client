@@ -4,21 +4,22 @@ import { DiscountProvider } from "./DiscountContext"
 import { FileProvider } from "./FileContext"
 import { ModalProvider } from "./ModalContext"
 import { PageProvider } from "./PageContext"
+import { ProductProvider } from "./ProductContext"
 
 export const ContextList = ({ children }) => {
 
 
     return (
-        <DiscountProvider>
-            <FileProvider>
-                <AdvertisementProvider>
-                    <PageProvider>
+        <ProductProvider>
+            <DiscountProvider>
+                <FileProvider>
+                    <AdvertisementProvider>
                         <ModalProvider>
                             {children}
                         </ModalProvider>
-                    </PageProvider>
-                </AdvertisementProvider>
-            </FileProvider>
-        </DiscountProvider>
+                    </AdvertisementProvider>
+                </FileProvider>
+            </DiscountProvider>
+        </ProductProvider>
     )
 }

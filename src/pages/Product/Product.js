@@ -18,23 +18,15 @@ import { deleteProduct, getProducts } from '../../adapters/product'
 import { ModalContext } from '../../context/ModalContext'
 import toast from 'react-hot-toast'
 import { UserContext } from '../../context/UserContext'
+import { ProductContext } from '../../context/ProductContext'
 
 
 function Tables() {
 
     const [dataTable, setDataTable] = useState([])
 
-    const [isRefreshed, setRefresh] = useState(false)
 
-    useEffect(() => {
-
-        getProducts()
-            .then(response => {
-                setDataTable(response.data)
-            })
-            .catch(error => console.log(error));
-    }, [isRefreshed])
-
+    const { products, refresh } = useContext(ProductContext)
     const { setModalData, openModal, closeModal } = useContext(ModalContext)
 
     const { user } = useContext(UserContext)
@@ -46,7 +38,7 @@ function Tables() {
                 , {
                     loading: "Deleting product",
                     success: () => {
-                        setRefresh(!isRefreshed);
+                        refresh();
                         closeModal();
                         return "Deleted product"
                     },
@@ -87,7 +79,7 @@ function Tables() {
                         </tr>
                     </TableHeader>
                     <TableBody>
-                        {dataTable.map((product, i) => (
+                        {products.map((product, i) => (
                             <TableRow key={i}>
                                 <TableCell>
                                     {product.name}
