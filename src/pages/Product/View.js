@@ -15,6 +15,7 @@ import toast from 'react-hot-toast'
 import { UserContext } from '../../context/UserContext'
 import { ModalContext } from '../../context/ModalContext'
 import { getTotalPrice } from '../../utils/helper/calculatePrice'
+import { PublishedButton } from './PublishedButton'
 const moment = require('moment');
 
 function View() {
@@ -132,6 +133,8 @@ function View() {
 
                                         </tbody>
                                     </table>
+
+                                    <PublishedButton id={product.data.id} onChange={()=>setRefresh(!isRefreshed)} publishedState={product.data.published} />
                                 </div>
                             </CardBody>
                         </Card>

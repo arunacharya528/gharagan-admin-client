@@ -3,11 +3,13 @@ const apiURL = process.env.REACT_APP_API_URL;
 const axios = require('axios');
 const qs = require('qs');
 
-export const getProducts = () => {
+export const getProducts = (token) => {
     let config = {
         method: 'get',
-        url: `${apiURL}/allProduct?sort=latest`,
-        headers: {},
+        url: `${apiURL}/product`,
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
         maxRedirects: 0
     };
     return axios(config)

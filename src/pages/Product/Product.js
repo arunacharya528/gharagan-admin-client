@@ -11,14 +11,15 @@ import {
     Modal, ModalHeader, ModalBody
 } from '@windmill/react-ui'
 
-import { EyeIcon, TrashIcon, PlusIcon } from '../../icons'
+import { EyeIcon, TrashIcon, PlusIcon, CheckIcon } from '../../icons'
 import PageTitle from '../../components/Typography/PageTitle'
 import { Link } from 'react-router-dom'
-import { deleteProduct, getProducts } from '../../adapters/product'
+import { deleteProduct, getProducts, putProduct } from '../../adapters/product'
 import { ModalContext } from '../../context/ModalContext'
 import toast from 'react-hot-toast'
 import { UserContext } from '../../context/UserContext'
 import { ProductContext } from '../../context/ProductContext'
+import { PublishedButton } from './PublishedButton'
 
 
 function Tables() {
@@ -56,6 +57,8 @@ function Tables() {
         })
         openModal();
     }
+
+
     return (
         <>
             <PageTitle>
@@ -74,6 +77,7 @@ function Tables() {
                             <TableCell>Category</TableCell>
                             <TableCell>Brand</TableCell>
                             <TableCell>Average rating</TableCell>
+                            <TableCell>Published</TableCell>
                             <TableCell>Action</TableCell>
 
                         </tr>
@@ -93,6 +97,10 @@ function Tables() {
                                 <TableCell>
                                     {product.ratings_avg_rate}
                                 </TableCell>
+                                <TableCell>
+                                    <PublishedButton id={product.id} publishedState={product.published} onChange={() => refresh()} />
+                                </TableCell>
+
                                 <TableCell>
                                     <div className="flex items-center space-x-4">
                                         <Link layout="link" size="icon" aria-label="Edit" to={"/app/product/" + product.id}>
