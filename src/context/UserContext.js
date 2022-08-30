@@ -54,7 +54,16 @@ export const UserProvider = ({ children }) => {
                             role: response.data.role
                         }
                     })
-                    cookies.set('token', response.data.token, { path: "/" })
+                    cookies.set('token', response.data.token, { path: "/", expires: new Date(Date.now() + (60 * 60 * 1000)) })
+                    setTimeout(() => {
+                        toast(
+                            "Your session has expired. Login again to continue your operations.",
+                            {
+                                duration: 6000,
+                            }
+                        );
+                        handleLogout(response.data.token)
+                    }, 60 * 60 * 1000)
                     history.push("/app/dashboard")
                     return "Successfully logged in"
                 },

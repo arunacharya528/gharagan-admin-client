@@ -64,7 +64,9 @@ export const deleteProduct = (token, id) => {
     let config = {
         method: 'delete',
         url: `${apiURL}/product/${id}`,
-        headers: {},
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
         maxRedirects: 0
     };
 
