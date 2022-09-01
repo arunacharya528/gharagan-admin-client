@@ -27,10 +27,9 @@ export const UserProvider = ({ children }) => {
 
     const history = useHistory();
 
-    useEffect(() => {
+    const getLoggedInStatus = () => {
         const token = cookies.get('token');
-
-        if (token !== "") {
+        if (token && token !== '') {
             getIfLoggedIn({ token: token })
                 .then(response => {
                     var data = response.data;
@@ -39,6 +38,13 @@ export const UserProvider = ({ children }) => {
                 })
                 .catch(response => setUser({ loading: true, data: initialState }))
         }
+    }
+
+    useEffect(() => {
+        getLoggedInStatus()
+        setInterval(() => {
+            getLoggedInStatus()
+        }, 1000 * 60 * 5)
     }, [isRefreshed])
 
     const handleLogin = () => {
