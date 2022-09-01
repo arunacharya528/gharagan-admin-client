@@ -16,6 +16,7 @@ import { ImageThumbnail } from "../File/ImageThumbnail";
 import { MinusIcon } from "../../icons";
 import toast from "react-hot-toast";
 import { UserContext } from "../../context/UserContext";
+import { AdvertisementContext } from "../../context/AdvertisementContext";
 
 const moment = require('moment')
 
@@ -23,6 +24,7 @@ const Add = () => {
 
     const { mode } = useContext(WindmillContext)
     const { files } = useContext(FileContext)
+    const { updateAds } = useContext(AdvertisementContext)
 
     const [name, setName] = useState(undefined);
     const [summary, setSummary] = useState(undefined);
@@ -43,8 +45,8 @@ const Add = () => {
 
     const history = useHistory();
     const [isSelectorDisplayed, setSelectorTodisplay] = useState(false);
-    const types = ['banner', 'promotion', 'category'];
-    const pages = ['home', 'detail', 'filter', 'profile'];
+    const types = ['banner', 'promotion', 'category', 'sidebar'];
+    // const pages = ['home', 'detail', 'filter', 'profile'];
 
     const handleDateChange = range => {
         setDateRange(range)
@@ -63,7 +65,10 @@ const Add = () => {
                 active_from: moment(Date.parse(dateRange[0])).format('YYYY-MM-DD HH:mm:ss'),
                 active_to: moment(Date.parse(dateRange[1])).format('YYYY-MM-DD HH:mm:ss'),
             })
-                .then(response => history.push("/app/advertisement"))
+                .then(response => {
+                    history.push("/app/advertisement")
+                    updateAds();
+                })
             ,
             {
                 loading: "Saving advertisement",

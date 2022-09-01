@@ -27,6 +27,7 @@ import { Link } from 'react-router-dom';
 import { ModalContext } from '../../context/ModalContext';
 import toast from 'react-hot-toast';
 import { UserContext } from '../../context/UserContext';
+import { PublishedButton } from './PublishedButton';
 
 const moment = require('moment');
 const Advertisement = () => {
@@ -160,7 +161,7 @@ const Advertisement = () => {
                                     <option>banner</option>
                                     <option>promotion</option>
                                     <option>category</option>
-                                    <option>side bar</option>
+                                    <option>sidebar</option>
                                 </Select>
                             </Label>
 
@@ -223,8 +224,9 @@ const Advertisement = () => {
                                         </div>
 
                                         <div className='flex flex-col text-center'>
-                                            {getBadge(ad.active)}
-                                            {determineValidation(ad.active_to)}
+                                            {/* {getBadge(ad.active)} */}
+                                            <PublishedButton id={ad.id} onChange={() => { updateAds() }} publishedState={ad.active} />
+                                            {/* {determineValidation(ad.active_to)} */}
                                         </div>
 
                                         <div className='flex items-center'>

@@ -64,8 +64,7 @@ const Edit = () => {
 
     const history = useHistory();
     const [isSelectorDisplayed, setSelectorTodisplay] = useState(false);
-    const types = ['banner', 'promotion', 'category'];
-    const pages = ['home', 'detail', 'filter', 'profile'];
+    const types = ['banner', 'promotion', 'category', 'sidebar'];
 
     const handleDateChange = range => {
         setDateRange(range)
@@ -136,7 +135,7 @@ const Edit = () => {
                                     )}
                                 </div>
                             </div>
-                            
+
                         </div>
 
                         <Label className="mt-4">

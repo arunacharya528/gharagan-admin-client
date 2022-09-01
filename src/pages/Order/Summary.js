@@ -129,6 +129,7 @@ export const OrderSummary = ({ order, change }) => {
             .catch((err) => { console.log(err); });
     }
 
+
     return (
         <Card className="mb-4">
             <CardBody>
@@ -139,6 +140,11 @@ export const OrderSummary = ({ order, change }) => {
                             <div className="">
                                 <div className="uppercase font-semibold text-sm">Invoice #</div>
                                 <div>{order.id}</div>
+                            </div>
+
+                            <div className="">
+                                <Link to={"/app/user/" + order.user.id + "/view"} className="underline">{order.user.name}</Link>
+                                <div>{order.user.email}</div>
                             </div>
 
                             <div className="">
